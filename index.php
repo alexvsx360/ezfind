@@ -97,6 +97,7 @@
             $customerIdIssueDate = $_POST['issueDate'];
             $promoterName = $_POST['promoterName'];
             $agentId = $_POST['agentId'];
+            $saleDate = $_POST['saleDate'];
 
 
 
@@ -191,6 +192,7 @@
                             'מסלול חיתום : ' . $hitum . " \n" .
                             'תאריך תחילת ביטוח : ' . $insuranceStartDate . " \n" .
                             'האם יש מכתב ביטול? : ' . $cancellationLetter  . " \n" .
+                            'תאריך המכירה : ' . $saleDate  . " \n" .
                             'לינק למסמכים : ' . 'https://portal.ibell.co.il/user-upload/' . $leadid . '/' . $newnameimg . " \n\n" .
                             'הערות להצעה: ' . $insuranceComment
 
@@ -264,14 +266,15 @@
                 'premia' => $premia,
                 'hitum' => $hitum,
                 'insuranceStartDate' => $insuranceStartDate,
-                'cancellationLetter' => $cancellationLetter
+                'cancellationLetter' => $cancellationLetter,
+                'saleDate' => $saleDate
            ];
 
 
             fwrite($myfile, "create policy POST parameter open new lead in Lead.im" . $policyPost);
             fwrite($myfile, "create customer POST parameter open new lead in Lead.im" . $costumerPost);
 
-            updateBIScreen($agentId, $insuranceCompany, $premia, $hitum, $userName, $promoterName, $leadChannel, "תור_בקרה", str_replace('_'," ", $policy), $customerId, $callCenterName);
+            //updateBIScreen($agentId, $insuranceCompany, $premia, $hitum, $userName, $promoterName, $leadChannel, "תור_בקרה", str_replace('_'," ", $policy), $customerId, $callCenterName);
             /*post to create policy */
             $return = httpPost($baseUrl, $policyPost);
             /*todo add post to create new customer */
