@@ -1,0 +1,42 @@
+body
+{
+	direction: rtl;
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+fieldset { 
+    display: block;
+    margin: 30px auto 0;
+    max-width:500px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px solid #f3f3f3;
+    
+}
+
+.button_center
+{
+	width:90%;
+	margin:30px auto;
+	display: block;
+}
