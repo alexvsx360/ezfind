@@ -40,7 +40,9 @@ if ($curl = curl_init()) {
     'file_category'=>$_POST['file_category'],
     'cat_name'=>$_POST['cat_name'],
     'fileType'=>$_POST['fileType'],
-    'file' => $cfile
+    'file' => $cfile,
+    'ssn' => $_POST['ssn'],
+    'issue-date' => $_POST['issue-date'],
     ));
     //print_r('CURL END');
     $out = curl_exec($curl);
