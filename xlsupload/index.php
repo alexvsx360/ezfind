@@ -650,7 +650,7 @@ if ($rowData[0][8] == "") {
                 <img src="logo3.png"/>
             </div>
             <div class="col-xs-12 col-md-12 col-sm-12">
-                <form action="redirect.php" method="post" enctype="multipart/form-data">
+                <form id="main-form" action="redirect.php" method="post" enctype="multipart/form-data">
                     <fieldset>
                         <div class="error alert alert-danger">
                             אנא בחרו קובץ
@@ -737,6 +737,9 @@ if ($rowData[0][8] == "") {
             var valueSelected = this.value;
 
             jQuery('.cat_name').val(optionSelected.text());
+        });
+        jQuery("#main-form").submit(function () {
+            $(this).find(':submit').val("מעלה קובץ...").attr( 'disabled','disabled' );
         });
 
         jQuery("#submit").click(function () {
