@@ -18,8 +18,43 @@
     </head>
     <body>
 <?php
+
+include ('functions.php');
+
+function createMainRecord ($result){
+    $crmAccountNumberNameJson =[
+        "3328" => "ezfind",
+        "3326" => "ez ביטוח",
+        "3474" => "אביב בר שי",
+        "3325" => "אלעד שמעוני",
+        "3305" => "מוקד בולוטין",
+        "3313" => "מוקד פרחי",
+
+    ];
+    $salesmanName = getRecordInitializerdName($_POST['recordNumber'], $_POST['crmAcccountNumber'], $_POST['agentId']);
+    $baseUrl = "http://api.lead.im/v1/submit";
+    $postData['lm_form'] = "18573";
+    $postData['lm_key'] = "fde1fae3d6";
+    $postData['lm_redirect'] = "no";
+    $postData['name'] = $_POST['name'];
+    $postData['phone'] = $_POST['phone'];
+    $postData['ssn'] = $_POST['ssn'];
+    $postData['issue-date'] = $_POST['issue-date'];
+    $postData['leader'] = $salesmanName;
+    $postData['callCenterName'] = $crmAccountNumberNameJson[$_POST['crmAcccountNumber']];
+    $postData['insurmt'] = "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $baseUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+    curl_exec($ch);
+    curl_close($ch);
+}
+
 //print_r($_POST);
 //print_r($_FILES);
+$myfile = fopen("log.txt", "a");
 $cfile = curl_file_create($_FILES['file']['tmp_name'], $_FILES['file']['type'], $_FILES['file']['name']);
 
  //print_r('UPLOAD START');
@@ -27,7 +62,7 @@ $cfile = curl_file_create($_FILES['file']['tmp_name'], $_FILES['file']['type'], 
 if ($curl = curl_init()) {
     //print_r('CURL START');
     //curl_setopt($curl, CURLOPT_URL, 'http://xlsx_parse.webmind28.com/api.php');
-    curl_setopt($curl, CURLOPT_URL, 'http://212.143.233.53/api.php');
+    curl_setopt($curl, CURLOPT_URL, 'http://192.168.150.223/api.php');
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
@@ -49,6 +84,8 @@ if ($curl = curl_init()) {
     $result = json_decode(trim($out));
     curl_error($curl);
 
+    fwrite($myfile, "\nPrinting the out parameter " . $out);
+
    //   echo $out;
     // if ($out!="Data saved successfully") {
     //     print $out;
@@ -64,7 +101,8 @@ if ($curl = curl_init()) {
         }
         $fileName   = $uploadDir."/".$result->file;
         move_uploaded_file($_FILES['file']['tmp_name'], $fileName);
-     
+
+        createMainRecord($result);
        
     ?>
         <script type="text/javascript">
@@ -132,12 +170,12 @@ if ($curl = curl_init()) {
 			<div class="alert alert-danger">
 			<?php print $it; ?>
 			</div>
-			<?php			
+			<?php
 			}
 		}
 	}
     ?>
-    
+
    
             
     </body>

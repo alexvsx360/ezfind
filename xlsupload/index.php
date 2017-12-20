@@ -508,12 +508,14 @@ if ($rowData[0][8] == "") {
 
                         <div class="form-group">
                             <label for="sel1">ת.ז:</label>
-                            <input required type="number" class="input-group form-control" placeholder="פרמיה בשח" name="ssn"/>
+                            <input required type="number" class="input-group form-control" placeholder="פרמיה בשח"
+                                   name="ssn"/>
                         </div>
 
                         <div class="form-group">
                             <label for="sel1">תאריך הנפקת ת.ז:</label>
-                            <input required type="date" class="input-group form-control date"  data-date-format="dd-mm-yyyy"  name="issue-date"/>
+                            <input required type="date" class="input-group form-control date"
+                                   data-date-format="dd-mm-yyyy" name="issue-date"/>
                         </div>
 
                         <div class="form-group">
@@ -614,12 +616,14 @@ if ($rowData[0][8] == "") {
 
                         <div class="form-group">
                             <label for="sel1">ת.ז:</label>
-                            <input required type="number" class="input-group form-control" placeholder="פרמיה בשח" name="ssn"/>
+                            <input required type="number" class="input-group form-control" placeholder="פרמיה בשח"
+                                   name="ssn"/>
                         </div>
 
                         <div class="form-group">
                             <label for="sel1">תאריך הנפקת ת.ז:</label>
-                            <input required type="date" class="input-group form-control date"  data-date-format="dd-mm-yyyy"  name="issue-date"/>
+                            <input required type="date" class="input-group form-control date"
+                                   data-date-format="dd-mm-yyyy" name="issue-date"/>
                         </div>
 
                         <div class="form-group">
@@ -693,12 +697,14 @@ if ($rowData[0][8] == "") {
 
                         <div class="form-group">
                             <label for="sel1">ת.ז:</label>
-                            <input required type="number" class="input-group form-control" placeholder="מספר ת.ז" name="ssn"/>
+                            <input required type="number" class="input-group form-control" placeholder="מספר ת.ז"
+                                   name="ssn"/>
                         </div>
 
                         <div class="form-group">
                             <label for="sel1">תאריך הנפקת ת.ז:</label>
-                            <input required type="date" class="input-group form-control date"  data-date-format="dd-mm-yyyy"  name="issue-date"/>
+                            <input required type="date" class="input-group form-control date"
+                                   data-date-format="dd-mm-yyyy" name="issue-date"/>
                         </div>
 
                         <div class="form-group">
@@ -739,7 +745,7 @@ if ($rowData[0][8] == "") {
             jQuery('.cat_name').val(optionSelected.text());
         });
         jQuery("#main-form").submit(function () {
-            $(this).find(':submit').val("מעלה קובץ...").attr( 'disabled','disabled' );
+            $(this).find(':submit').val("מעלה קובץ...").attr('disabled', 'disabled');
         });
 
         jQuery("#submit").click(function () {
