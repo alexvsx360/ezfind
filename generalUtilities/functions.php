@@ -22,6 +22,21 @@ function getLeadJson ($lead_id, $acc_id ,$lm_initializer_id){
 }
 
 
+function httpPostWithUserPassword ($url, $post, $username, $password){
+    $process = curl_init($url);
+    curl_setopt($process, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+//curl_setopt($process, CURLOPT_HEADER, 1);
+    curl_setopt($process, CURLOPT_USERPWD, $username . ":" . $password);
+    curl_setopt($process, CURLOPT_TIMEOUT, 30);
+    curl_setopt($process, CURLOPT_POST, 1);
+    curl_setopt($process, CURLOPT_POSTFIELDS, $post /*array('ticket'=>json_encode($data, JSON_UNESCAPED_UNICODE))*/);
+    curl_setopt($process, CURLOPT_RETURNTRANSFER, true);
+    $return = curl_exec($process);
+    curl_close($process);
+    return $return;
+}
+
+
 function getRecordInitializerdName($lead_id, $acc_id, $lm_initializer_id){
     $leadImKey = '3765d732472d44469e70a088caef3040';
 
