@@ -89,6 +89,7 @@ if ($_GET) {
                 <input type="hidden" class="input-group form-control" value="<?php print $userEmail ?>" name="userEmail"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $issueDate ?>" name="issueDate"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $sellingChannel ?>" name="sellingChannel"/>
+                <input type="hidden" class="input-group form-control" value="<?php if ($_GET['agentId']) { print $_GET['agentId']; } ?>"  name="agentId"/>
             </div>
             <div class="row" >
                 <div class="col-xs-4"></div>

@@ -35,6 +35,7 @@ function generateMislakeLead($ticketCreationResponse){
         'lm_form' => 18681,
         'lm_key' => "7fa3e74b41",
         'lm_redirect' => "no",
+        'lm_supplier' => $_POST['agentId'],
         'name' => $_POST['customerName'],
         'phone' => $_POST['customerPhone'],
         'id' => $_POST['customerSsn'],
@@ -94,15 +95,13 @@ function generateTicketComment(){
     }
 }
 
-var_dump($_REQUEST);
-
 /*open new Ticket*/
 $ticketUrl = "https://ezfind-sherut.zendesk.com/api/v2/tickets.json";
 $data->subject = "בדיקה במסלקה פנסיונית (" . $_POST['recordNumber'] . ")";
 
 $data->custom_fields = array('114102615553' => 'מסלקות_פנסיוניות___בקשות_חדשות');
 $data->requester = array(
-    'email' => 'a3328c17397@emails.lead.im',
+    'email' => 'a3328c18712@emails.lead.im',
     'name' => 'LeadIm Proxy'
 );
 /*
@@ -127,9 +126,7 @@ $mislakaPost = generateMislakeLead($ticketCreationResponse);
 $newMislakaLeadId = openNewLead($mislakaPost);
 
 $updateCustomerResponse = addOrCreateCustomerandUpdateNewSale($newMislakaLeadId, $_POST['customerPhone'], generateCustomerPostData());
-echo $updateCustomerResponse;
 
-echo 1111;
 
 
 ?>
