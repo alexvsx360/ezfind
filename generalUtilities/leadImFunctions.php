@@ -7,6 +7,37 @@
  */
 include_once ('functions.php');
 
+function getStatusAsString($statusCode){
+    $statusCodeToSrting = [
+        '1' => "New",
+        '100084' => "תור בקרה",
+        '100085' => "נשלח לחברת הביטוח",
+        '102337' => "חיתום",
+        '102338' => "חוסרים",
+        '102339' => "נדחה",
+        '102340' => "הופק",
+        '102700' => "נגנז",
+        '103721' => "לא עונה 1",
+        '103722' => "לא עונה 2",
+        '103723' => "לא עונה 3",
+        '103724' => "לא עונה 4",
+        '103725' => "לא עונה 5 ויותר",
+        '103726' => "נקבעה שיחת המשך",
+        '103727' => "הועבר לטיפול נציג המכירות",
+        '103728' => "ממתין למסמכים מהלקוח",
+        '103729' => "נשלח מכתב ביטול",
+        '103730' => "פניה סגורה",
+        '103731' => "לקוח מבקש לבטל",
+        '103732' => "עודכן אמצעי תשלום",
+        '103733' => "שימור",
+        '103734' => "ביטול",
+        '104259' => "הופק ושומר",
+        '2' => "Invalid",
+
+    ];
+    return $statusCodeToSrting[$statusCode];
+}
+
 function addOrCreateCustomerandUpdateNewSale($saleId, $customerPhone, $createCustomerPost){
     /*search lead by customer phone */
     $searchBaseUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/searchlead.ashx";
