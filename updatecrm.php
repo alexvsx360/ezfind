@@ -5,19 +5,10 @@
  * Date: 11/7/2017
  * Time: 3:19 PM
  */
+include ('functions.php');
 
 $paramIndex = 0;
 $updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
-function httpGet($url){
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-    $content = trim(curl_exec($ch));
-    curl_close($ch);
-    return $content;
-}
 
 $statusToFieldNumJson = [
     "תור_בקרה" => "100084",
@@ -55,7 +46,7 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
             fwrite($myfile, $key . " : " . $value . "\n");
         }
 
-        $updateLeadUrl = $updateLeadUrl . "&lead_ticket=" . $_GET['lead_ticket'] . "&status=" . $statusToFieldNumJson[$_GET['status']];
+        $updateLeadUrl = $updateLeadUrl . "&usr_id=11017&lead_ticket=" . $_GET['lead_ticket'] . "&status=" . $statusToFieldNumJson[$_GET['status']];
             if (! empty($_GET['policyNumber'])){
                 appendParameterToURL(102145, $_GET['policyNumber']);
             }
@@ -77,8 +68,21 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
             if (! empty($_GET['hitum'])){
                 appendParameterToURL(102133, $hitumJson[$_GET['hitum']] );
             }
+            if (!empty($_GET['pendingStatus'])){
+                appendParameterToURL(104471, $_GET['pendingStatus'] );
+            }
+/*            if (! empty($_GET['cancelationLetterExists'])){
+            appendParameterToURL(102137,    ($_GET['cancelationLetterExists'] == 0 ? "lfv102139" : "lfv102138"));
+            }
+            if (! empty($_GET['cancelationLetterSent'])){
+            appendParameterToURL(102141, ($_GET['cancelationLetterSent'] == 0 ? "lfv102143" : "lfv102142") );
+            }*/
+
 
         fwrite($myfile, "Update URL is: " . $updateLeadUrl ."\n");
+        /*Update the CRM*/
         httpGet($updateLeadUrl);
+        /*Update the BI*/
+        //updateRecordInBiScreen($_GET['lead_ticket'],  $statusToFieldNumJson[$_GET['status']], strtotime($_GET['productionDate']), $_GET['premia']);
         /*http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=4564&status=10084&update_fields[fld_id]=102145&update_fields[fld_val]=&update_fields[fld_id_1]=100100&update_fields[fld_val_1]=123456&update_fields[fld_id_2]=102416&update_fields[fld_val_2]=154&update_fields[fld_id_3]=102140&update_fields[fld_val_3]=2017-12-01&update_fields[fld_id_4]=102218&update_fields[fld_val_4]=2017-11-27&update_fields[fld_id_5]=102144&update_fields[fld_val_5]=2018-01-01&update_fields[fld_id_6]=102133&update_fields[fld_val_6]=ירוק*/
     }
