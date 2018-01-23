@@ -340,12 +340,37 @@ class Lead {
             'productionStatus' => $this->getStatus(),
             'productionDate' => $this->policy->getProductionDate()->format(DateTime::ISO8601),
             'pendingStatus' => $this->policy->getPendingStatus(),
+            'recordStatus' => "",
             'reference' => $this->getRecordId(),
 
         ];
 
     }
 
+    function generateDeletePolicyPostData(){
+        return [
+            'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
+            'data_source' => '610a2983898a41d299700b16cebd0987',
+            'member_api_provider' => 'Lead Im CRM',
+            'member_api_id' => $this->getSupplierId(),
+            'member_name' => "supplier_" . $this->getSupplierId(),
+            'callCenterName' => $this->getCallCenterName(),
+            'sellingChannel' => $this->policy->getSellingChannel(),
+            'saleDate' => $this->policy->getSaleDate()->format(DateTime::ISO8601), // Updated ISO8601,
+            'sellerName' => $this->policy->getSellerName(),
+            'promoterName' => $this->policy->getPromoterName(),
+            'insuranceType' => $this->policy->getPolicyType(),
+            'insuranceCompany' => $this->policy->getInsuranceCompany(),
+            'monthlyPremia' => $this->policy->getMonthlyPremia(),
+            'anualPremia' => $this->policy->getAnnualPremia(),
+            'hitum' => $this->policy->getHitum(),
+            'productionStatus' => $this->getStatus(),
+            'productionDate' => $this->policy->getProductionDate()->format(DateTime::ISO8601),
+            'pendingStatus' => $this->policy->getPendingStatus(),
+            'recordStatus' => "canceled",
+            'reference' => $this->getRecordId(),
+        ];
+    }
 
 }
 
