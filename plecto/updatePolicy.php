@@ -17,24 +17,25 @@ $method = $_GET['method'];
 
 $acc_id = $_GET['crmAcccountNumber'];
 $recordNumber = $_GET['recordNumber'];
+
+$leadPostDate = "";
 /*get the Json from the CRM*/
 $leadToPopulateJson = getLeadJson($_GET['recordNumber'], $acc_id, $_GET['agentId']);
-if ($leadToPopulateJson['lead']['campaign_id'] == 17967) {
+if ($leadToPopulateJson['lead']['campaign_id'] == 17967 && $method == "update") {
     /*create lead Object from the Json data and create a post to update the BI*/
     $lead = new Lead($leadToPopulateJson);
-    $leadPostDate = "";
-    if ($method == "update") {
-        $leadPostDate = $lead->generateUpdatePolicyPostData();
-    } else if ($method == "delete") {
-        $leadPostDate = $lead->generateDeletePolicyPostData();
-    } else {
-        error_log("Unknown method value in request! lead id is " . $recordNumber . " method is: " . $method . "\n");
-    }
+    $leadPostDate = $lead->generateUpdatePolicyPostData();
     /*update the BI and return a result code*/
     $output = addLeadToPlecto($leadPostDate);
 
 
-}else{
+} else if ($method == "delete") {
+    $recordDate = new DateTime();
+    $recordDate->setTimestamp($_GET['date']);
+
+    $leadPostDate = Lead::generateDeletePolicyPostData($recordNumber, $_GET['agentId'], $recordDate);
+    $output = addLeadToPlecto($leadPostDate);
+} else {
     /*lead is not from the correct campaign*/
     error_log("received lead from the wrong campaign " . $leadToPopulateJson['lead']['campaign_id'] . "\n");
 }
