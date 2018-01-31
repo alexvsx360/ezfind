@@ -98,6 +98,8 @@
             $promoterName = $_POST['promoterName'];
             $agentId = $_POST['agentId'];
             $saleDate = $_POST['saleDate'];
+            $cancelPolicyNumber = $_POST['cancelPolicy'];
+            $cancelInsuranceCompany = $_POST['cancelInsuranceCompany'];
 
 
 
@@ -192,6 +194,8 @@
                             'מסלול חיתום : ' . $hitum . " \n" .
                             'תאריך תחילת ביטוח : ' . $insuranceStartDate . " \n" .
                             'האם יש מכתב ביטול? : ' . $cancellationLetter  . " \n" .
+                            'חברת ביטוח אליה ישלח מכתב הביטול : ' . $cancelInsuranceCompany  . " \n" .
+                            'מספר פוליסה לבטל : ' . $cancelPolicyNumber  . " \n" .
                             'תאריך המכירה : ' . $saleDate  . " \n" .
                             'לינק למסמכים : ' . 'https://portal.ibell.co.il/user-upload/' . $leadid . '/' . $newnameimg . " \n\n" .
                             'הערות להצעה: ' . $insuranceComment
@@ -267,6 +271,8 @@
                 'hitum' => $hitum,
                 'insuranceStartDate' => $insuranceStartDate,
                 'cancellationLetter' => $cancellationLetter,
+                'cancelInsuranceCompany' => $cancelInsuranceCompany,
+                'cancelPolicyNumber' => $cancelPolicyNumber,
                 'saleDate' => $saleDate
            ];
 
@@ -429,7 +435,17 @@
                         </div>
 
                         <div class="row" >
+
                             <div class="col-xs-2 "></div>
+                            <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                                <label for="sel1">האם יש מכתב ביטול?</label>
+                                <select required class="form-control" id="cancellationNumber" name="cancellationNumber">
+                                    <option disabled selected value> -- האם יש מכתב ביטול -- </option>
+                                    <option value="כן">כן</option>
+                                    <option value="לא">לא</option>
+                                </select>
+                            </div>
+
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">מצב משפחתי:</label>
                                 <select required class="form-control" id="marriageStatus" name="marriageStatus">
@@ -442,16 +458,24 @@
                                 </select>
                             </div>
 
+                        </div>
+
+
+                        <!--Hiddene input for cancellation letter-->
+                        <div class="row" >
+                            <div class="col-xs-2 "></div>
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                                <label for="sel1">האם יש מכתב ביטול?</label>
-                                <select required class="form-control" id="cancellationNumber" name="cancellationNumber">
-                                    <option disabled selected value> -- האם יש מכתב ביטול -- </option>
-                                    <option value="כן">כן</option>
-                                    <option value="לא">לא</option>
-                                </select>
+                                <label for="sel1">מספר פוליסה לביטול</label>
+                                <input type="text" class="input-group form-control"  placeholder="מספר פוליסה לביטול" id="cancelPolicy" name="cancelPolicy"/>
+                            </div>
+
+                            <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                                <label for="sel1">באיזו חברת ביטוח לבטל?</label>
+                                <input type="text" class="input-group form-control"  placeholder="באיזו חברת ביטוח לבטל?" id="cancelInsuranceCompany" name="cancelInsuranceCompany"/>
                             </div>
                         </div>
 
+                        <!--End of hidden fields-->
 
 
                         <div class="row" >
@@ -532,7 +556,20 @@
         <script>
             jQuery(document).ready(function(){
 
+                jQuery("#cancellationNumber").change(function (){
+                    console.log("cancellationNumber select was changed to" + this.value);
+                    if(this.value === "כן"){
+                        console.log("Adding require to #cancelInsuranceCompany and #cancelPolicy" );
+                        $("#cancelInsuranceCompany").prop('required',true);
+                        $("#cancelPolicy").prop('required',true);
+                    }else{
+                        console.log("Removing require to #cancelInsuranceCompany and #cancelPolicy" );
+                        $("#cancelInsuranceCompany").prop('required',false);
+                        $("#cancelPolicy").prop('required',false);
+                    }
 
+
+                });
                 jQuery("#back_to_form").click(function(){
                     console.log("back_to_form was called")
                     // jQuery('#back_form').removeClass('hide');
