@@ -30,7 +30,8 @@ include ('../generalUtilities/leadImFunctions.php');
 
 $customerFullName = ""; $customerPhone = ""; $ssn =""; $email =""; $callCenterName = ""; $recordNumber = "";
 $address = ""; $secondaryCustomerName = ""; $secondaryCustomerSsn = "";
-$userName = ""; $userEmail = ""; $issueDate = ""; $sellingChannel="";
+$userName = ""; $userEmail = ""; $issueDate = ""; $sellingChannel=""; $birthDate = "";
+$employyType=""; $jobsCount=""; $sex="";
 if ($_GET) {
     global $customerFullName,
            $customerPhone,
@@ -43,6 +44,10 @@ if ($_GET) {
            $userEmail,
            $sellingChannel,
            $issueDate,
+           $birthDate,
+           $employyType,
+           $jobsCount,
+           $sex,
            $callCenterName;
 
     /*get lead information from the CRM*/
@@ -60,6 +65,13 @@ if ($_GET) {
     $userEmail = $leadToPopulateJson['user']['email'];
 
     $issueDate = $leadToPopulateJson['lead']['fields']['94522'];
+    $birthDate = $leadToPopulateJson['lead']['fields']['94951'];
+    $employyType = ($leadToPopulateJson['lead']['fields']['98378'] == 98379 ? 'עצמאי' : 'שכיר');
+    $jobsCount = $leadToPopulateJson['lead']['fields']['98382']; $jobsCount = preg_replace('/[^0-9]/', '', $jobsCount);
+    $sex = ($leadToPopulateJson['lead']['fields']['103089'] == 103090 ? 'זכר' : 'נקבה');
+
+
+
     $sellingChannel = $leadToPopulateJson['lead']['channel_name'];
     $secondaryCustomerName = getSecondaryCustomerName($acc_id, $leadToPopulateJson);
     $secondaryCustomerSsn = getSecondaryCustomerSsn($acc_id, $leadToPopulateJson);
@@ -89,6 +101,10 @@ if ($_GET) {
                 <input type="hidden" class="input-group form-control" value="<?php print $userEmail ?>" name="userEmail"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $issueDate ?>" name="issueDate"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $sellingChannel ?>" name="sellingChannel"/>
+                <input type="hidden" class="input-group form-control" value="<?php print $birthDate ?>" name="birthDate"/>
+                <input type="hidden" class="input-group form-control" value="<?php print $employyType ?>" name="employyType"/>
+                <input type="hidden" class="input-group form-control" value="<?php print $jobsCount ?>" name="jobsCount"/>
+                <input type="hidden" class="input-group form-control" value="<?php print $sex ?>" name="sex"/>
                 <input type="hidden" class="input-group form-control" value="<?php if ($_GET['agentId']) { print $_GET['agentId']; } ?>"  name="agentId"/>
             </div>
             <div class="row" >
