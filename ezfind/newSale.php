@@ -107,7 +107,7 @@ $data->requester = array(
 /*
 $data->collaborators = getCollaboratorArrayById($crmAccount, $userEmail); */
 generateTicketComment();
-$data->collaborators = array( $_POST['userEmail'], "yaki@ezfind.co.il", "shay@ezfind.co.il");
+$data->collaborators = array( $_POST['userEmail'], "yaki@ezfind.co.il", "yariv.d@ezfind.co.il");
 
 /*API to Zendesk to open the ticket*/
 $create = json_encode(array('ticket' => $data)/*, JSON_UNESCAPED_UNICODE*/);
