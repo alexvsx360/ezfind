@@ -26,10 +26,11 @@
  * Date: 12/20/2017
  * Time: 3:32 PM
  */
-include ('../generalUtilities/functions.php');
-include ('../generalUtilities/leadImFunctions.php');
+include_once ('../generalUtilities/functions.php');
+include_once ('../generalUtilities/leadImFunctions.php');
 $data = "";
 
+$LOGGER = fopen("log.txt", "a");
 function generateMislakeLead($ticketCreationResponse){
     return [
         'lm_form' => 18681,
@@ -59,7 +60,6 @@ function generateCustomerPostData(){
         'lm_form' => '17993',
         'lm_key' => '6ebab5cef5',
         'lm_redirect' => 'no',
-        /*'lm_supplier' => $agentId,*/
         'name' => $_POST['customerName'],
         'phone' => $_POST['customerPhone'],
         'id' => $_POST['customerSsn'],
@@ -95,7 +95,7 @@ function generateTicketComment(){
     }
 }
 
-/*open new Ticket*/
+//open new Ticket
 $ticketUrl = "https://ezfind-sherut.zendesk.com/api/v2/tickets.json";
 $data->subject = "בדיקה במסלקה פנסיונית (" . $_POST['recordNumber'] . ")";
 
@@ -104,13 +104,12 @@ $data->requester = array(
     'email' => 'a3328c18712@emails.lead.im',
     'name' => 'LeadIm Proxy'
 );
-/*
-$data->collaborators = getCollaboratorArrayById($crmAccount, $userEmail); */
+
 generateTicketComment();
 $data->collaborators = array( $_POST['userEmail'], "yaki@ezfind.co.il", "yariv.d@ezfind.co.il");
 
-/*API to Zendesk to open the ticket*/
-$create = json_encode(array('ticket' => $data)/*, JSON_UNESCAPED_UNICODE*/);
+//API to Zendesk to open the ticket
+$create = json_encode(array('ticket' => $data));
 //fwrite($myfile, "return value from Zendesk API is " . print_r($create, true));
 
 $username = 'yaki@tgeg.co.il/token';
@@ -127,6 +126,82 @@ $newMislakaLeadId = openNewLead($mislakaPost);
 
 $updateCustomerResponse = addOrCreateCustomerandUpdateNewSale($newMislakaLeadId, $_POST['customerPhone'], generateCustomerPostData());
 
+
+
+/******************************START VOD REQUEST*************************************************/
+/*function getAccessToken() {
+    $postData = [
+        'email' => 'yaki@tgeg.co.il',
+        'password' => 'Alma@102030'
+    ];
+    $response = httpPostContentTypeJson('https://api.treepodia.com/rest/vod/v032016/auth', json_encode($postData));
+    return json_decode($response);
+}
+
+function validateVodRequest (){
+    //insert validation to this the request
+    //first check all variables exists and have value in it
+    if ( isset($_POST['birthDate']) && !empty($_POST['birthDate']) &&
+         isset($_POST['customerSsn']) && !empty($_POST['customerSsn']) &&
+         isset($_POST['customerFirstName']) && !empty($_POST['customerFirstName']) &&
+         isset($_POST['employyType']) && !empty($_POST['employyType']) &&
+         isset($_POST['jobsCount']) && !empty($_POST['jobsCount']) &&
+         isset($_POST['sex']) && !empty($_POST['sex'])
+    ) {
+        //all variable exists and have values
+        if ( !$_POST['jobsCount'] > 0 ) return false;
+
+        return true;
+    }
+    return false;
+}
+
+$isPassedVodValidation = validateVodRequest();
+$isVideoRequestSuccess = false;
+if ($isPassedVodValidation){
+    global $isVideoRequestSuccess;
+
+    fwrite($LOGGER, "VOD request for sku " . $_POST['customerSsn'] . " Passed validation, starting to build VOD request\n");
+
+    $accessToken = getAccessToken();
+
+    $bDate = new DateTime();
+    $bDate->setTimestamp($_POST['birthDate']);
+
+    $vodPostData = [
+        'accessToken' => $accessToken->accessToken,
+        'sku' => $_POST['customerSsn'],
+        'templateId' => 1,
+        'requestData' => array(
+            'name' => $_POST['customerFirstName'],
+            'fname' => $_POST['customerLastName'],
+            'ssn' => $_POST['customerSsn'],
+            'bDate' => $bDate->getTimestamp(),
+            'EmployeeType' => $_POST['employyType'],
+            'jobsCount' => $_POST['jobsCount'],
+            'sex' => $_POST['sex']
+        ),
+        'callback' => array(
+            'url' => 'https://ezfind.frb.io/plecto/logger.php',
+            'method' => 'POST',
+            'contentType' => 'application/json',
+            'body' => "{\"requestId\":\"{requestId}\",\"videoUrl\":\"{videoUrl}\"}",
+        )
+    ];
+
+
+    $url = 'https://api.treepodia.com/rest/vod/v032016/acc/UA-EZFIND/requests';
+
+    $response = httpPostContentTypeJson($url, json_encode($vodPostData));
+    fwrite($LOGGER,"VOD request for sku " . $_POST['customerSsn'] . " sent to Trepodioa VOD - response is: " . $response . "\n" );
+
+    $response = json_decode($response);
+    $isVideoRequestSuccess = (['status'] == "SUCCESS");
+} else {
+    fwrite($LOGGER,"VOD request for sku " . $_POST['customerSsn'] . " FAILED validation!!\n" . print_r($_REQUEST, TRUE) . "\n");
+}*/
+
+/******************************END VOD REQUEST*************************************************/
 
 
 ?>

@@ -24,8 +24,8 @@
 <body>
 <?php
 
-include ('../generalUtilities/functions.php');
-include ('../generalUtilities/leadImFunctions.php');
+include_once ('../generalUtilities/functions.php');
+include_once ('../generalUtilities/leadImFunctions.php');
 
 
 $customerFullName = ""; $customerPhone = ""; $ssn =""; $email =""; $callCenterName = ""; $recordNumber = "";
