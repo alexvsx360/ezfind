@@ -31,7 +31,7 @@ include ('../generalUtilities/leadImFunctions.php');
 $customerFullName = ""; $customerPhone = ""; $ssn =""; $email =""; $callCenterName = ""; $recordNumber = "";
 $address = ""; $secondaryCustomerName = ""; $secondaryCustomerSsn = "";
 $userName = ""; $userEmail = ""; $issueDate = ""; $sellingChannel=""; $birthDate = "";
-$employyType=""; $jobsCount=""; $sex="";
+$employyType=""; $jobsCount=""; $sex=""; $customerFirstName = ""; $customerLastName="";
 if ($_GET) {
     global $customerFullName,
            $customerPhone,
@@ -48,6 +48,8 @@ if ($_GET) {
            $employyType,
            $jobsCount,
            $sex,
+           $customerFirstName,
+           $customerLastName,
            $callCenterName;
 
     /*get lead information from the CRM*/
@@ -66,6 +68,8 @@ if ($_GET) {
 
     $issueDate = $leadToPopulateJson['lead']['fields']['94522'];
     $birthDate = $leadToPopulateJson['lead']['fields']['94951'];
+    $customerFirstName = $leadToPopulateJson['lead']['fields']['94516'];
+    $customerLastName = $leadToPopulateJson['lead']['fields']['94517'];
     $employyType = ($leadToPopulateJson['lead']['fields']['98378'] == 98379 ? 'עצמאי' : 'שכיר');
     $jobsCount = $leadToPopulateJson['lead']['fields']['98382']; $jobsCount = preg_replace('/[^0-9]/', '', $jobsCount);
     $sex = ($leadToPopulateJson['lead']['fields']['103089'] == 103090 ? 'זכר' : 'נקבה');
@@ -105,6 +109,8 @@ if ($_GET) {
                 <input type="hidden" class="input-group form-control" value="<?php print $employyType ?>" name="employyType"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $jobsCount ?>" name="jobsCount"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $sex ?>" name="sex"/>
+                <input type="hidden" class="input-group form-control" value="<?php print $customerFirstName ?>" name="customerFirstName"/>
+                <input type="hidden" class="input-group form-control" value="<?php print $customerLastName ?>" name="customerLastName"/>
                 <input type="hidden" class="input-group form-control" value="<?php if ($_GET['agentId']) { print $_GET['agentId']; } ?>"  name="agentId"/>
             </div>
             <div class="row" >
