@@ -21,7 +21,7 @@ $recordNumber = $_GET['recordNumber'];
 $leadPostDate = "";
 /*get the Json from the CRM*/
 $leadToPopulateJson = getLeadJson($_GET['recordNumber'], $acc_id, $_GET['agentId']);
-if ($leadToPopulateJson['lead']['campaign_id'] == 17967 && $method == "update") {
+if ($leadToPopulateJson['lead']['campaign_id'] == 17967 && $leadToPopulateJson['lead']['channel_id'] != 19582 && $method == "update") {
     /*create lead Object from the Json data and create a post to update the BI*/
     $lead = new Lead($leadToPopulateJson);
     $leadPostDate = $lead->generateUpdatePolicyPostData();

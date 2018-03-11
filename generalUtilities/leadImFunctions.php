@@ -162,6 +162,8 @@ function getSecondaryCustomerSsn($acc_id, $leadToPopulateJson){
 function getCallCenterName($acc_id, $leadToPopulateJson){
     switch ($acc_id){
         case 3328:
+            if ($leadToPopulateJson['lead']['campaign_id'] == 19578)
+                return "ezloans";
             return "ezfind";
         case 3694:
             return $leadToPopulateJson['lead']['fields']['100098'];
