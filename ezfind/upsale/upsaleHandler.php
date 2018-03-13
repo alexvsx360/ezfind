@@ -122,20 +122,48 @@ $LOGGER = fopen("log.txt", "a");
 
 
 /*save the file to the directory */
-$info = pathinfo($_FILES['file']['name']);
-$ext = $info['extension']; // get the extension of the file
-$newname = "upsale_doc_" . $_POST['recordNumber'] ."." .$ext;
 
-$target = '../documents/'.$newname;
-move_uploaded_file( $_FILES['file']['tmp_name'], $target);
+$files = $_FILES["file"]["name"];
+$extension_files = array();
+$new_name_files =  array();
+$array_types = array();
+$array_targets = array();
 
+//to get the extension of the file.
+foreach ($files as $index => $file_name) {
+    $extension =  pathinfo($file_name,PATHINFO_EXTENSION);
+    array_push($extension_files,$extension);}
 
+//to define a new name for each file.
+foreach ($extension_files as $i => $extension_name) {
+    $count = $i;
+    $new_name ="upsale_doc_" . $_POST['recordNumber'].".".$count.".".$extension_name;
+    array_push($new_name_files, $new_name);
+}
+
+//send to new directory the files and save the new directory and types in arrays.
+foreach ($new_name_files as $i =>$newname) {
+    move_uploaded_file($_FILES["file"]["tmp_name"][$i],'../documents/'.$newname);
+    $target = '../documents/'.$newname;
+    array_push($array_targets, $target);
+    $type = $_FILES['file']['type'][$i];
+    array_push($array_types, $type);
+};
 //save the uploaded file as zendesk attachment
-$attachment = $client->attachments()->upload([
-    'file' => $target,
-    'type' => $_FILES['file']['type'],
-]);
 
+$upload_token = "";
+foreach ($files as $i => $files) {
+$params = array(
+    'file' => $array_targets[$i],
+    'type' => $array_types[$i],
+    'name' =>  $files
+);
+    if (isset($upload_token)) {
+        $params['token'] = $upload_token;
+    }
+    $attachment = $client->attachments()->upload($params);
+    $upload_token = $attachment->upload->token;
+}
 
 /*
  * 1. build the ticket
@@ -162,7 +190,7 @@ $newTicket = $client->tickets()->create([
     'collaborators' =>[$_POST['userEmail'], 'yariv.d@ezfind.co.il'],
     'comment'  => [
         'body' => generateCommentBody($customerCount),
-        'uploads'   => [$attachment->upload->token]
+        'uploads'   => [$upload_token]
     ],
 ]);
 
@@ -180,7 +208,14 @@ $client->tickets()->update($newTicket->ticket->id,[
         'body' => 'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $newPedionLead . " \n\n",
     ]
 ]);
-
+//$client->tickets()->update($newTicket->ticket->id, [
+//    'priority' => 'high',
+//    'comment' => [
+//        'body' => 'TEST',
+//        'uploads' => [$upload_token],
+//        'public' => false
+//    ]
+//]);
 echo $newTicket->ticket->id;
 
 ?>
