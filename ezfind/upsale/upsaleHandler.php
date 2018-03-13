@@ -162,7 +162,7 @@ $newTicket = $client->tickets()->create([
     'collaborators' =>[$_POST['userEmail'], 'yariv.d@ezfind.co.il'],
     'comment'  => [
         'body' => generateCommentBody($customerCount),
-        'uploads'   => [$attachment->upload->token]
+        'uploads'   => [$attachment->upload->token, $attachment->upload->token]
     ],
 ]);
 
