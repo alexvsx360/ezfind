@@ -19,7 +19,7 @@
     <script src="../js/bootstrap.min.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>הגשת מכירה חדשה לאיזיפינד</title>
+    <title>הלוואות</title>
 </head>
 <body>
 <?php
@@ -92,7 +92,7 @@ if ($_GET) {
     <div class="row" >
         <form enctype="multipart/form-data" id="main-form" action="upsaleHandler.php" class="" method="post" >
             <div class="form-group">
-                <input type="hidden" class="input-group form-control" value="pedion"  name="typeForm"/>
+                <input type="hidden" class="input-group form-control" value="loan"  name="typeForm"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $customerPhone; ?>" name="customerPhone"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $ssn ?>"  name="customerSsn"/>
@@ -112,7 +112,7 @@ if ($_GET) {
                 <input type="hidden" class="input-group form-control" value="<?php print $sex ?>" name="sex"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $customerFirstName ?>" name="customerFirstName"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $customerLastName ?>" name="customerLastName"/>
-                <input type="hidden" class="input-group form-control" value="פדיון" name="operationType"/>
+                <input type="hidden" class="input-group form-control" value="הלוואות" name="operationType"/>
                 <input type="hidden" class="input-group form-control" value="<?php if ($_GET['agentId']) { print $_GET['agentId']; } ?>"  name="agentId"/>
             </div>
             <div class="row" >
@@ -120,7 +120,7 @@ if ($_GET) {
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                     <div class="input-group">
                         <div id="radioBtn" class="btn-group">
-                            <label for="sel1">עבור מי הטיקט - מועמד ראשי או משני</label><br>
+                            <label for="sel1">למי נותנים הלוואה - מועמד ראשי או משני</label><br>
                             <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="2">משני</a>
                             <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="1">ראשי</a>
                         </div>
@@ -131,24 +131,27 @@ if ($_GET) {
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label for="sel1">סוג הקופה</label>
-                    <select required class="form-control" id="pedionType" name="pedionType">
-                        <option disabled selected value> -- בחר את סוג הקופה -- </option>
-                        <option value="קרן_פנסיה">פנסיה</option>
-                        <option value="קופת_גמל">גמל</option>
-                        <option value="ביטוח_מנהלים">מנהלים</option>
-                        <option value="חסכון_טהור">חסכון</option>
-                        <option value="קופה_אחרת">אחר</option>
-                    </select>
+                    <label for="sel1">הגוף המנהל</label>
+                    <input required type="text" class="input-group form-control" placeholder="כתוב את הגוף המנהל " name="insuranceCompany"/>
                 </div>
             </div>
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label for="sel1">הגוף המנהל</label>
-                    <input required type="text" class="input-group form-control" placeholder="כתוב את הגוף המנהל את החסכון הפנסיוני שרוצים לפדות" name="insuranceCompany"/>
+                    <label for="sel1">סוג הקופה</label>
+
+                    <select required class="form-control" id="pedionType" name="pedionType">
+                        <option disabled selected value> -- בחר את סוג הקופה -- </option>
+                        <option value="קרן_פנסיה">פנסיה</option>
+                        <option value="קופת_גמל">גמל</option>
+                        <option value="ביטוח_מנהלים">מנהלים</option>
+                        <option value="השתלמות">השתלמות</option>
+                        <option value="חסכון_טהור">חסכון</option>
+                        <option value="קופה_אחרת">אחר</option>
+                    </select>
                 </div>
             </div>
+
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -159,30 +162,15 @@ if ($_GET) {
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label for="sel1">מעמד הקופה</label>
-                    <select required class="form-control" id="programStatus" name="programStatus">
-                        <option disabled selected value> -- בחר את מעמד הקופה -- </option>
-                        <option value="עצמאי">עצמאי</option>
-                        <option value="שכיר">שכיר</option>
-                    </select>
+                    <label for="sel1">סכום להלוואה</label>
+                    <input required type="number" class="input-group form-control" placeholder="סכום להלוואה" name="loanAmount"/>
                 </div>
             </div>
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label for="sel1">סכום לפדיון</label>
-                    <input required type="number" class="input-group form-control" placeholder="סכום לפדיון" name="pedionSum"/>
-                </div>
-            </div>
-            <div class="row" >
-                <div class="col-xs-4 "></div>
-                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label for="sel1">האם הלקוח מודע לתשלום מס 35%?</label>
-                    <select required class="form-control" id="taxAware" name="taxAware">
-                        <option disabled selected value> -- בחר תשובתך -- </option>
-                        <option value="כן">כן</option>
-                        <option value="לא">לא</option>
-                    </select>
+                    <label for="sel1">תקופת הלוואה בחודשים</label>
+                    <input required type="number" class="input-group form-control" placeholder="תקופת הלוואה בחודשים" name="loanMontlyPeriod"/>
                 </div>
             </div>
             <div class="row" >
@@ -199,15 +187,6 @@ if ($_GET) {
                     <input required type="number" class="input-group form-control" placeholder="מספר תשלומים" name="paymentCount"/>
                 </div>
             </div>
-
-            <div class="row" >
-                <div class="col-xs-4 "></div>
-                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label for="exampleInputFile">צרף מסמכים רלוונטיים</label>
-                    <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file[]" id="InputFile" multiple/>
-                </div>
-            </div>
-
             <div class="row" >
                 <div class="col-xs-4"></div>
 
@@ -216,6 +195,16 @@ if ($_GET) {
                     <textarea class="form-control" rows="4"  id="comments" name="insuranceComment"></textarea>
                 </div>
             </div>
+
+            <div class="row" >
+                <div class="col-xs-4 "></div>
+                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <label for="exampleInputFile">צרף מסמכים רלוונטיים</label>
+                    <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file[]" id="InputFile"  multiple/>
+                </div>
+            </div>
+
+
 
 
             <div class="row" >

@@ -23,6 +23,36 @@
 /*
  * Functions
  * */
+$basicDataHeaderTicket =
+    'מוקד: ' . $_POST['callCenterName'] . " \n" .
+    'איש מכירות: ' . $_POST['userName'] . " \n" .
+    'פעולה לביצוע: ' . $_POST['operationType'] . " \n" .
+    'הגוף המנהל: ' . $_POST['insuranceCompany'] . " \n" .
+    'סוג הקופה: ' . $_POST['pedionType'] . " \n" .
+    'מספר הקופה: ' . $_POST['programNumber'] ;
+
+$basicDataFooterTicket =
+    'קישור לרשומת הליד המקורי (ממוקד המכירות) : ' . 'https://crm.ibell.co.il/a/3328/leads/' . $_POST['recordNumber'] . " \n\n".
+    'הערות להצעה: ' . $_POST['insuranceComment']. " \n" ;
+
+$basicDataForLead=
+    [ 'lm_supplier' => $_POST['agentId'],
+    'name' => $_POST['customerName'],
+    'phone' => $_POST['customerPhone'],
+    'id' => $_POST['customerSsn'],
+    'issueDate' => $_POST['issueDate'],
+    'email' => $_POST['customerEmail'],
+    'address' => $_POST['address'],
+    'callCenter' => $_POST['callCenterName'],
+    'paymentSum' => $_POST['paymentSum'],
+    'mislakaPaymentCount' => $_POST['paymentCount'],
+    'pedionType' => $_POST['pedionType'],
+    'insuranceCompany' => $_POST['insuranceCompany'],
+    'programNumber' => $_POST['programNumber'],
+    'insuranceComment' => $_POST['insuranceComment'],
+     'sellerName' => $_POST['userName'],
+    ];
+
 function generateTitle($customerCount){
     if ($customerCount == 1){ //מועמד ראשי
         return $_POST['customerName'] . " " . $_POST['customerSsn'] . " " . $_POST['operationType'] . " " .  $_POST['pedionType'] . " " . $_POST['insuranceCompany'];
@@ -32,49 +62,84 @@ function generateTitle($customerCount){
 }
 
 function generateCommentBody($customerCount){
+    global $basicDataHeaderTicket;
+    global $basicDataFooterTicket;
     $customerName = ($customerCount == 1) ? $_POST['customerName'] : $_POST['secondaryCustomerName'];
     $customerSsn = ($customerCount == 1) ? $_POST['customerSsn'] : $_POST['secondaryCustomerSsn'];
-    return 'שם מלא: ' . $customerName . " \n" .
-    'תעודת זהות: ' . $customerSsn.  " \n" .
-    'מוקד: ' . $_POST['callCenterName'] . " \n" .
-    'איש מכירות: ' . $_POST['userName'] . " \n" .
-    'פעולה לביצוע: ' . $_POST['operationType'] . " \n" .
-    'סוג הקופה: ' . $_POST['pedionType'] . " \n" .
-    'הגוף המנהל: ' . $_POST['insuranceCompany'] . " \n" .
-    'מספר הקופה: ' . $_POST['programNumber'] . " \n" .
-    'מעמד הקופה: ' . $_POST['programStatus'] . " \n" .
-    'סכום לפדיון: ' . $_POST['pedionSum'] . " \n" .
-    'האם הלקוח מודע לתשלום מס 35%?: ' . $_POST['taxAware'] . " \n" .
-    'קישור לרשומת הליד המקורי (ממוקד המכירות) : ' . 'https://crm.ibell.co.il/a/3328/leads/' . $_POST['recordNumber'] . " \n\n" .
-    'הערות להצעה: ' . $_POST['insuranceComment'];
-}
+    if($_POST['typeForm'] == 'pedion'){
+       return
+            'שם מלא: ' . $customerName . " \n" .
+            'תעודת זהות: ' . $customerSsn.  " \n" .
+            $basicDataHeaderTicket.  " \n" .
+            'מעמד הקופה: ' . $_POST['programStatus'] . " \n".
+            'סכום לפדיון: ' . $_POST['pedionSum'] . " \n".
+            'האם הלקוח מודע לתשלום מס 35%?: ' . $_POST['taxAware'] . " \n".
+            $basicDataFooterTicket;
+    }
+    if($_POST['typeForm'] == 'loan') {
+        return
+            'שם מלא: ' . $customerName . " \n" .
+            'תעודת זהות: ' . $customerSsn.  " \n" .
+            $basicDataHeaderTicket.  " \n" .
+            'סכום להלוואה: ' . $_POST['loanAmount'] . " \n" .
+            'תקופת ההלוואה בחודשים: ' . $_POST['loanMontlyPeriod'] . " \n".
+            $basicDataFooterTicket;
+    }
+
+};
 
 function generatePedionLead($ticketNumber){
-    return [
-        'lm_form' => 19648,
-        'lm_key' => "72c23068db",
-        'lm_redirect' => "no",
-        'lm_supplier' => $_POST['agentId'],
-        'name' => $_POST['customerName'],
-        'phone' => $_POST['customerPhone'],
-        'id' => $_POST['customerSsn'],
-        'issueDate' => $_POST['issueDate'],
-        'email' => $_POST['customerEmail'],
-        'address' => $_POST['address'],
-        'callCenter' => $_POST['callCenterName'],
-        'ticketNumber' => $ticketNumber,
-        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
-        'sellerName' => $_POST['userName'],
-        'paymentSum' => $_POST['paymentSum'],
-        'mislakaPaymentCount' => $_POST['paymentCount'],
-        'pedionType' => $_POST['pedionType'],
-        'insuranceCompany' => $_POST['insuranceCompany'],
-        'programNumber' => $_POST['programNumber'],
-        'pedionSum' => $_POST['pedionSum'],
-        'programStatus' => $_POST['programStatus'],
-        'taxAware' => $_POST['taxAware'],
-        'insuranceComment' => $_POST['insuranceComment'],
-    ];
+    global $basicDataForLead;
+    if($_POST['typeForm'] == 'pedion'){
+        return
+            array_merge($basicDataForLead,
+                        ['lm_form' => 19648,
+                        'lm_key' => "72c23068db",
+                        'ticketNumber' => $ticketNumber,
+                        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                        'pedionSum' => $_POST['pedionSum'],
+                        'programStatus' => $_POST['programStatus'],
+                        'taxAware' => $_POST['taxAware']]);
+    }
+        if($_POST['typeForm'] == 'loan'){
+        return
+            array_merge($basicDataForLead,
+                        [ 'lm_form' => 19904,
+                        'lm_key' => "bada9387d2",
+                         'ticketNumber' => $ticketNumber,
+                         'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                        'sellerName' => $_POST['userName'],
+                        'loanAmount' => $_POST['loanAmount'],
+                        'loanMontlyPeriod' => $_POST['loanMontlyPeriod']
+                        ]);
+        }
+//    [
+//        'lm_form' => 19648,
+//        'lm_key' => "72c23068db",
+//
+//        'lm_redirect' => "no",
+//        'lm_supplier' => $_POST['agentId'],
+//        'name' => $_POST['customerName'],
+//        'phone' => $_POST['customerPhone'],
+//        'id' => $_POST['customerSsn'],
+//        'issueDate' => $_POST['issueDate'],
+//        'email' => $_POST['customerEmail'],
+//        'address' => $_POST['address'],
+//        'callCenter' => $_POST['callCenterName'],
+//        'ticketNumber' => $ticketNumber,
+//        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+//        'sellerName' => $_POST['userName'],
+//        'paymentSum' => $_POST['paymentSum'],
+//        'mislakaPaymentCount' => $_POST['paymentCount'],
+//        'pedionType' => $_POST['pedionType'],
+//        'insuranceCompany' => $_POST['insuranceCompany'],
+//        'programNumber' => $_POST['programNumber'],
+//        'pedionSum' => $_POST['pedionSum'],
+//        'programStatus' => $_POST['programStatus'],
+//        'taxAware' => $_POST['taxAware'],
+
+//        'insuranceComment' => $_POST['insuranceComment'],
+//    ];
 }
 
 function generateCustomerPostData(){
@@ -122,19 +187,48 @@ $LOGGER = fopen("log.txt", "a");
 
 
 /*save the file to the directory */
-$info = pathinfo($_FILES['file']['name']);
-$ext = $info['extension']; // get the extension of the file
-$newname = "upsale_doc_" . $_POST['recordNumber'] ."." .$ext;
 
-$target = '../documents/'.$newname;
-move_uploaded_file( $_FILES['file']['tmp_name'], $target);
+$files = $_FILES["file"]["name"];
+$extension_files = array();
+$new_name_files =  array();
+$array_types = array();
+$array_targets = array();
 
+//to get the extension of the file.
+foreach ($files as $index => $file_name) {
+    $extension =  pathinfo($file_name,PATHINFO_EXTENSION);
+    array_push($extension_files,$extension);}
 
+//to define a new name for each file.
+foreach ($extension_files as $i => $extension_name) {
+    $count = $i;
+    $new_name ="upsale_doc_" . $_POST['recordNumber'].".".$count.".".$extension_name;
+    array_push($new_name_files, $new_name);
+}
+
+//send to new directory the files and save the new directory and types in arrays.
+foreach ($new_name_files as $i =>$newname) {
+    move_uploaded_file($_FILES["file"]["tmp_name"][$i],'../documents/'.$newname);
+    $target = '../documents/'.$newname;
+    array_push($array_targets, $target);
+    $type = $_FILES['file']['type'][$i];
+    array_push($array_types, $type);
+};
 //save the uploaded file as zendesk attachment
-$attachment = $client->attachments()->upload([
-    'file' => $target,
-    'type' => $_FILES['file']['type'],
-]);
+
+$upload_token = "";
+foreach ($files as $i => $files) {
+$params = array(
+    'file' => $array_targets[$i],
+    'type' => $array_types[$i],
+    'name' =>  $files
+);
+    if (isset($upload_token)) {
+        $params['token'] = $upload_token;
+    }
+    $attachment = $client->attachments()->upload($params);
+    $upload_token = $attachment->upload->token;
+}
 
 
 /*
@@ -162,7 +256,7 @@ $newTicket = $client->tickets()->create([
     'collaborators' =>[$_POST['userEmail'], 'yariv.d@ezfind.co.il'],
     'comment'  => [
         'body' => generateCommentBody($customerCount),
-        'uploads'   => [$attachment->upload->token, $attachment->upload->token]
+        'uploads'   => [$upload_token]
     ],
 ]);
 
@@ -180,7 +274,14 @@ $client->tickets()->update($newTicket->ticket->id,[
         'body' => 'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $newPedionLead . " \n\n",
     ]
 ]);
-
+//$client->tickets()->update($newTicket->ticket->id, [
+//    'priority' => 'high',
+//    'comment' => [
+//        'body' => 'TEST',
+//        'uploads' => [$upload_token],
+//        'public' => false
+//    ]
+//]);
 echo $newTicket->ticket->id;
 
 ?>
