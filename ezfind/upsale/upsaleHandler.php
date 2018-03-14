@@ -23,6 +23,36 @@
 /*
  * Functions
  * */
+$basicDataHeaderTicket =
+    'מוקד: ' . $_POST['callCenterName'] . " \n" .
+    'איש מכירות: ' . $_POST['userName'] . " \n" .
+    'פעולה לביצוע: ' . $_POST['operationType'] . " \n" .
+    'הגוף המנהל: ' . $_POST['insuranceCompany'] . " \n" .
+    'סוג הקופה: ' . $_POST['pedionType'] . " \n" .
+    'מספר הקופה: ' . $_POST['programNumber'] ;
+
+$basicDataFooterTicket =
+    'קישור לרשומת הליד המקורי (ממוקד המכירות) : ' . 'https://crm.ibell.co.il/a/3328/leads/' . $_POST['recordNumber'] . " \n\n".
+    'הערות להצעה: ' . $_POST['insuranceComment']. " \n" ;
+
+$basicDataForLead=
+    [ 'lm_supplier' => $_POST['agentId'],
+    'name' => $_POST['customerName'],
+    'phone' => $_POST['customerPhone'],
+    'id' => $_POST['customerSsn'],
+    'issueDate' => $_POST['issueDate'],
+    'email' => $_POST['customerEmail'],
+    'address' => $_POST['address'],
+    'callCenter' => $_POST['callCenterName'],
+    'paymentSum' => $_POST['paymentSum'],
+    'mislakaPaymentCount' => $_POST['paymentCount'],
+    'pedionType' => $_POST['pedionType'],
+    'insuranceCompany' => $_POST['insuranceCompany'],
+    'programNumber' => $_POST['programNumber'],
+    'insuranceComment' => $_POST['insuranceComment'],
+     'sellerName' => $_POST['userName'],
+    ];
+
 function generateTitle($customerCount){
     if ($customerCount == 1){ //מועמד ראשי
         return $_POST['customerName'] . " " . $_POST['customerSsn'] . " " . $_POST['operationType'] . " " .  $_POST['pedionType'] . " " . $_POST['insuranceCompany'];
@@ -32,49 +62,84 @@ function generateTitle($customerCount){
 }
 
 function generateCommentBody($customerCount){
+    global $basicDataHeaderTicket;
+    global $basicDataFooterTicket;
     $customerName = ($customerCount == 1) ? $_POST['customerName'] : $_POST['secondaryCustomerName'];
     $customerSsn = ($customerCount == 1) ? $_POST['customerSsn'] : $_POST['secondaryCustomerSsn'];
-    return 'שם מלא: ' . $customerName . " \n" .
-    'תעודת זהות: ' . $customerSsn.  " \n" .
-    'מוקד: ' . $_POST['callCenterName'] . " \n" .
-    'איש מכירות: ' . $_POST['userName'] . " \n" .
-    'פעולה לביצוע: ' . $_POST['operationType'] . " \n" .
-    'סוג הקופה: ' . $_POST['pedionType'] . " \n" .
-    'הגוף המנהל: ' . $_POST['insuranceCompany'] . " \n" .
-    'מספר הקופה: ' . $_POST['programNumber'] . " \n" .
-    'מעמד הקופה: ' . $_POST['programStatus'] . " \n" .
-    'סכום לפדיון: ' . $_POST['pedionSum'] . " \n" .
-    'האם הלקוח מודע לתשלום מס 35%?: ' . $_POST['taxAware'] . " \n" .
-    'קישור לרשומת הליד המקורי (ממוקד המכירות) : ' . 'https://crm.ibell.co.il/a/3328/leads/' . $_POST['recordNumber'] . " \n\n" .
-    'הערות להצעה: ' . $_POST['insuranceComment'];
-}
+    if($_POST['typeForm'] == 'pedion'){
+       return
+            'שם מלא: ' . $customerName . " \n" .
+            'תעודת זהות: ' . $customerSsn.  " \n" .
+            $basicDataHeaderTicket.  " \n" .
+            'מעמד הקופה: ' . $_POST['programStatus'] . " \n".
+            'סכום לפדיון: ' . $_POST['pedionSum'] . " \n".
+            'האם הלקוח מודע לתשלום מס 35%?: ' . $_POST['taxAware'] . " \n".
+            $basicDataFooterTicket;
+    }
+    if($_POST['typeForm'] == 'loan') {
+        return
+            'שם מלא: ' . $customerName . " \n" .
+            'תעודת זהות: ' . $customerSsn.  " \n" .
+            $basicDataHeaderTicket.  " \n" .
+            'סכום להלוואה: ' . $_POST['loanAmount'] . " \n" .
+            'תקופת ההלוואה בחודשים: ' . $_POST['loanMontlyPeriod'] . " \n".
+            $basicDataFooterTicket;
+    }
+
+};
 
 function generatePedionLead($ticketNumber){
-    return [
-        'lm_form' => 19648,
-        'lm_key' => "72c23068db",
-        'lm_redirect' => "no",
-        'lm_supplier' => $_POST['agentId'],
-        'name' => $_POST['customerName'],
-        'phone' => $_POST['customerPhone'],
-        'id' => $_POST['customerSsn'],
-        'issueDate' => $_POST['issueDate'],
-        'email' => $_POST['customerEmail'],
-        'address' => $_POST['address'],
-        'callCenter' => $_POST['callCenterName'],
-        'ticketNumber' => $ticketNumber,
-        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
-        'sellerName' => $_POST['userName'],
-        'paymentSum' => $_POST['paymentSum'],
-        'mislakaPaymentCount' => $_POST['paymentCount'],
-        'pedionType' => $_POST['pedionType'],
-        'insuranceCompany' => $_POST['insuranceCompany'],
-        'programNumber' => $_POST['programNumber'],
-        'pedionSum' => $_POST['pedionSum'],
-        'programStatus' => $_POST['programStatus'],
-        'taxAware' => $_POST['taxAware'],
-        'insuranceComment' => $_POST['insuranceComment'],
-    ];
+    global $basicDataForLead;
+    if($_POST['typeForm'] == 'pedion'){
+        return
+            array_merge($basicDataForLead,
+                        ['lm_form' => 19648,
+                        'lm_key' => "72c23068db",
+                        'ticketNumber' => $ticketNumber,
+                        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                        'pedionSum' => $_POST['pedionSum'],
+                        'programStatus' => $_POST['programStatus'],
+                        'taxAware' => $_POST['taxAware']]);
+    }
+        if($_POST['typeForm'] == 'loan'){
+        return
+            array_merge($basicDataForLead,
+                        [ 'lm_form' => 19904,
+                        'lm_key' => "bada9387d2",
+                         'ticketNumber' => $ticketNumber,
+                         'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                        'sellerName' => $_POST['userName'],
+                        'loanAmount' => $_POST['loanAmount'],
+                        'loanMontlyPeriod' => $_POST['loanMontlyPeriod']
+                        ]);
+        }
+//    [
+//        'lm_form' => 19648,
+//        'lm_key' => "72c23068db",
+//
+//        'lm_redirect' => "no",
+//        'lm_supplier' => $_POST['agentId'],
+//        'name' => $_POST['customerName'],
+//        'phone' => $_POST['customerPhone'],
+//        'id' => $_POST['customerSsn'],
+//        'issueDate' => $_POST['issueDate'],
+//        'email' => $_POST['customerEmail'],
+//        'address' => $_POST['address'],
+//        'callCenter' => $_POST['callCenterName'],
+//        'ticketNumber' => $ticketNumber,
+//        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+//        'sellerName' => $_POST['userName'],
+//        'paymentSum' => $_POST['paymentSum'],
+//        'mislakaPaymentCount' => $_POST['paymentCount'],
+//        'pedionType' => $_POST['pedionType'],
+//        'insuranceCompany' => $_POST['insuranceCompany'],
+//        'programNumber' => $_POST['programNumber'],
+//        'pedionSum' => $_POST['pedionSum'],
+//        'programStatus' => $_POST['programStatus'],
+//        'taxAware' => $_POST['taxAware'],
+
+//        'insuranceComment' => $_POST['insuranceComment'],
+//    ];
 }
 
 function generateCustomerPostData(){
@@ -164,6 +229,7 @@ $params = array(
     $attachment = $client->attachments()->upload($params);
     $upload_token = $attachment->upload->token;
 }
+
 
 /*
  * 1. build the ticket
