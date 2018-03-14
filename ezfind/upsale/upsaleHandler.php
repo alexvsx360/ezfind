@@ -113,33 +113,7 @@ function generatePedionLead($ticketNumber){
                         'loanMontlyPeriod' => $_POST['loanMontlyPeriod']
                         ]);
         }
-//    [
-//        'lm_form' => 19648,
-//        'lm_key' => "72c23068db",
-//
-//        'lm_redirect' => "no",
-//        'lm_supplier' => $_POST['agentId'],
-//        'name' => $_POST['customerName'],
-//        'phone' => $_POST['customerPhone'],
-//        'id' => $_POST['customerSsn'],
-//        'issueDate' => $_POST['issueDate'],
-//        'email' => $_POST['customerEmail'],
-//        'address' => $_POST['address'],
-//        'callCenter' => $_POST['callCenterName'],
-//        'ticketNumber' => $ticketNumber,
-//        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
-//        'sellerName' => $_POST['userName'],
-//        'paymentSum' => $_POST['paymentSum'],
-//        'mislakaPaymentCount' => $_POST['paymentCount'],
-//        'pedionType' => $_POST['pedionType'],
-//        'insuranceCompany' => $_POST['insuranceCompany'],
-//        'programNumber' => $_POST['programNumber'],
-//        'pedionSum' => $_POST['pedionSum'],
-//        'programStatus' => $_POST['programStatus'],
-//        'taxAware' => $_POST['taxAware'],
 
-//        'insuranceComment' => $_POST['insuranceComment'],
-//    ];
 }
 
 function generateCustomerPostData(){
@@ -201,8 +175,7 @@ foreach ($files as $index => $file_name) {
 
 //to define a new name for each file.
 foreach ($extension_files as $i => $extension_name) {
-    $count = $i;
-    $new_name ="upsale_doc_" . $_POST['recordNumber'].".".$count.".".$extension_name;
+    $new_name ="upsale_doc_" . $_POST['recordNumber'].".".$i.".".$extension_name;
     array_push($new_name_files, $new_name);
 }
 
@@ -218,10 +191,10 @@ foreach ($new_name_files as $i =>$newname) {
 
 $upload_token = "";
 foreach ($files as $i => $files) {
-$params = array(
-    'file' => $array_targets[$i],
-    'type' => $array_types[$i],
-    'name' =>  $files
+    $params = array(
+        'file' => $array_targets[$i],
+        'type' => $array_types[$i],
+        'name' =>  $files
 );
     if (isset($upload_token)) {
         $params['token'] = $upload_token;
