@@ -203,10 +203,6 @@ if ($_GET) {
                     <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file[]" id="InputFile"  multiple/>
                 </div>
             </div>
-
-
-
-
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">

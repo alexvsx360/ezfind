@@ -13,6 +13,10 @@
         <!-- Latest compiled and minified JavaScript -->
 		<script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
 
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<title>Upload files</title>
@@ -317,7 +321,7 @@
                 </div>
 -->
             <div class="row" >
-                    <form id= "main-form" action="" class="" method="post"  enctype="multipart/form-data">
+                    <form id= "main-form" action="" class="" method="post"    enctype="multipart/form-data">
                         <div class="form-group">
 
                             <!--Need to delete after testing-->
@@ -383,7 +387,8 @@
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">פרמיה בש"ח:</label>
-                                <input required type="number" class="input-group form-control" placeholder="פרמיה בשח" name="premia"/>
+                                <input required type="number" class="input-group form-control" id="sum_premia" placeholder="פרמיה בשח" name="premia" onchange="numValidate()"/>
+                                <p id ="num_alert" class="alert-danger" style ="visibility: hidden">המספר צריך להיות גדול מ-0</p>
 
                             </div>
                         </div>
@@ -406,7 +411,8 @@
                             <div class="col-xs-2 "></div>
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">תאריך לידה:</label>
-                                <input required type="date" class="input-group form-control date"  data-date-format="dd-mm-yyyy" placeholder="תאריך לידה" name="birthDate"/>
+<!--                              //  <date-util format="dd/MM/yyyy"></date-util>-->
+                                <input required type="text" class="input-group form-control date datepicker"  data-date-format="dd-mm-yyyy" placeholder="תאריך לידה" name="birthDate"/>
                             </div>
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -424,13 +430,13 @@
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">תאריך הנפקת תעודת זהות:</label>
-                                <input required type="date" class="input-group form-control"  placeholder="תאריך הנפקת תעודת זהות" name="issueDate"/>
-
+                                <input required type="text" class="input-group form-control datepicker"  placeholder="תאריך הנפקת תעודת זהות" name="issueDate"/>
                             </div>
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">תאריך תחילת ביטוח:</label>
-                                <input required type="date" class="input-group form-control" placeholder="תאריך תחילת ביטוח" name="insuranceStartDate"/>
+                                <input required type="date" id="insurance_start_date" class="input-group form-control " placeholder="תאריך תחילת ביטוח" name="insuranceStartDate" onchange="dateValidate()"/>
+                                <p id ="date_alert" class="alert-danger" style ="visibility: hidden">תאריך תחילת הביטוח יתחיל מהיום והלאה</p>
                             </div>
                         </div>
 
@@ -508,7 +514,7 @@
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">תאריך המכירה (ברירת מחדל - היום):</label>
-                                <input required type="date"  value="<?php echo date("Y-m-d");?>" class="input-group form-control"  name="saleDate"/>
+                                <input id="datepicker" required type="text"  value="<?php echo date("Y-m-d");?>" class="input-group form-control datepicker"  name="saleDate"/>
 
                             </div>
 
@@ -546,7 +552,7 @@
 
                         </div>
                             </div>
-
+                <p>Date: <input type="text" id="datepicker"></p>
                     </form>
 
                 </div>
@@ -554,6 +560,33 @@
         } ?>
 
         <script>
+            function dateValidate(){
+                $("#date_alert").css("visibility","hidden");
+                $( function() {
+                    $( "#insurance_start_date" ).datepicker({dateFormat: "yy-mm-dd"})
+                });
+                startDate=  jQuery("#insurance_start_date").val();
+                var dateNow = Date.now();
+                var formatStartDate = new Date(startDate);
+                if (formatStartDate < dateNow) {
+                    jQuery("#date_alert").css("visibility","visible");
+                    return false;
+                }else{
+                    return true;
+                };
+            }
+            function  numValidate(){
+                $("#num_alert").css("visibility","hidden");
+                var num =  $("#sum_premia").val();
+
+                if ( num < 1) {
+                    $("#num_alert").css("visibility","visible");
+                    return false;
+                }else{
+                    return true;
+                };
+            }
+
             jQuery(document).ready(function(){
 
                 jQuery("#cancellationNumber").change(function (){
@@ -578,7 +611,9 @@
                 });
 
 
+
                 jQuery("#main-form").submit(function () {
+
                     $(this).find(':submit').val("הבקשה נשלחת...").attr( 'disabled','disabled' );
                 });
 
@@ -603,6 +638,9 @@
                         return true;
                     }
                 });*/
+                $( function() {
+                    $( ".datepicker" ).datepicker({dateFormat: "dd-mm-yy"})
+                });
             });
 
         </script>

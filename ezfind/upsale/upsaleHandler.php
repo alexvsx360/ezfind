@@ -20,22 +20,15 @@
 <body>
 
 <?php
+
+
 /*
  * Functions
  * */
-$basicDataHeaderTicket =
-    'מוקד: ' . $_POST['callCenterName'] . " \n" .
-    'איש מכירות: ' . $_POST['userName'] . " \n" .
-    'פעולה לביצוע: ' . $_POST['operationType'] . " \n" .
-    'הגוף המנהל: ' . $_POST['insuranceCompany'] . " \n" .
-    'סוג הקופה: ' . $_POST['pedionType'] . " \n" .
-    'מספר הקופה: ' . $_POST['programNumber'] ;
 
-$basicDataFooterTicket =
-    'קישור לרשומת הליד המקורי (ממוקד המכירות) : ' . 'https://crm.ibell.co.il/a/3328/leads/' . $_POST['recordNumber'] . " \n\n".
-    'הערות להצעה: ' . $_POST['insuranceComment']. " \n" ;
 
 $basicDataForLead=
+
     [ 'lm_supplier' => $_POST['agentId'],
     'name' => $_POST['customerName'],
     'phone' => $_POST['customerPhone'],
@@ -53,7 +46,15 @@ $basicDataForLead=
      'sellerName' => $_POST['userName'],
     ];
 
+
 function generateTitle($customerCount){
+if($_POST['typeForm'] == 'update_details'){
+    if ($customerCount == 1){ //מועמד ראשי
+        return $_POST['customerName'] . " " . $_POST['customerSsn'] . " " . $_POST['operationType'] . " " ;
+    } else { //מועמד משני
+        return $_POST['secondaryCustomerName'] . " " . $_POST['secondaryCustomerSsn'] . " " . $_POST['operationType'] . " " ;
+    }
+}else{
     if ($customerCount == 1){ //מועמד ראשי
         return $_POST['customerName'] . " " . $_POST['customerSsn'] . " " . $_POST['operationType'] . " " .  $_POST['pedionType'] . " " . $_POST['insuranceCompany'];
     } else { //מועמד משני
@@ -61,58 +62,103 @@ function generateTitle($customerCount){
     }
 }
 
-function generateCommentBody($customerCount){
-    global $basicDataHeaderTicket;
-    global $basicDataFooterTicket;
-    $customerName = ($customerCount == 1) ? $_POST['customerName'] : $_POST['secondaryCustomerName'];
-    $customerSsn = ($customerCount == 1) ? $_POST['customerSsn'] : $_POST['secondaryCustomerSsn'];
-    if($_POST['typeForm'] == 'pedion'){
-       return
-            'שם מלא: ' . $customerName . " \n" .
-            'תעודת זהות: ' . $customerSsn.  " \n" .
-            $basicDataHeaderTicket.  " \n" .
-            'מעמד הקופה: ' . $_POST['programStatus'] . " \n".
-            'סכום לפדיון: ' . $_POST['pedionSum'] . " \n".
-            'האם הלקוח מודע לתשלום מס 35%?: ' . $_POST['taxAware'] . " \n".
-            $basicDataFooterTicket;
+}
+function echoProgramDetails(){
+    $counter = 0;
+    $allDetails="";
+    if($_POST['typeForm'] == 'update_details'){
+        $pedionType = $_POST['pedionType'];
+        $insuranceCompany = $_POST['insuranceCompany'];
+        $programNumber = $_POST['programNumber'];
+        $length=count($pedionType);
+        for($i=0;$i<$length;$i++){
+            $counter++;
+            $allDetails .=$counter.".".' הגוף המנהל:'." ".$insuranceCompany[$i] ."  "." . ".' סוג הקופה:'." ".$pedionType[$i] ." "." .".' מספר הקופה:'." ".$programNumber[$i] . " \n";
+        }
+        return $allDetails;
     }
-    if($_POST['typeForm'] == 'loan') {
-        return
-            'שם מלא: ' . $customerName . " \n" .
-            'תעודת זהות: ' . $customerSsn.  " \n" .
-            $basicDataHeaderTicket.  " \n" .
-            'סכום להלוואה: ' . $_POST['loanAmount'] . " \n" .
-            'תקופת ההלוואה בחודשים: ' . $_POST['loanMontlyPeriod'] . " \n".
-            $basicDataFooterTicket;
+    if($_POST['typeForm'] == 'update_beneficiaries'){
+        $fullName= $_POST['fullName'];
+        $IDNumber=$_POST['IDNumber'];
+        $relation =$_POST['relation'];
+        $percentBenefit =$_POST['percentBenefit'];
+        $allDetails="";
+        $length=count($fullName);
+        for($i=0;$i<$length;$i++){
+            $counter++;
+            $allDetails .= $counter.".". ' שם מלא:'." ".$fullName[$i] ."  "." . ".' מס ת.ז:'." ".$IDNumber[$i] ."  "." . ".' קרבה:'." ".$relation[$i] ." "." .".' הטבה באחוזים:'." ".$percentBenefit[$i]. " \n";
+        }
+        return $allDetails;
     }
-
-};
+}
+$programDetails = echoProgramDetails();
 
 function generatePedionLead($ticketNumber){
+    global $programDetails;
     global $basicDataForLead;
-    if($_POST['typeForm'] == 'pedion'){
-        return
-            array_merge($basicDataForLead,
-                        ['lm_form' => 19648,
-                        'lm_key' => "72c23068db",
-                        'ticketNumber' => $ticketNumber,
-                        'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
-                        'pedionSum' => $_POST['pedionSum'],
-                        'programStatus' => $_POST['programStatus'],
-                        'taxAware' => $_POST['taxAware']]);
+    switch ($_POST['typeForm']){
+        case 'pedion':
+              return
+                array_merge($basicDataForLead,
+                    ['lm_form' => 19648,
+                     'lm_key' => "72c23068db",
+                     'ticketNumber' => $ticketNumber,
+                     'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                     'pedionSum' => $_POST['pedionSum'],
+                     'programStatus' => $_POST['programStatus'],
+                     'taxAware' => $_POST['taxAware']
+                    ]);
+        case 'loan':
+            return
+                array_merge($basicDataForLead,
+                    [ 'lm_form' => 19904,
+                    'lm_key' => "bada9387d2",
+                    'ticketNumber' => $ticketNumber,
+                    'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                    'sellerName' => $_POST['userName'],
+                    'loanAmount' => $_POST['loanAmount'],
+                    'loanMontlyPeriod' => $_POST['loanMontlyPeriod']
+                    ]);
+        case 'pedion_hishtalmut':
+            return
+                array_merge($basicDataForLead,
+                    [ 'lm_form' => 	19944,
+                    'lm_key' => "43615b9aeb",
+                    'programStatus' => $_POST['programStatus'],
+                    'ticketNumber' => $ticketNumber,
+                    'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                    'pedionSum' => $_POST['pedionAmount'],
+                ]);
+        case 'update_details':
+            return
+                array_merge($basicDataForLead,
+                    [ 'lm_form' => 	19939,
+                    'lm_key' => "4bca6e8f3a",
+                    'ticketNumber' => $ticketNumber,
+                    'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                    'insuranceComment' =>  'פרטי הקופות:'. " \n". $programDetails. " \n"."הערות:". " \n".$_POST['insuranceComment'],
+                ]);
+        case  'update_beneficiaries':
+            return
+                array_merge($basicDataForLead,
+                    [ 'lm_form' => 	19940,
+                    'lm_key' => "29b09bfb8c",
+                    'ticketNumber' => $ticketNumber,
+                    'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                    'insuranceComment' => $_POST['insuranceComment'],
+                    'mutavim'=>$programDetails,
+                    ]);
+        case 'missing_deposits':
+            return
+                array_merge($basicDataForLead,
+                    ['lm_form' => 	19942,
+                    'lm_key' => "c68dc5d3f4",
+                    'ticketNumber' => $ticketNumber,
+                    'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
+                    'reference_type' => $_POST['reference_type'],
+                    'employer_name' => $_POST['employer_name'],
+                    ]);
     }
-        if($_POST['typeForm'] == 'loan'){
-        return
-            array_merge($basicDataForLead,
-                        [ 'lm_form' => 19904,
-                        'lm_key' => "bada9387d2",
-                         'ticketNumber' => $ticketNumber,
-                         'zendeskLink' => 'https://ezfind-sherut.zendesk.com/agent/tickets/' . $ticketNumber,
-                        'sellerName' => $_POST['userName'],
-                        'loanAmount' => $_POST['loanAmount'],
-                        'loanMontlyPeriod' => $_POST['loanMontlyPeriod']
-                        ]);
-        }
 
 }
 
@@ -134,8 +180,6 @@ function generateCustomerPostData(){
 /*End of FUNCTIONS*/
 ?>
 
-
-
 <?php
 /**
  * Created by PhpStorm.
@@ -148,13 +192,13 @@ function generateCustomerPostData(){
 require '../../vendor/autoload.php';
 include_once ('../../generalUtilities/functions.php');
 include_once ('../../generalUtilities/leadImFunctions.php');
+include_once('../../generalUtilities/classes/ticket_classes/CreateTicket.php');
 $data = "";
 use Zendesk\API\HttpClient as ZendeskAPI;
 
 $subdomain = "ezfind-sherut";
 $username  = "yaki@tgeg.co.il";
 $token     = "r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF"; // replace this with your token
-
 $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $LOGGER = fopen("log.txt", "a");
@@ -214,6 +258,9 @@ foreach ($files as $i => $files) {
  * customerCount = 2 ==> מועמד משני
  * */
 $customerCount = $_POST['customerCount'];
+$Ticket = new CreateTicket();
+$Ticket->createTicket($_POST['typeForm'],$customerCount,$programDetails);
+
 
 $newTicket = $client->tickets()->create([
     'subject'  => generateTitle($customerCount),
@@ -228,7 +275,7 @@ $newTicket = $client->tickets()->create([
     ],
     'collaborators' =>[$_POST['userEmail'], 'yariv.d@ezfind.co.il'],
     'comment'  => [
-        'body' => generateCommentBody($customerCount),
+        'body' => $Ticket->getTicket(),
         'uploads'   => [$upload_token]
     ],
 ]);
@@ -247,14 +294,7 @@ $client->tickets()->update($newTicket->ticket->id,[
         'body' => 'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $newPedionLead . " \n\n",
     ]
 ]);
-//$client->tickets()->update($newTicket->ticket->id, [
-//    'priority' => 'high',
-//    'comment' => [
-//        'body' => 'TEST',
-//        'uploads' => [$upload_token],
-//        'public' => false
-//    ]
-//]);
+
 echo $newTicket->ticket->id;
 
 ?>

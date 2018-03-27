@@ -1,0 +1,29 @@
+#add_input_program,#add_input_mutavim{
+    color: #1b6d85;
+    float: right;
+
+}
+.row-of-inputs{
+    margin-right:18px;
+}
+
+label{
+    float: right;
+}
+p{
+    float: right;
+}
+i { cursor: pointer;
+}
+#minus_icon,#minus_icon2{
+    color: #721c24;
+    font-size:21px;
+
+
+}
+#underline{
+    border-bottom: 1px solid gray;
+}
+#span{
+    text-align: right;
+}
