@@ -295,8 +295,6 @@ $client->tickets()->update($newTicket->ticket->id,[
     ]
 ]);
 
-echo $newTicket->ticket->id;
-
 ?>
 <div class="container" role="main" id="button_block">
     <div class="text-center">

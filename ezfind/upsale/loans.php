@@ -211,7 +211,7 @@ if ($_GET) {
             </div>
         </form>
     </div>
-
+</div>
 
 
     <script>

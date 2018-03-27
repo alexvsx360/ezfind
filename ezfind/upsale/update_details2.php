@@ -191,7 +191,7 @@ if ($_GET) {
         <br/>
         <div class="row justify-content-center">
             <div class="col-2">
-                <button type="submit" class="btn btn-primary">הגש מכירה</button>
+                <button type="submit" class="btn btn-primary" id="submit">הגש מכירה</button>
             </div>
         </div>
 </div>

@@ -15,7 +15,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <!--    <link rel="stylesheet" href="../css/bootstrap.min.css" crossorigin="anonymous">-->
-    <!--    <!-- Optional theme -->-->
+    <!--    <!-- Optional theme -->
     <!--    <link rel="stylesheet" href="../css/bootstrap-theme.min.css" crossorigin="anonymous">-->
     <!--    <link rel="stylesheet" href="../css/style.css">-->
     <link rel="stylesheet" href="../css_bootstrap4/css/bootstrap-grid.css" crossorigin="anonymous">
@@ -210,7 +210,7 @@ if ($_GET) {
             <br/>
             <div class="row justify-content-center">
                 <div class="col-2">
-                    <button type="submit" class="btn btn-primary">הגש מכירה</button>
+                    <button type="submit" class="btn btn-primary" id="submit">הגש מכירה</button>
                 </div>
             </div>
         </div>
