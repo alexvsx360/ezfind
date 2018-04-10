@@ -26,9 +26,21 @@
  * Date: 12/20/2017
  * Time: 3:32 PM
  */
+
+// load Composer
+require '../vendor/autoload.php';
 include_once ('../generalUtilities/functions.php');
 include_once ('../generalUtilities/leadImFunctions.php');
 $data = "";
+use Zendesk\API\HttpClient as ZendeskAPI;
+
+$subdomain = "ezfind-sherut";
+$username  = "yaki@tgeg.co.il";
+$token     = "r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF"; // replace this with your token
+
+$client = new ZendeskAPI($subdomain, $username);
+$client->setAuth('basic', ['username' => $username, 'token' => $token]);
+
 
 $LOGGER = fopen("log.txt", "a");
 function generateMislakeLead($ticketCreationResponse){
@@ -70,6 +82,13 @@ function generateCustomerPostData(){
     ];
 }
 
+function getCallCenterManagerEmail(){
+    if ($_POST['callCenterName'] == 'ezfind'){
+        return "ziv.s@ezfind.co.il";
+    }
+    return 'shay@ezloans.co.il';
+}
+
 function generateTicketComment(){
     global $data;
     if ($_POST['customerCount'] == 2){
@@ -94,6 +113,24 @@ function generateTicketComment(){
         );
     }
 }
+// init the Zendesk Client
+
+
+/*save the file to the directory */
+$info = pathinfo($_FILES['file']['name']);
+$ext = $info['extension']; // get the extension of the file
+$newname = "Power_of_Attorney_" . $_POST['recordNumber'] ."." .$ext;
+
+$target = 'documents/'.$newname;
+move_uploaded_file( $_FILES['file']['tmp_name'], $target);
+
+
+//save the uploaded file as zendesk attachment
+$attachment = $client->attachments()->upload([
+    'file' => $target,
+    'type' => $_FILES['file']['type'],
+]);
+
 
 //open new Ticket
 $ticketUrl = "https://ezfind-sherut.zendesk.com/api/v2/tickets.json";
@@ -106,7 +143,7 @@ $data->requester = array(
 );
 
 generateTicketComment();
-$data->collaborators = array( $_POST['userEmail'], "yaki@ezfind.co.il", "yariv.d@ezfind.co.il");
+$data->collaborators = array( $_POST['userEmail'], "yaki@ezfind.co.il", getCallCenterManagerEmail());
 
 //API to Zendesk to open the ticket
 $create = json_encode(array('ticket' => $data));
@@ -118,6 +155,13 @@ $password = 'r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF';
 $return = httpPostWithUserPassword($ticketUrl, $create, $username, $password);
 $ticketCreationResponse = json_decode($return, true);
 
+// Update a ticket
+$client->tickets()->update($ticketCreationResponse['ticket']['id'],[
+    'comment' => [
+        'body' => 'מצ"ב ייפוי כח',
+        'uploads'   => [$attachment->upload->token]
+        ]
+]);
 
 
 //create the mislaka
