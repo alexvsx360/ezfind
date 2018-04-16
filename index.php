@@ -104,15 +104,32 @@
             $saleDate = $_POST['saleDate'];
             $cancelPolicyNumber = $_POST['cancelPolicy'];
             $cancelInsuranceCompany = $_POST['cancelInsuranceCompany'];
-
-
-
-
+            $payingWith = $_POST['payingWith'];
             $leadid=$_POST['recordNumber'];
             $agentid=$_POST['agentId'];
             $crmAccount=$_POST['crmAcccountNumber'];
             $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/user-upload/'.$leadid."/"; //папка для хранения файлов
 
+            $linkInformation = array(
+                'כלל'=> array(
+                    'תאונות_אישיות' => 'https://bit.ly/2H5CsFe',
+                    'בריאות' => 'https://bit.ly/2H2plnY',
+                    'מחלות_קשות' => 'https://bit.ly/2H2oXWM',
+                    'חיים' => 'https://bit.ly/2EbJ7dI'
+                ),
+                'הראל'=>array(
+                    'תאונות_אישיות' => 'https://bit.ly/2pWEI9l',
+                    'בריאות' => 'https://bit.ly/2GoIXpo',
+                    'מחלות_קשות' => 'https://bit.ly/2Gul8Zn',
+                    'חיים' => 'https://bit.ly/2J9RTg9'
+                ),
+                'איילון'=>array(
+                    'תאונות_אישיות' => 'https://bit.ly/2Gpi0SH',
+                    'בריאות' => 'https://bit.ly/2Gs5txB',
+                    'מחלות_קשות' => 'https://bit.ly/2Eb4uMi',
+                    'חיים' => 'https://bit.ly/2J8EFQG'
+                )
+            );
             fwrite($myfile, "I am in station 2");
             foreach ($category as $cat) {
                 if (true/*$_POST['file_category']==$cat->category_crm_id*/) {
@@ -157,11 +174,13 @@
 
                 }
             }
-
-
             fwrite($myfile, "I am in station 4 - before API");
             /*API to Zendesk*/
             $ticketUrl = "https://ezfind.zendesk.com/api/v2/tickets.json";
+            //format date for the ticket from 'dd-mm-yy' to 'yy-mm-dd'.
+            $ticketInsuranceStartDate = date_create($_POST['insuranceStartDate']);
+            $ticketInsuranceStartDate = date_format($ticketInsuranceStartDate,"Y/m/d");
+            $ticketInsuranceStartDate = str_replace('/', '-', $ticketInsuranceStartDate);
             $data = '';
             $data->subject = $customerName . ' ' . $customerId . ' ' . $policy . ' ' . $insuranceCompany;
             $data->custom_fields = array(
@@ -171,7 +190,7 @@
                 '114096335852' => $insuranceCompany,                                // חברת ביטוח
                 '114096335872' => $premia,                                          //פרמיה
                 '114096401231' => $yesNoJson[$cancellationLetter]  ,                               // האם יש מכתב ביטול?
-                '114096372992' => $insuranceStartDate,                                                //תאריך תחילת ביטוח
+                '114096372992' => $ticketInsuranceStartDate,                                                //תאריך תחילת ביטוח
                 '114096462111' => "תור_בקרה"
             );
             $data->requester = array(
@@ -196,11 +215,13 @@
                             'פרמיה בש"ח : ' . $premia . " \n" .
                             'הנחה באחוזים : ' . $discount . " \n" .
                             'מסלול חיתום : ' . $hitum . " \n" .
-                            'תאריך תחילת ביטוח : ' . $insuranceStartDate . " \n" .
+                            'תאריך תחילת ביטוח : ' .$insuranceStartDate. " \n" .
                             'האם יש מכתב ביטול? : ' . $cancellationLetter  . " \n" .
                             'חברת ביטוח אליה ישלח מכתב הביטול : ' . $cancelInsuranceCompany  . " \n" .
                             'מספר פוליסה לבטל : ' . $cancelPolicyNumber  . " \n" .
                             'תאריך המכירה : ' . $saleDate  . " \n" .
+                            'אמצעי תשלום : ' . $payingWith  . " \n" .
+                            'גילוי נאות: '. $linkInformation[$insuranceCompany][$policy]. " \n" .
                             'לינק למסמכים : ' . 'https://portal.ibell.co.il/user-upload/' . $leadid . '/' . $newnameimg . " \n\n" .
                             'הערות להצעה: ' . $insuranceComment
 
@@ -277,7 +298,9 @@
                 'cancellationLetter' => $cancellationLetter,
                 'cancelInsuranceCompany' => $cancelInsuranceCompany,
                 'cancelPolicyNumber' => $cancelPolicyNumber,
-                'saleDate' => $saleDate
+                'saleDate' => $saleDate,
+                'payingWidth' => $payingWith ,
+                'giluy_naot' => $linkInformation[$insuranceCompany][$policy]
            ];
 
 
@@ -387,8 +410,8 @@
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">פרמיה בש"ח:</label>
-                                <input required type="number" class="input-group form-control" id="sum_premia" placeholder="פרמיה בשח" name="premia" onchange="numValidate()"/>
-                                <p id ="num_alert" class="alert-danger" style ="visibility: hidden">המספר צריך להיות גדול מ-0</p>
+                                <input required type="number" class="input-group form-control" id="sum_premia" placeholder="פרמיה בשח" name="premia"/>
+                                <p id ="num_alert" class="alert-danger" style ="visibility: hidden">הפרמיה חיבת להיות גדולה מ-0</p>
 
                             </div>
                         </div>
@@ -435,8 +458,8 @@
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">תאריך תחילת ביטוח:</label>
-                                <input required type="date" id="insurance_start_date" class="input-group form-control " placeholder="תאריך תחילת ביטוח" name="insuranceStartDate" onchange="dateValidate()"/>
-                                <p id ="date_alert" class="alert-danger" style ="visibility: hidden">תאריך תחילת הביטוח יתחיל מהיום והלאה</p>
+                                <input required type="text" id="insurance_start_date" class="datepicker input-group form-control " placeholder="תאריך תחילת ביטוח" name="insuranceStartDate" "/>
+                                <p id ="date_alert" class="alert-danger" style ="visibility: hidden">תאריך תחילת הביטוח יהיה מהיום והלאה</p>
                             </div>
                         </div>
 
@@ -501,9 +524,6 @@
 
                         </div>
 
-
-
-
                         <div class="row" >
                             <div class="col-xs-2 "></div>
 
@@ -514,14 +534,21 @@
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">תאריך המכירה (ברירת מחדל - היום):</label>
-                                <input id="datepicker" required type="text"  value="<?php echo date("Y-m-d");?>" class="input-group form-control datepicker"  name="saleDate"/>
-
+                                <input id="saleDate" required type="text"  value="" class="input-group form-control datepicker"  name="saleDate"/>
                             </div>
-
-
-
                         </div>
 
+                        <div class="row" >
+                            <div class="col-xs-2 "></div>
+                            <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                                <label for="sel1">אמצעי תשלום:</label>
+                                <select required class="form-control" id="payingWith" name="payingWith">
+                                    <option disabled selected value> -- בחר אמצעי תשלום -- </option>
+                                    <option value="אשראי">אשראי</option>
+                                    <option value="הוראת קבע">הוראת קבע</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="row" >
                             <div class="col-xs-2 "></div>
 
@@ -546,48 +573,29 @@
                                 <input type="submit" class="btn btn-primary" id="submit" name="sendForm" value="שלח הצעה"/>
                             </div>
 
-
-
-
-
                         </div>
                             </div>
-                <p>Date: <input type="text" id="datepicker"></p>
+
                     </form>
 
                 </div>
             <?php
+
         } ?>
 
         <script>
-            function dateValidate(){
-                $("#date_alert").css("visibility","hidden");
-                $( function() {
-                    $( "#insurance_start_date" ).datepicker({dateFormat: "yy-mm-dd"})
-                });
-                startDate=  jQuery("#insurance_start_date").val();
-                var dateNow = Date.now();
-                var formatStartDate = new Date(startDate);
-                if (formatStartDate < dateNow) {
-                    jQuery("#date_alert").css("visibility","visible");
-                    return false;
-                }else{
-                    return true;
-                };
-            }
-            function  numValidate(){
-                $("#num_alert").css("visibility","hidden");
-                var num =  $("#sum_premia").val();
 
-                if ( num < 1) {
-                    $("#num_alert").css("visibility","visible");
-                    return false;
-                }else{
-                    return true;
-                };
-            }
+            $( function() {
+                $( ".datepicker" ).datepicker({dateFormat: "dd-mm-yy"})
+            });
 
             jQuery(document).ready(function(){
+                //to set defult value today in input '#saleDate', format:'dd-mm-yy'.
+                var now = new Date();
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                var today =(day) +"-"+(month)+"-"+ now.getFullYear();
+                $('#saleDate').val(today);
 
                 jQuery("#cancellationNumber").change(function (){
                     console.log("cancellationNumber select was changed to" + this.value);
@@ -610,11 +618,35 @@
                     window.history.back();
                 });
 
+                $("#main-form").submit(function () {
+                    $("#date_alert").css("visibility", "hidden");
+                    $("#num_alert").css("visibility","hidden");
 
+                    // Check if the premia is greater than 0.
 
-                jQuery("#main-form").submit(function () {
+                    var num =  $("#sum_premia").val();
+                    if ( num < 1) {
+                        $("#num_alert").css("visibility","visible");
+                        return false;
+                    }
 
-                    $(this).find(':submit').val("הבקשה נשלחת...").attr( 'disabled','disabled' );
+                    //check that the insurance start date starts from now
+                    //to compare dates, format them for the same date type and reset the time.
+
+                    var tempDate = $('#insurance_start_date').datepicker('getDate');
+                    var newformattedDate = $.datepicker.formatDate('yy-mm-dd', tempDate);
+                    var dateNow = Date.now();
+                    dateNow = new Date(dateNow);
+                    dateNow.setHours(0,0,0,0);
+                    var formatStartDate = new Date(newformattedDate);
+                    formatStartDate.setHours(0,0,0,0);
+                    if (formatStartDate >= dateNow) {
+                        $(this).find(':submit').val("הבקשה נשלחת...").attr( 'disabled','disabled' );
+                        return true;
+                    } else {
+                        $("#date_alert").css("visibility", "visible");
+                        return false;
+                    }
                 });
 
                 /*jQuery("#submit").click(function () {
@@ -638,9 +670,7 @@
                         return true;
                     }
                 });*/
-                $( function() {
-                    $( ".datepicker" ).datepicker({dateFormat: "dd-mm-yy"})
-                });
+
             });
 
         </script>
