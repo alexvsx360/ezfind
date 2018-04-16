@@ -88,7 +88,7 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
                         //מעבר מתור חיתום או תור חוסרים לתור הפקות
                         //need to update "תאריך השלמת חוסר" - 106545
                         appendParameterToURL(106545, time()); //current time milliseconds
-                    } else if($leadToPopulateJson['lead']['status'] == 100084){
+                    } else if($leadToPopulateJson['lead']['status'] == 100084 || $leadToPopulateJson['lead']['status'] == 1){
                         //מעבר מתור בקרה לחברת הביטוח
                         //need to update field 106546 תאריך שליחה לחברת הביטוח
                         appendParameterToURL(106546, time()); //current time milliseconds
