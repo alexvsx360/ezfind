@@ -62,7 +62,6 @@ if ($_GET) {
                     <input type="hidden" class="input-group form-control" value="<?php print $customerPhone; ?>" name="customerPhone"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $ssn ?>"  name="customerSsn"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $email ?>"  name="customerEmail"/>
-                    <input type="hidden" class="input-group form-control" value="<?php print $callCenterName ?>" name="callCenterName"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $recordNumber ?>" name="recordNumber"/>
                     <input type="hidden" class="input-group form-control" value="bitul" name="leadType"/>
                 </div>
@@ -134,6 +133,19 @@ if ($_GET) {
                         <label for="sel1">איש מכירות:</label>
                         <input required type="text" class="input-group form-control" placeholder="איש מכירות" name="salesMan"/>
 
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-xs-4 "></div>
+                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                        <label for="sel1">שם המוקד</label>
+                        <select required class="form-control" id="callCenterName" name="callCenterName">
+                            <option disabled selected value> -- בחר שם המוקד -- </option>
+                            <option value="איזי_ביטוח">איזי_ביטוח</option>
+                            <option value="אלעד_שמעוני">אלעד_שמעוני</option>
+                            <option value="מוקד_בולוטין">מוקד_בולוטין</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row" >
