@@ -76,6 +76,14 @@ function httpPost($url, $post) {
     return $response;
 }
 
+function printRequestToFile($file){
+    $req_dump = print_r($_REQUEST, TRUE);
+    fwrite($file, "\nNew HTTP " . $_SERVER['REQUEST_METHOD'] . " Received\n");
+    fwrite($file, "Requested URI is  " . $_SERVER['REQUEST_URI'] . "\n");
+    fwrite($file, "Printing request Params: \n");
+    fwrite($file, $req_dump);
+}
+
 function httpPostContentTypeJson($url, $post) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

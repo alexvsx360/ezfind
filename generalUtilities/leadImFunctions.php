@@ -38,6 +38,87 @@ function getStatusAsString($statusCode){
     return $statusCodeToSrting[$statusCode];
 }
 
+
+function appendParameterToURL ($updateLeadUrl, $fieldToUpdate, $fieldValue, $paramIndex){
+    if ($paramIndex == 0){
+        $updateLeadUrl  = $updateLeadUrl . "&update_fields[fld_id]=" . $fieldToUpdate . "&update_fields[fld_val]=" . $fieldValue;
+    } else {
+        $updateLeadUrl  = $updateLeadUrl . "&update_fields[fld_id_" . $paramIndex . "]=" . $fieldToUpdate . "&update_fields[fld_val_" .$paramIndex . "]=" . $fieldValue;
+    }
+    return $updateLeadUrl;
+}
+
+function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign){
+    if (! isset($crmAccountNumber) || ! isset($searchBy) || !isset($searchTerm) || !isset($campaign)){
+        return [
+            "errorMsg" => "All API parameters must exists"
+        ];
+    } else {
+        $searchPost = [
+            "key" => "3765d732472d44469e70a088caef3040",
+            "acc_id" => $crmAccountNumber,
+            "searchby" => $searchBy,
+            "searchterm" => $searchTerm,
+            "campaign"  => $campaign            // customers campaign
+            //"channel"   => "17993"
+
+        ];
+        return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/searchlead.ashx", $searchPost), true);
+    }
+}
+
+function leadImGetLead($crmAccountNumber, $leadId) {
+    if (! isset($crmAccountNumber) || ! isset($leadId) ){
+        return [
+            "errorMsg" => "All API parameters must exists"
+        ];
+    } else {
+        $searchPost = [
+            "key" => "3765d732472d44469e70a088caef3040",
+            "acc_id" => $crmAccountNumber,
+            "lead_id" => $leadId,              // lead id
+        ];
+        return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getlead.ashx", $searchPost), true);
+    }
+}
+
+function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $doLogFinalUrl){
+    if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($updateFieldsKeyValue)){
+        return [
+            "errorMsg" => "All API parameters must exists"
+        ];
+    } else {
+        $url = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?lead_id=" . $leadId . "&acc_id=" . $crmAccountNumber;
+        $index = 0;
+        foreach($updateFieldsKeyValue as $key => $value){
+            $url = appendParameterToURL($url, $key, $value, $index);
+            $index++;
+        }
+        if ($doLogFinalUrl){
+            error_log("leadImUpdateLead -  updating lead: " . $leadId . "UpdateUrl is: " .$url . "\n");
+        }
+        return httpGet($url);
+    }
+}
+
+
+function leadImSendSMS($crmAccountNumber, $leadId, $templateId, $userId){
+    if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($templateId) || !isset($userId)){
+        return [
+            "errorMsg" => "All API parameters must exists"
+        ];
+    } else {
+        $sendSMSPost = [
+            "key" => "3765d732472d44469e70a088caef3040",
+            "acc_id" => $crmAccountNumber,
+            "lead_id" => $leadId,              // lead id
+            "template_id" => $templateId,
+            "user_id" => $userId,
+        ];
+        return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/send_template_sms.ashx", $sendSMSPost), true);
+    }
+}
+
 function addOrCreateCustomerandUpdateNewSale($saleId, $customerPhone, $createCustomerPost){
     /*search lead by customer phone */
     $searchBaseUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/searchlead.ashx";
