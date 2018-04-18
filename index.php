@@ -69,7 +69,7 @@
             fwrite($myfile, "leadToPopulateJson: " . $leadToPopulateJson);
             $fieldsValuesJsonArray = array_values($leadToPopulateJson['lead']['fields']);
             $fullName = $fieldsValuesJsonArray[0] . " " . $fieldsValuesJsonArray[1];
-            $phone =  $fieldsValuesJsonArray[3];
+            $phone =  $fieldsValuesJsonArray[4];
             $promoterName = $fieldsValuesJsonArray[16];
             $currentUserName = $leadToPopulateJson['user']['name'];
             $currentUserEmail = $leadToPopulateJson['user']['email'];
@@ -115,21 +115,32 @@
                     'תאונות_אישיות' => 'https://bit.ly/2H5CsFe',
                     'בריאות' => 'https://bit.ly/2H2plnY',
                     'מחלות_קשות' => 'https://bit.ly/2H2oXWM',
-                    'חיים' => 'https://bit.ly/2EbJ7dI'
+                    'חיים' => 'https://bit.ly/2EbJ7dI',
+                    'ביטוח_משכנתא'=>'https://bit.ly/2J0av18',
+                    'אובדן_כושר_עבודה' => 'https://bit.ly/2qG1eDM',
+                    'סיעודי' => 'https://bit.ly/2H2plnY'
+
                 ),
                 'הראל'=>array(
                     'תאונות_אישיות' => 'https://bit.ly/2pWEI9l',
                     'בריאות' => 'https://bit.ly/2GoIXpo',
                     'מחלות_קשות' => 'https://bit.ly/2Gul8Zn',
-                    'חיים' => 'https://bit.ly/2J9RTg9'
+                    'חיים' => 'https://bit.ly/2J9RTg9',
+                    'ביטוח_משכנתא' =>'https://bit.ly/2HHnANF',
+                    'אובדן_כושר_עבודה' => 'https://bit.ly/2qDT6UE',
+                    'סיעודי' => 'https://bit.ly/2JSVNdI'
                 ),
                 'איילון'=>array(
                     'תאונות_אישיות' => 'https://bit.ly/2Gpi0SH',
                     'בריאות' => 'https://bit.ly/2Gs5txB',
                     'מחלות_קשות' => 'https://bit.ly/2Eb4uMi',
-                    'חיים' => 'https://bit.ly/2J8EFQG'
+                    'חיים' => 'https://bit.ly/2J8EFQG',
+                    'ביטוח_משכנתא' => 'https://bit.ly/2J2zNMc',
+                    'אובדן_כושר_עבודה' => 'https://bit.ly/2Hqp1Cp',
+                    'סיעודי' => 'https://bit.ly/2JTxa0A'
                 )
             );
+
             fwrite($myfile, "I am in station 2");
             foreach ($category as $cat) {
                 if (true/*$_POST['file_category']==$cat->category_crm_id*/) {
