@@ -90,7 +90,7 @@ if ($_GET) {
         <img src="logo3.png" class="rounded">
     </div>
     <div class="row" >
-        <form id="main-form" action="newSale.php" class="" method="post" >
+        <form enctype="multipart/form-data" id="main-form" action="newSale.php" class="" method="post" >
             <div class="form-group">
                 <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $customerPhone; ?>" name="customerPhone"/>
@@ -137,9 +137,18 @@ if ($_GET) {
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                     <label for="sel1">מספר תשלומים</label>
-                    <input required type="number" class="input-group form-control" placeholder="משפר תשלומים" name="paymentCount"/>
+                    <input required type="number" class="input-group form-control" placeholder="מספר תשלומים" name="paymentCount"/>
                 </div>
             </div>
+
+            <div class="row" >
+                <div class="col-xs-4 "></div>
+                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <label for="exampleInputFile">צרף ייפוי כח</label>
+                    <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file" id="InputFile" />
+                </div>
+            </div>
+
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
