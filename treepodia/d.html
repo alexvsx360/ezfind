@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>וידאו פרסונלי</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    function getSkuFromURL() {
+        var url = new URL(window.location.href);
+        return url.searchParams.get("sku");
+    }
+
+    function initTreepodia(player) {
+        player.show({
+            //Required Parameters
+            account: "UA-EZFIND",
+            sku: getSkuFromURL(),
+            width: 1280,
+            height: 720,
+            container: "treepodiaPlayerMain",
+            //Optional Parameters
+            showTime: false,
+            popup: false,
+            showPoster: true,
+            showJumboPlay: true,
+            autoplay: false
+            /* customCSS: "css/customPlayer.css" */
+        });
+    }
+</script>
+
+<div id="treepodiaPlayerMain"></div>
+
+
+<script type="text/javascript" src="//dxa05szpct2ws.cloudfront.net/player3/TreepodiaPlayer.js"></script>
+</body>
+</html>
