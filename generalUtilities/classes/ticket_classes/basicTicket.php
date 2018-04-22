@@ -6,13 +6,15 @@
  * Time: 11:07
  */
 
-class basicTicket
-{
-public  $headerTicket;
-public  $footerTicket;
+class basicTicket {
+
+protected  $headerTicket;
+protected  $footerTicket;
+
     public function __constructor(){
 
     }
+
 public  function getHeader($customerCount){
 
     return $this->headerTicket=
@@ -22,10 +24,8 @@ public  function getHeader($customerCount){
     'הגוף המנהל: ' . $_POST['insuranceCompany'] . " \n" .
     'סוג הקופה: ' . $_POST['pedionType'] . " \n" .
     'מספר הקופה: ' . $_POST['programNumber'] . " \n" ;
-
-
-
 }
+
     public  function getFooter(){
       return  $this->footerTicket=
           'קישור לרשומת הליד המקורי (ממוקד המכירות) : ' . 'https://crm.ibell.co.il/a/3328/leads/' . $_POST['recordNumber'] . " \n\n".

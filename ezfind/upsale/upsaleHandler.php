@@ -259,7 +259,7 @@ foreach ($files as $i => $files) {
  * */
 $customerCount = $_POST['customerCount'];
 $Ticket = new CreateTicket();
-$Ticket->createTicket($_POST['typeForm'],$customerCount,$programDetails);
+$Ticket->createTicket($_POST['typeForm'], $customerCount, $programDetails);
 
 
 $newTicket = $client->tickets()->create([

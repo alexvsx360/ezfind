@@ -16,10 +16,10 @@ class CreateTicket
         $this->ticket = new TicketFactory();
     }
 
-    public function createTicket($type=null,$customerCount,$details=null)
+    public function createTicket($type=null, $customerCount, $details=null)
     {
-        $ticket =  $this->ticket->makeTicket($type,$details,$customerCount);
-        $this->ticket= $ticket;
+        $ticket =  $this->ticket->makeTicket($type, $details, $customerCount);
+        $this->ticket = $ticket;
     }
 
     public function getTicket()

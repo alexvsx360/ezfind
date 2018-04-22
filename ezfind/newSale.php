@@ -195,6 +195,7 @@ function validateVodRequest (){
     ) {
         //all variable exists and have values
         if ( !$_POST['jobsCount'] > 0 ) return false;
+        if (!$_POST['callCenterName'] == "ezloans") return false;
 
         return true;
     }

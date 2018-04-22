@@ -1,0 +1,70 @@
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 905
+    [workingQueue] => מסלקות_פנסיוניות___בקשות_חדשות
+)
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 906
+    [status] => חדשה
+    [workingQueue] => מסלקות_פנסיוניות___בקשות_חדשות
+)
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 907
+    [status] => Solved
+    [workingQueue] => מסלקות_פנסיוניות___בקשות_חדשות
+)
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 909
+    [status] => New
+    [workingQueue] => מסלקות_פנסיוניות___בקשות_חדשות
+)
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 909
+    [status] => New
+    [workingQueue] => מסלקות_פנסיוניות___בקשות_חדשות
+)
+
+http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=909&status=100084
+Array
+(
+)
+
+http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=&status=&update_fields[fld_id]=104484&update_fields[fld_val]=
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 20000295
+    [status] => חדשה
+    [workingQueue] => מסלקות_פנסיוניות___נשלח_לחברת_הביטוח
+    [XDEBUG_SESSION_START] => 15429
+)
+
+http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=20000295&status=100085&update_fields[fld_id]=104484&update_fields[fld_val]=חדשה
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 20000295
+    [status] => חדשה
+    [workingQueue] => מסלקות_פנסיוניות___נשלח_לחברת_הביטוח
+    [XDEBUG_SESSION_START] => 13129
+)
+
+http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=20000295&status=100085&update_fields[fld_id]=104484&update_fields[fld_val]=חדשה
+Array
+(
+    [acc_id] => 3694
+    [lead_ticket] => 20000295
+    [status] => חדשה
+    [workingQueue] => מסלקות_פנסיוניות___נשלח_לחברת_הביטוח
+    [XDEBUG_SESSION_START] => 17830
+)
+
