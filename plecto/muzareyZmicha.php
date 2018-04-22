@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: User
- * Date: 12/24/2017
- * Time: 11:29 AM
+ * Date: 15/04/2018
+ * Time: 10:50
  */
 include_once ('../generalUtilities/plectoFunctions.php');
 
@@ -19,19 +19,23 @@ $leadDate = new DateTime($leadDate);
 
 $leadPostDate = [
     'date' => $leadDate->format(DateTime::ISO8601), // Updated ISO8601,
-    'data_source' => 'c19a89078ccf4c89b5603277b54eb7c7',
-    'member_api_provider' => 'Lead Im CRM',
-    'member_api_id' => $_GET['suplaierId'],
-    'member_name' =>  $_GET['suplaierName'],
-    'callCenterName' => $_GET['callCenterName'],
-    'sellingChannl' => $_GET['sellingChannl'],
+    'data_source' => 'd9f8ce743a3540b09da09c3aa5882ea2',
+    'member_api_provider' => 'leadsProxy',
+    'member_api_id' =>"1234",
+    'member_name' => 'Leads Proxy',
+    'productName' => $_GET['channel_name'],
     'sellerName' => $_GET['sellerName'],
+    'callCenterName' => $_GET['callCenterName'],
     'paymentSum' => $_GET['paymentSum'],
-    'paymentCount' => $_GET['paymentCount'],
-    'customerCount' => $_GET['customerCount'],
-    'CustomerType' => $_GET['CustomerType'],
+    'mislakaPaymentCount' => $_GET['mislakaPaymentCount'],
+    'loanAmount' => $_GET['loanAmount'],
+    'loanMontlyPeriod' => $_GET['loanMontlyPeriod'],
+    'pedionSum' => $_GET['pedionSum'],
+    'policyType' => $_GET['policyType'],
+    'pullType' => $_GET['pullType'],
+    'referenceType' => $_GET['referenceType'],
+    'ticketStatus' => $_GET['ticketStatus'],
     'reference' => $_GET['recordId'],
-    'recordStatus' => ""
 
 ];
 
