@@ -43,6 +43,7 @@ $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 
 $LOGGER = fopen("log.txt", "a");
+printRequestToFile($LOGGER);
 function generateMislakeLead($ticketCreationResponse){
     return [
         'lm_form' => 18681,
@@ -173,7 +174,7 @@ $updateCustomerResponse = addOrCreateCustomerandUpdateNewSale($newMislakaLeadId,
 
 
 /******************************START VOD REQUEST*************************************************/
-/*function getAccessToken() {
+function getAccessToken() {
     $postData = [
         'email' => 'yaki@tgeg.co.il',
         'password' => 'Alma@102030'
@@ -226,7 +227,7 @@ if ($isPassedVodValidation){
             'sex' => $_POST['sex']
         ),
         'callback' => array(
-            'url' => 'https://ezfind.frb.io/plecto/logger.php',
+            'url' => 'https://ezfind.frb.io/treepodia/EzfindOnBoardingCallbackHandler.php',
             'method' => 'POST',
             'contentType' => 'application/json',
             'body' => "{\"requestId\":\"{requestId}\",\"videoUrl\":\"{videoUrl}\"}",
@@ -240,10 +241,13 @@ if ($isPassedVodValidation){
     fwrite($LOGGER,"VOD request for sku " . $_POST['customerSsn'] . " sent to Trepodioa VOD - response is: " . $response . "\n" );
 
     $response = json_decode($response);
-    $isVideoRequestSuccess = (['status'] == "SUCCESS");
+    $isVideoRequestSuccess = ($response->status == "SUCCESS");
+    if ($isVideoRequestSuccess){
+        leadImUpdateLead(3328, $_POST['recordNumber'], [ 105347 => $response->id, 105346 => $_POST['customerSsn']], true);
+    }
 } else {
     fwrite($LOGGER,"VOD request for sku " . $_POST['customerSsn'] . " FAILED validation!!\n" . print_r($_REQUEST, TRUE) . "\n");
-}*/
+}
 
 /******************************END VOD REQUEST*************************************************/
 
