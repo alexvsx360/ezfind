@@ -1,0 +1,7 @@
+{
+  "name": "demo/demo",
+  "description": "description_text",
+  "require": {
+    "zendesk/zendesk_api_client_php": "2.0.9"
+  }
+}

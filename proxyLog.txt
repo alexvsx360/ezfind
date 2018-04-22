@@ -912,3 +912,169 @@ productionDate : 2017-11-27
 firstPaymentDate : 2018-01-01
 hitum : ירוק
 XDEBUG_SESSION_START : 12536
+acc_id : 3694
+lead_ticket : 4564
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 11724
+acc_id : 3694
+lead_ticket : 4564
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 10073
+acc_id : 3694
+lead_ticket : 4564
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 16535
+acc_id : 3694
+lead_ticket : 038054664
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 19637
+acc_id : 3694
+lead_ticket : 038054664
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 12746
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=038054664&status=100084&update_fields[fld_id]=100100&update_fields[fld_val]=123456&update_fields[fld_id_1]=102416&update_fields[fld_val_1]=154&update_fields[fld_id_2]=102140&update_fields[fld_val_2]=1512082800&update_fields[fld_id_3]=102218&update_fields[fld_val_3]=1511737200&update_fields[fld_id_4]=102144&update_fields[fld_val_4]=1514761200&update_fields[fld_id_5]=102133&update_fields[fld_val_5]=102134
+acc_id : 3694
+lead_ticket : 038054664
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 19596
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=038054664&status=100084&update_fields[fld_id]=100100&update_fields[fld_val]=123456&update_fields[fld_id_1]=102416&update_fields[fld_val_1]=154&update_fields[fld_id_2]=102140&update_fields[fld_val_2]=1512082800&update_fields[fld_id_3]=102218&update_fields[fld_val_3]=1511737200&update_fields[fld_id_4]=102144&update_fields[fld_val_4]=1514761200&update_fields[fld_id_5]=102133&update_fields[fld_val_5]=102134
+acc_id : 3694
+lead_ticket : 5527
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 19964
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=5527&status=100084&update_fields[fld_id]=100100&update_fields[fld_val]=123456&update_fields[fld_id_1]=102416&update_fields[fld_val_1]=154&update_fields[fld_id_2]=102140&update_fields[fld_val_2]=1512082800&update_fields[fld_id_3]=102218&update_fields[fld_val_3]=1511737200&update_fields[fld_id_4]=102144&update_fields[fld_val_4]=1514761200&update_fields[fld_id_5]=102133&update_fields[fld_val_5]=102134
+acc_id : 3694
+lead_ticket : 5527
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 15772
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=5527&status=100084&update_fields[fld_id]=100100&update_fields[fld_val]=123456&update_fields[fld_id_1]=102416&update_fields[fld_val_1]=154&update_fields[fld_id_2]=102140&update_fields[fld_val_2]=1512082800&update_fields[fld_id_3]=102218&update_fields[fld_val_3]=1511737200&update_fields[fld_id_4]=102144&update_fields[fld_val_4]=1514761200&update_fields[fld_id_5]=102133&update_fields[fld_val_5]=102134
+acc_id : 3694
+lead_ticket : 5527
+policyNumber : 
+premia : 123456
+actualPremia : 154
+status : תור_בקרה
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-27
+firstPaymentDate : 2018-01-01
+hitum : ירוק
+XDEBUG_SESSION_START : 15290
+acc_id : 3694
+lead_ticket : 5285
+policyNumber : 114427592
+premia : 108
+actualPremia : 109
+status : תור_הופק
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-16
+firstPaymentDate : 
+hitum : ירוק
+cancelationLetterExists : 1
+cancelationLetterSent : 1
+XDEBUG_SESSION_START : 17552
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=5285&status=102340&update_fields[fld_id]=102145&update_fields[fld_val]=114427592&update_fields[fld_id_1]=100100&update_fields[fld_val_1]=108&update_fields[fld_id_2]=102416&update_fields[fld_val_2]=109&update_fields[fld_id_3]=102140&update_fields[fld_val_3]=1512082800&update_fields[fld_id_4]=102218&update_fields[fld_val_4]=1510786800&update_fields[fld_id_5]=102133&update_fields[fld_val_5]=102134&update_fields[fld_id_6]=102137&update_fields[fld_val_6]=כן&update_fields[fld_id_7]=102141&update_fields[fld_val_7]=כן
+acc_id : 3694
+lead_ticket : 5285
+policyNumber : 114427592
+premia : 108
+actualPremia : 109
+status : תור_הופק
+insuranceStartDate : 2017-12-01
+productionDate : 2017-11-16
+firstPaymentDate : 
+hitum : ירוק
+cancelationLetterExists : 1
+cancelationLetterSent : 1
+XDEBUG_SESSION_START : 17460
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=5285&status=102340&update_fields[fld_id]=102145&update_fields[fld_val]=114427592&update_fields[fld_id_1]=100100&update_fields[fld_val_1]=108&update_fields[fld_id_2]=102416&update_fields[fld_val_2]=109&update_fields[fld_id_3]=102140&update_fields[fld_val_3]=1512082800&update_fields[fld_id_4]=102218&update_fields[fld_val_4]=1510786800&update_fields[fld_id_5]=102133&update_fields[fld_val_5]=102134&update_fields[fld_id_6]=102137&update_fields[fld_val_6]=lfv102138&update_fields[fld_id_7]=102141&update_fields[fld_val_7]=lfv102142
+acc_id : 3694
+lead_ticket : 12157
+status : תור_הפקות
+XDEBUG_SESSION_START : 12899
+acc_id : 3694
+lead_ticket : 12157
+status : תור_הפקות
+XDEBUG_SESSION_START : 12076
+acc_id : 3694
+lead_ticket : 12157
+status : תור_הפקות
+XDEBUG_SESSION_START : 10734
+acc_id : 3694
+lead_ticket : 12157
+status : תור_הפקות
+XDEBUG_SESSION_START : 13767
+acc_id : 3694
+lead_ticket : 12080
+status : תור_הפקות
+XDEBUG_SESSION_START : 10251
+acc_id : 3694
+lead_ticket : 12080
+status : תור_הפקות
+XDEBUG_SESSION_START : 19597
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&usr_id=11017&lead_ticket=12080&status=100085&update_fields[fld_id]=106545&update_fields[fld_val]=1521391784
+acc_id : 3694
+lead_ticket : 12080
+status : תור_הפקות
+XDEBUG_SESSION_START : 15836
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&usr_id=11017&lead_ticket=12080&status=100085&update_fields[fld_id]=106545&update_fields[fld_val]=1521391835
+acc_id : 3694
+lead_ticket : 14642
+status : תור_הפקות
+XDEBUG_SESSION_START : 15883
+Update URL is: http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&usr_id=11017&lead_ticket=14642&status=100085&update_fields[fld_id]=106546&update_fields[fld_val]=1521391893

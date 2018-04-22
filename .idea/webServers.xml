@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="9ffb330d-c7a5-49e4-b898-553e572ff27c" name="Apache on XAMPP" url="http://ezfind.dev">
+      <webServer id="9ffb330d-c7a5-49e4-b898-553e572ff27c" name="Apache on XAMPP" url="http://ezfind.local">
         <fileTransfer port="0" mountedRoot="C:\xampp\htdocs" accessType="MOUNT" />
       </webServer>
       <webServer id="660ca823-cd2b-4d39-8fe7-63e80b3a3084" name="portal iBell" url="http://ftp.s47.upress.link">
@@ -12,6 +12,9 @@
           </advancedOptions>
           <option name="port" value="21" />
         </fileTransfer>
+      </webServer>
+      <webServer id="e08b4e3d-2abd-4314-8e28-5e0f422560ab" name="ezfind.local Apache On Xammp" url="http://ezfind.local">
+        <fileTransfer port="0" mountedRoot="C:\xampp\htdocs" accessType="MOUNT" />
       </webServer>
     </option>
   </component>
