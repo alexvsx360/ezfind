@@ -173,6 +173,7 @@ if ($_GET) {
                             <option value="ותק מעל שש שנים">ותק מעל שש שנים</option>
                             <option value="השתלמות">השתלמות</option>
                             <option value="ותק שלוש שנים">ותק שלוש שנים וגם גיל פרישה</option>
+                            <option value="החלת/השלכת ותק">החלת/השלכת ותק</option>
                         </select>
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">:סוג המשיכה</label>

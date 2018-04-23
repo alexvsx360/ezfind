@@ -13,7 +13,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <!--    <link rel="stylesheet" href="../css/bootstrap.min.css" crossorigin="anonymous">-->
-    <!--    <!-- Optional theme -->-->
+    <!--    <!-- Optional theme -->
     <!--    <link rel="stylesheet" href="../css/bootstrap-theme.min.css" crossorigin="anonymous">-->
     <!--    <link rel="stylesheet" href="../css/style.css">-->
     <link rel="stylesheet" href="../css_bootstrap4/css/bootstrap-grid.css" crossorigin="anonymous">
@@ -183,7 +183,7 @@ if ($_GET) {
         </div>
         <div class="row justify-content-center">
             <div class="col-12">
-                <label for="exampleInputFile">צרף מסמכים רלוונטיים</label>
+                <label for="exampleInputFile">צרף צילום תעודת זהות + ספח כתובת עדכני</label>
                 <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file[]" id="InputFile"  multiple/>
             </div>
         </div>

@@ -145,6 +145,7 @@ if ($_GET) {
                     <option selected> -- בחר את סוג הפניה -- </option>
                     <option value="חוב פיגורים">חוב פיגורים</option>
                     <option value="הפקדות חסרות">הפקדות חסרות</option>
+                    <option value="קיימים כספים לא משויכים">קיימים כספים לא משויכים</option>
                 </select>
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">:סוג הפניה</label>

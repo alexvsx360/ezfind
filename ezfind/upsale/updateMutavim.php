@@ -177,7 +177,7 @@ if ($_GET) {
                     <div  class="row justify-content-center form-row"  >
                         <div class="col">
 
-                            <input type="text"  required class="form-control programNumber"  placeholder="חלוקה באחוזים" name="percentBenefit[]" >
+                            <input type="text"  required class="form-control programNumber"  placeholder="חלק באחוזים" name="percentBenefit[]" >
                         </div>
                         <div class="col">
                             <select required class="form-control"  placeholder="קרבה" name="relation[]">
