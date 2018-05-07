@@ -26,7 +26,7 @@
 
 include ('../generalUtilities/functions.php');
 include ('../generalUtilities/leadImFunctions.php');
-
+$configTypes = include('configTypes.php');
 
 $customerFullName = ""; $customerPhone = ""; $ssn =""; $email =""; $callCenterName = ""; $recordNumber = "";
 
@@ -41,11 +41,24 @@ if ($_GET) {
     $acc_id = $_GET['crmAcccountNumber'];
     $recordNumber = $_GET['recordNumber'];
     $leadToPopulateJson = getLeadJson($_GET['recordNumber'], $acc_id, $_GET['agentId']);
+    $leadId = $leadToPopulateJson['lead']['lead_id'];
     $customerPhone = getCustomerPhone($acc_id, $leadToPopulateJson);
     $customerFullName = getCustomerFullName($acc_id, $leadToPopulateJson);
     $ssn = getCustomerSsn($acc_id, $leadToPopulateJson);
     $email = getCustomerEmail($acc_id, $leadToPopulateJson);
     $callCenterName = getCallCenterName($acc_id, $leadToPopulateJson);
+    $fields = $leadToPopulateJson['lead']['fields'];
+    $callCenterManager =  $fields['104609'];
+    $userEmail = $leadToPopulateJson['user']['email'];
+    $userName = $leadToPopulateJson['user']['name'];
+    $supplier = $leadToPopulateJson['lead']['supplier_id'];
+    $cancelInsuranceCompany = $fields['102112'];
+    $cancelInsuranceCompany = $configTypes['insuranceCompanyTypes'][$cancelInsuranceCompany];
+    $cancelMonthlyPremia = $fields['100100'];
+    $cancelPolicyType = $fields['102104'];
+    $cancelPolicyType = $configTypes['cisuyTypes'][$cancelPolicyType];
+    $cancelPolicyNumber = $fields['102145'];
+    $salesMan = $fields['100099'];
 }
 
 ?>
@@ -58,11 +71,22 @@ if ($_GET) {
         <div class="row" >
             <form id="main-form" action="openLead.php" class="" method="post" >
                 <div class="form-group">
+                    <input type="hidden" class="input-group form-control" value="<?php print $leadId; ?>"  name="leadId"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $cancelPolicyNumber; ?>"  name="cancelPolicyNumber"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $customerPhone; ?>" name="customerPhone"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $ssn ?>"  name="customerSsn"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $email ?>"  name="customerEmail"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $recordNumber ?>" name="recordNumber"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $acc_id ?>" name="crmAccountNumber"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $callCenterManager ?>" name="callCenterManager"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $cancelMonthlyPremia ?>" name="cancelMonthlyPremia"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $cancelInsuranceCompany ?>" name="cancelInsuranceCompany"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $cancelPolicyType ?>" name="cancelPolicyType"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $userEmail ?>" name="userEmail"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $supplier ?>" name="supplier"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $salesMan ?>" name="salesMan"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $callCenterName ?>" name="callCenterName"/>
                     <input type="hidden" class="input-group form-control" value="bitul" name="leadType"/>
                 </div>
                 <div class="row" >
@@ -90,64 +114,7 @@ if ($_GET) {
                         <input required type="number" class="input-group form-control" placeholder="מספר טיקט של מכתב הביטול" name="cancelTicketNumber"/>
                     </div>
                 </div>
-                <div class="row" >
-                    <div class="col-xs-4 "></div>
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label for="sel1">פרמיה חודשית</label>
-                        <input required type="number" class="input-group form-control" placeholder="פרמיה חודשית" name="cancelMonthlyPremia"/>
-                    </div>
-                </div>
-                <div class="row" >
-                    <div class="col-xs-4 "></div>
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label for="sel1">חברת ביטוח</label>
-                        <select required class="form-control" id="cancelInsurenceCompany" name="cancelInsurenceCompany">
-                            <option disabled selected value> -- בחר חברת ביטוח -- </option>
-                            <option value="כלל">כלל</option>
-                            <option value="הראל">הראל</option>
-                            <option value="איילון">איילון</option>
-                            <option value="הפניקס">הפניקס</option>
-                            <option value="הכשרה">הכשרה</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row" >
-                    <div class="col-xs-4 "></div>
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label for="sel1">כיסוי ביטוחי:</label>
-                        <select required class="form-control" id="cancelPolicyType" name="cancelPolicyType">
-                            <option disabled selected value> -- בחר כיסוי ביטוחי -- </option>
-                            <option value="תאונות אישיות">תאונות אישיות</option>
-                            <option value="אובדן כושר עבודה">אכ"ע</option>
-                            <option value="מחלות קשות">מחלות קשות</option>
-                            <option value="חיים">ריסק</option>
-                            <option value="בריאות">בריאות</option>
-                            <option value="ביטוח משכנתא">ריסק למשכנתא</option>
-                            <option value="סיעודי">סיעודי</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row" >
-                    <div class="col-xs-4 "></div>
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label for="sel1">איש מכירות:</label>
-                        <input required type="text" class="input-group form-control" placeholder="איש מכירות" name="salesMan"/>
 
-                    </div>
-                </div>
-
-                <div class="row" >
-                    <div class="col-xs-4 "></div>
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label for="sel1">שם המוקד</label>
-                        <select required class="form-control" id="callCenterName" name="callCenterName">
-                            <option disabled selected value> -- בחר שם המוקד -- </option>
-                            <option value="איזי_ביטוח">איזי_ביטוח</option>
-                            <option value="אלעד_שמעוני">אלעד_שמעוני</option>
-                            <option value="מוקד_בולוטין">מוקד_בולוטין</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="row" >
                     <div class="col-xs-4 "></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -192,6 +159,7 @@ if ($_GET) {
         });
     });
 </script>
+
 
 </body>
 </html>

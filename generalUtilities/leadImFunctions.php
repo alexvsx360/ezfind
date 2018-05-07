@@ -48,7 +48,7 @@ function appendParameterToURL ($updateLeadUrl, $fieldToUpdate, $fieldValue, $par
     return $updateLeadUrl;
 }
 
-function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign){
+function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign, $mult = 0 ){
     if (! isset($crmAccountNumber) || ! isset($searchBy) || !isset($searchTerm) || !isset($campaign)){
         return [
             "errorMsg" => "All API parameters must exists"
@@ -59,7 +59,8 @@ function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign){
             "acc_id" => $crmAccountNumber,
             "searchby" => $searchBy,
             "searchterm" => $searchTerm,
-            "campaign"  => $campaign            // customers campaign
+            "campaign"  => $campaign,            // customers campaign
+            "mult" => $mult
             //"channel"   => "17993"
 
         ];
@@ -82,13 +83,14 @@ function leadImGetLead($crmAccountNumber, $leadId) {
     }
 }
 
-function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $doLogFinalUrl){
+function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $doLogFinalUrl, $status = null){
     if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($updateFieldsKeyValue)){
         return [
             "errorMsg" => "All API parameters must exists"
         ];
     } else {
         $url = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?lead_id=" . $leadId . "&acc_id=" . $crmAccountNumber;
+        $url = $status!= null ? $url. "&status=" . $status : $url;
         $index = 0;
         foreach($updateFieldsKeyValue as $key => $value){
             $url = appendParameterToURL($url, $key, $value, $index);
@@ -101,7 +103,24 @@ function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $do
     }
 }
 
-
+//function leadImUpdateStatusLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $doLogFinalUrl,$status){
+//    if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($updateFieldsKeyValue)){
+//        return [
+//            "errorMsg" => "All API parameters must exists"
+//        ];
+//    } else {
+//        $url = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?lead_id=" . $leadId . "&acc_id=" . $crmAccountNumber ."&status=" .$status;
+//        $index = 0;
+//        foreach($updateFieldsKeyValue as $key => $value){
+//            $url = appendParameterToURL($url, $key, $value, $index);
+//            $index++;
+//        }
+//        if ($doLogFinalUrl){
+//            error_log("leadImUpdateLead -  updating lead: " . $leadId . "UpdateUrl is: " .$url . "\n");
+//        }
+//        return httpGet($url);
+//    }
+//}
 function leadImSendSMS($crmAccountNumber, $leadId, $templateId, $userId){
     if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($templateId) || !isset($userId)){
         return [
