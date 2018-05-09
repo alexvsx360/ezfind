@@ -42,20 +42,30 @@ $configTypes = include('configTypes.php');
 $dataTicket = "";
 $collaborators = "";
 $callCenterManagerMail = "";
+$callCenterManger = "";
+
 
 function updateTicket($collaborators,$dataTicket,$newLeadId){
     global $client;
     global $callCenterManagerMail;
+    global $callCenterManger;
     // Update a ticket
     $client->tickets()->update($_POST['cancelTicketNumber'],[
         'requester' =>array(
-            'name' => $_POST['callCenterManager'],
+            'name' => $callCenterManger,
             'email' => $callCenterManagerMail
         ),
         'subject' => "הלקוח מבקש לבטל:"." ".$_POST['customerName']." ".$_POST['customerSsn']." ".$_POST['cancelInsuranceCompany']." ".$_POST['cancelPolicyType'],
         'collaborators' => $collaborators,
         'custom_fields' => array(
-            '114096462111' => "תור_ביטולים"
+            '114096462111' => "תור_ביטולים",
+            '114096335892' => $_POST['callCenterName'],                 // מוקד ביטוח
+            '114096371131' => $_POST['cancelPolicyType'],                                                      //כיסוי ביטוחי
+            '114096335852' => $_POST['cancelInsuranceCompany'],                                // חברת ביטוח
+            '114096335872' => $_POST['cancelMonthlyPremia'],                                         //פרמיה
+            '114096405631' => $_POST['cancelPolicyNumber']  ,
+            //'114096470871' => ""
+
         ),
         'status'  => 'pending',
         'comment'=> $dataTicket." \n".
@@ -111,8 +121,8 @@ function generateBitulLeadData(){
         'cancelInsurenceCompany' => $_POST['cancelInsuranceCompany'],
         'salesMan' => $_POST['salesMan'],
         'leadIdToCancel' => $_POST['leadId'],
-        'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
-        'cancelPolicyNumber' => $_POST['cancelPolicyNumber']
+        'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
+        'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber']
     ];
 }
 
@@ -145,7 +155,15 @@ if ($_POST){
     $leadType = $_POST['leadType'] ;
     $customerSsn = $_POST['customerSsn'];
     $customerName = $_POST['customerName'];
-    $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$_POST['callCenterManager']];
+
+//if policy from "masad yashan" there isn't 'callCenterManager' so take it by maping by callCenterName
+    if($_POST['callCenterManager']!== ""){
+        $callCenterManger = $_POST['callCenterManager'];
+        $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$_POST['callCenterManager']];
+    }else{
+        $callCenterManger = $configTypes['callCenterManagerName'][$_POST['callCenterName']];
+        $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$callCenterManger];
+    }
     //if supplier elad shimony change collaborators and comment(dataTicket) in the ticket
 
     if ($_POST['supplier'] == '14416'){//elad shimoni
@@ -154,15 +172,15 @@ if ($_POST){
     }else{
         $collaborators = ["michael@tgeg.co.il"];//] /*/mail to supllier/*/
         $dataTicket =
-            "הי "." ".$_POST['callCenterManager']." ".","." ". $_POST['salesMan']. " \n" .
+            "הי "." ".$callCenterManger." ".","." ". $_POST['salesMan']. " \n" .
             "התקבלה בקשה לביטול מאת לקוח : "." ".$_POST['customerName']. " \n" .
             "ת.ז :"." ". $_POST['customerSsn']. " \n" .
             "חברת ביטוח :"." ". $_POST['cancelInsuranceCompany']. " \n" .
             "כיסוי :"." ". $_POST['cancelPolicyType']. " \n" .
+            "פרמיה חודשית :".$_POST['cancelMonthlyPremia']. " \n" .
             "יש לכם SLA של חמישה ימים קלנדרים לטפל בבקשת הביטול אחרת הטיקט נסגר והבקשה עוברת לשימור ". " \n" .
             "בהצלחה !";
     }
-
     switch ($_POST['leadType']){
     case 'pigur':
             $openLeadData = generatePigurLeadPostData();
