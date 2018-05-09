@@ -62,8 +62,8 @@ function updateTicket($collaborators,$dataTicket,$newLeadId){
             '114096335892' => $_POST['callCenterName'],                 // מוקד ביטוח
             '114096371131' => $_POST['cancelPolicyType'],                                                      //כיסוי ביטוחי
             '114096335852' => $_POST['cancelInsuranceCompany'],                                // חברת ביטוח
-            '114096335872' => $_POST['cancelMonthlyPremia'],                                         //פרמיה
-            '114096405631' => $_POST['cancelPolicyNumber']  ,
+            '114096335872' => $_POST['cancelMonthlyPremia']                                         //פרמיה
+            //'114096405631' => $_POST['cancelPolicyNumber']  ,
             //'114096470871' => ""
 
         ),
@@ -161,16 +161,24 @@ if ($_POST){
         $callCenterManger = $_POST['callCenterManager'];
         $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$_POST['callCenterManager']];
     }else{
+        if ($_POST['callCenterName']!== ""){
         $callCenterManger = $configTypes['callCenterManagerName'][$_POST['callCenterName']];
         $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$callCenterManger];
+        }else{
+            $callCenterManger = "doron";
+            $callCenterManagerMail = "doron1098@tgeg1.onmicrosoft.com";
+        }
     }
-    //if supplier elad shimony change collaborators and comment(dataTicket) in the ticket
 
-    if ($_POST['supplier'] == '14416'){//elad shimoni
+    //if supplier elad shimony/ callcenter not exist/ supplier not exist
+
+    if ($_POST['supplier'] == '14416'||$_POST['supplier'] == 0 || $callCenterManger == null){//elad shimoni
         $collaborators = ["michael@tgeg.co.il"];//
         $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור";
+        $callCenterManger = "doron";
+        $callCenterManagerMail = "doron1098@tgeg1.onmicrosoft.com";
     }else{
-        $collaborators = ["michael@tgeg.co.il"];//] /*/mail to supllier/*/
+        $collaborators = ["michael@tgeg.co.il"]; /*/mail to supllier/*/
         $dataTicket =
             "הי "." ".$callCenterManger." ".","." ". $_POST['salesMan']. " \n" .
             "התקבלה בקשה לביטול מאת לקוח : "." ".$_POST['customerName']. " \n" .
