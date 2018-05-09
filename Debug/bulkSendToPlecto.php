@@ -60,7 +60,7 @@ foreach ($array as $line){
         'CustomerType' => '',
         'reference' => $line['מספר ליד'],
     ];
-    if (count($masterArray) < 1){
+    if (count($masterArray) < 99){
         array_push($masterArray, $leadPostDate);
     } else {
         array_push($masterArray, $leadPostDate);
