@@ -28,6 +28,52 @@
  */
 include ('../generalUtilities/functions.php');
 include ('../generalUtilities/leadImFunctions.php');
+require '../vendor/autoload.php';
+include_once('../generalUtilities/classes/ticket_classes/CreateTicket.php');
+use Zendesk\API\HttpClient as ZendeskAPI;
+$subdomain = "ezfind";
+$username  = "yaki@ezfind.co.il";
+$token     = "Bdt7m6GAv0VQghQ6CRr81nhCMXcjq2fIfZHwMjMW"; // replace this with your token
+$client = new ZendeskAPI($subdomain, $username);
+$client->setAuth('basic', ['username' => $username, 'token' => $token]);
+$LOGGER = fopen("log.txt", "a");
+
+$configTypes = include('configTypes.php');
+$dataTicket = "";
+$collaborators = "";
+$callCenterManagerMail = "";
+
+function updateTicket($collaborators,$dataTicket,$newLeadId){
+    global $client;
+    global $callCenterManagerMail;
+    // Update a ticket
+    $client->tickets()->update($_POST['cancelTicketNumber'],[
+        'requester' =>array(
+            'name' => $_POST['callCenterManager'],
+            'email' => $callCenterManagerMail
+        ),
+        'subject' => "הלקוח מבקש לבטל:"." ".$_POST['customerName']." ".$_POST['customerSsn']." ".$_POST['cancelInsuranceCompany']." ".$_POST['cancelPolicyType'],
+        'collaborators' => $collaborators,
+        'custom_fields' => array(
+            '114096462111' => "תור_ביטולים"
+        ),
+        'status'  => 'pending',
+        'comment'=> $dataTicket." \n".
+                    'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $newLeadId
+    ]);
+}
+function addSherutLeadToCustomerByLeadType($leadType,$newLeadId,$customerSsn,$crmAccountNumber){
+    if($leadType == 'bitul'){
+        $searchBy = 102092;//number field of teudat zeut
+        $campaign  = 17992;//lakochot
+        $CustomerLead = leadInSearchLead($crmAccountNumber, $searchBy, $customerSsn, $campaign);
+        $CustomerLeadId = $CustomerLead['lead_id'];
+        addSherutLeadToCustomer($CustomerLeadId, $newLeadId);
+
+    }else{
+        return  addSherutLeadToCustomer($_POST['recordNumber'], $newLeadId);
+    }
+};
 
 function generatePigurLeadPostData(){
     return [
@@ -62,9 +108,11 @@ function generateBitulLeadData(){
         'cancelTicketNumber' => $_POST['cancelTicketNumber'],
         'cancelLink' => "https://ezfind.zendesk.com/agent/tickets/" . $_POST['cancelTicketNumber'],
         'cancelMonthlyPremia' => $_POST['cancelMonthlyPremia'],
-        'cancelInsurenceCompany' => $_POST['cancelInsurenceCompany'],
+        'cancelInsurenceCompany' => $_POST['cancelInsuranceCompany'],
         'salesMan' => $_POST['salesMan'],
-        'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber']
+        'leadIdToCancel' => $_POST['leadId'],
+        'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
+        'cancelPolicyNumber' => $_POST['cancelPolicyNumber']
     ];
 }
 
@@ -92,12 +140,38 @@ if ($_POST){
     $openLeadData = "";
     $newLeadId = "";
     $result =0;
+    $recordNumber = $_POST["recordNumber"];
+    $crmAccountNumber = $_POST["crmAccountNumber"];
+    $leadType = $_POST['leadType'] ;
+    $customerSsn = $_POST['customerSsn'];
+    $customerName = $_POST['customerName'];
+    $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$_POST['callCenterManager']];
+    //if supplier elad shimony change collaborators and comment(dataTicket) in the ticket
+
+    if ($_POST['supplier'] == '14416'){//elad shimoni
+        $collaborators = ["michael@tgeg.co.il"];//
+        $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור";
+    }else{
+        $collaborators = ["michael@tgeg.co.il"];//] /*/mail to supllier/*/
+        $dataTicket =
+            "הי "." ".$_POST['callCenterManager']." ".","." ". $_POST['salesMan']. " \n" .
+            "התקבלה בקשה לביטול מאת לקוח : "." ".$_POST['customerName']. " \n" .
+            "ת.ז :"." ". $_POST['customerSsn']. " \n" .
+            "חברת ביטוח :"." ". $_POST['cancelInsuranceCompany']. " \n" .
+            "כיסוי :"." ". $_POST['cancelPolicyType']. " \n" .
+            "יש לכם SLA של חמישה ימים קלנדרים לטפל בבקשת הביטול אחרת הטיקט נסגר והבקשה עוברת לשימור ". " \n" .
+            "בהצלחה !";
+    }
+
     switch ($_POST['leadType']){
     case 'pigur':
             $openLeadData = generatePigurLeadPostData();
         break;
         case 'bitul':
             $openLeadData = generateBitulLeadData();
+            $status = "107637";//התקבלה בקשה לביטול
+            $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול"];
+            leadImUpdateLead($crmAccountNumber, $recordNumber, $updateFieldsKeyValue, false,$status);
             break;
         case 'doublePay':
             $openLeadData = generateDoublePayLeadData();
@@ -107,7 +181,13 @@ if ($_POST){
         break;
     }
     $newLeadId = openNewLead($openLeadData);
-    $result = addSherutLeadToCustomer($_POST['recordNumber'], $newLeadId);
+    $result = addSherutLeadToCustomerByLeadType($leadType,$newLeadId,$customerSsn,$crmAccountNumber);
+
+    if ($_POST['leadType']== 'bitul'){
+       updateTicket($collaborators,$dataTicket,$newLeadId);
+    }
+
+
 }
 ?>
 <div class="container" role="main" id="button_block">
@@ -118,7 +198,7 @@ if ($_POST){
         <div class="col-xs-12 col-md-12 col-sm-12">
             <fieldset>
                 <div class="col-xs-6 col-md-6 col-sm-6">
-                    <a target="_blank" href="https://crm.ibell.co.il/a/3694/leads/<?php print $_POST['recordNumber'] ?>" class="btn btn-success">לצפיה בכרטיס הלקוח</a>
+                    <a target="_blank" href="https://crm.ibell.co.il/a/3694/leads/<?php print $_POST['recordNumber'] ?>" class="btn btn-success">לצפיה בפוליסה המקורית </a>
                 </div>
                 <div class="col-xs-6 col-md-6 col-sm-6">
                     <a target="_blank" href="https://crm.ibell.co.il/a/3694/leads/<?php print $newLeadId ?>" class="btn btn-success">לצפיה בפניה שנפתחה</a>
