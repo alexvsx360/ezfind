@@ -23,7 +23,7 @@
     <script src="../ezfind/css_bootstrap4/js/bootstrap.bundle.js" crossorigin="anonymous"></script>
     <script src="../ezfind/css_bootstrap4/js/bootstrap.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <script type="" charset="" src="js/helperFunction.js"></script>
     <title>שימור או ביטול</title>
 </head>
 <body>
@@ -89,13 +89,12 @@ if ($_GET) {
 
 <div class="container" role="main" id="back_form">
     <div class="text-center">
-        <img src="../logo3.png" class="rounded">
+        <img src="logo3.png" class="rounded">
     </div>
-    <form enctype="multipart/form-data" id="main-form" action="bitulOrShimurHandler.php" class="" method="post" >
+    <form enctype="multipart/form-data" id="main-form" onsubmit="return validateFileSize()" action="bitulOrShimurHandler.php" class="" method="post" >
         <div class="form-group">
             <input type="hidden" class="input-group form-control" value="<?php print $userEmail ?>" name="userEmail"/>
             <input type="hidden" class="input-group form-control" value="<?php print $userName ?>" name="userName"/>
-<!--            <input type="hidden" class="input-group form-control" value="--><?php //print $leadIdToCancel ?><!--" name="leadIdToCancel"/>-->
             <input type="hidden" class="input-group form-control" value="<?php print $callCenterManager ?>" name="callCenterManager"/>
             <input type="hidden" class="input-group form-control" value="<?php print $callCenterManagerMail ?>" name="callCenterManagerMail"/>
             <input type="hidden" class="input-group form-control" value="<?php print $recordNumber ?>" name="recordNumber"/>
@@ -157,7 +156,7 @@ if ($_GET) {
         });
 
         $('#main-form').submit(function () {
-            $(this).find("button[type='submit']").prop('disabled', true);
+          //  $(this).find("button[type='submit']").prop('disabled', true);
         });
         // Check if the premia is greater than 0.
         $("body").on('click', "#submit", function () {
