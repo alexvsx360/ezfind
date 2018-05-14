@@ -5,8 +5,27 @@
  * Date: 12/24/2017
  * Time: 11:29 AM
  */
-include_once ('../generalUtilities/plectoFunctions.php');
 
+/**
+ * Created by PhpStorm.
+ * User: User
+ * Date: 07/05/2018
+ * Time: 10:30
+ */
+
+include_once ('../generalUtilities/plectoFunctions.php');
+function getChannelName($channelName){
+    switch ($channelName){
+        case "דף נחיתה אתר ezfind":
+        case "פייסבוק":
+        case "פייסבוק פוסטים-הלוואות":
+        case  "פוסטים פייסבוק-איתור":
+            return "פייסבוק";
+        default:
+            return $channelName;
+
+    }
+};
 function getLeadCallCenterSuplaier($campainName){
     switch ($campainName){
         case "פוליסות מהר הביטוח":
@@ -24,6 +43,10 @@ function getLeadCallCenterSuplaier($campainName){
                 default:
                     return "לא ידוע";
             }
+        case "איתור כספים אבודים" :
+            return 'ezfind';
+        case "הלוואות" :
+            return 'ezfind';
         default:
             return "לא ידוע";
     }
@@ -51,8 +74,9 @@ $leadPostDate = [
     'member_api_provider' => 'leadsProxy',
     'member_api_id' => ($_GET['suplaierId'] == "" ? "1234" : $_GET['suplaierId']),
     'member_name' => ($_GET['suplaier'] == "" ? "Leads Proxy" : $_GET['suplaier']),
-    'leadChannel' => $_GET['channelName'],
+    'leadChannel' => getChannelName($_GET['channelName']),
     'leadSuplaier' => getLeadSuplaier(),
+    'campainName' => $_GET['campainName'],
     'leadCallCenterSuplaier' => getLeadCallCenterSuplaier($_GET['campainName']),
     'leadIncorrectStatus' => $_GET['incorrectLeadStatus'],
     'reference' => $_GET['leadId'],
