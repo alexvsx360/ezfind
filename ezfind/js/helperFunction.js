@@ -5,12 +5,15 @@ function  validateFileSize() {
     $(file).each(function (index, value) {
         if (Math.round((value.size / 1024)) > 8000) {
             alert("גודל הקובץ: " + value.name + " " + " גדול מידי, ולכן לא ניתן להעלותו, עליך להקטינו לפני ההעלאה");
+
             return flag = false;
         } else {
-            $("#submit").attr('disabled', 'disabled').val('פותח פניה ..');
             return flag = true;
         }
     });
+    if(flag === true) {
+        $("#submit").attr('disabled', 'disabled').val('פותח פניה ..');
+    }
     return flag;
 }
 
