@@ -1,4 +1,19 @@
 var html= "";
+function  validateFileSize() {
+    var flag = true;
+    var file = $('input[type="file"]').get(0).files;
+    $(file).each(function (index, value) {
+        if (Math.round((value.size / 1024)) > 8000) {
+            alert("גודל הקובץ: " + value.name + " " + " גדול מידי, ולכן לא ניתן להעלותו, עליך להקטינו לפני ההעלאה");
+            return flag = false;
+        } else {
+            $("#submit").attr('disabled', 'disabled').val('פותח פניה ..');
+            return flag = true;
+        }
+    });
+    return flag;
+}
+
 $(document).ready(function(){
 $("#add_input_program").click (function () {
     html='<div><br> <div  class="row justify-content-center form-row">\n' +
@@ -24,7 +39,6 @@ $("#add_input_program").click (function () {
         '                </div></div>';
     $("#div_for_three_inputs").append(html);
 });
-
 
     $("body").on('click', "#minus_icon", function() {
 

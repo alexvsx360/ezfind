@@ -100,7 +100,7 @@ if ($_GET) {
     <div class="text-center">
         <img src="../logo3.png" class="rounded">
     </div>
-    <form enctype="multipart/form-data" id="main-form" action="upsaleHandler.php" class="" method="post" >
+    <form enctype="multipart/form-data" id="main-form" onsubmit="return validateFileSize() "action="upsaleHandler.php" class="" method="post" >
         <div class="form-group">
             <input type="hidden" class="input-group form-control" value="update_beneficiaries"  name="typeForm"/>
             <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
@@ -253,9 +253,9 @@ if ($_GET) {
 
             jQuery('.cat_name').val(optionSelected.text());
         });
-        jQuery("#main-form").submit(function () {
-            $(this).find(':submit').val("פותח פניה...").attr('disabled', 'disabled');
-        });
+        // jQuery("#main-form").submit(function () {
+        //     $(this).find(':submit').val("פותח פניה...").attr('disabled', 'disabled');
+        // });
 
         jQuery("#submit").click(function () {
             var ddd = jQuery("#InputFile").val();

@@ -101,7 +101,7 @@ if ($_GET) {
     <div class="text-center">
         <img src="../logo3.png" class="rounded">
     </div>
-    <form enctype="multipart/form-data" id="main-form" action="upsaleHandler.php" class="" method="post" >
+    <form enctype="multipart/form-data" id="main-form" action="upsaleHandler.php" onsubmit="return validateFileSize()" class="" method="post">
         <div class="form-group">
             <input type="hidden" class="input-group form-control" value="pedion_hishtalmut"  name="typeForm"/>
             <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
@@ -208,7 +208,7 @@ if ($_GET) {
                 <br/>
                 <div class="row justify-content-center">
                     <div class="col-2">
-                        <button type="submit" class="btn btn-primary" id="submit">הגש מכירה</button>
+                        <button type="submit"  class="btn btn-primary" id="submit" >הגש מכירה</button>
                     </div>
                 </div>
             </div>
@@ -220,7 +220,6 @@ if ($_GET) {
 
 
 <script>
-
     jQuery(document).ready(function () {
 
         $('#radioBtn button').on('click', function(){
@@ -233,6 +232,12 @@ if ($_GET) {
             $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
             $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
         });
+
+
+
+
+
+
 
 
 
@@ -250,7 +255,7 @@ if ($_GET) {
             jQuery('.cat_name').val(optionSelected.text());
         });
         jQuery("#main-form").submit(function () {
-            $(this).find(':submit').val("פותח פניה...").attr('disabled', 'disabled');
+
         });
 
         jQuery("#submit").click(function () {

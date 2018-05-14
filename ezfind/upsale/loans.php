@@ -17,6 +17,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="../js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script type="" charset="" src="../js/helperFunction.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>הלוואות</title>
@@ -90,7 +91,7 @@ if ($_GET) {
         <img src="../logo3.png" class="rounded">
     </div>
     <div class="row" >
-        <form enctype="multipart/form-data" id="main-form" action="upsaleHandler.php" class="" method="post" >
+        <form enctype="multipart/form-data" id="main-form" onsubmit="return validateFileSize()" action="upsaleHandler.php" class="" method="post" >
             <div class="form-group">
                 <input type="hidden" class="input-group form-control" value="loan"  name="typeForm"/>
                 <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
@@ -245,7 +246,7 @@ if ($_GET) {
                 jQuery('.cat_name').val(optionSelected.text());
             });
             jQuery("#main-form").submit(function () {
-                $(this).find(':submit').val("פותח פניה...").attr('disabled', 'disabled');
+               // $(this).find(':submit').val("פותח פניה...").attr('disabled', 'disabled');
             });
 
             jQuery("#submit").click(function () {
