@@ -103,24 +103,6 @@ function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $do
     }
 }
 
-//function leadImUpdateStatusLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $doLogFinalUrl,$status){
-//    if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($updateFieldsKeyValue)){
-//        return [
-//            "errorMsg" => "All API parameters must exists"
-//        ];
-//    } else {
-//        $url = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?lead_id=" . $leadId . "&acc_id=" . $crmAccountNumber ."&status=" .$status;
-//        $index = 0;
-//        foreach($updateFieldsKeyValue as $key => $value){
-//            $url = appendParameterToURL($url, $key, $value, $index);
-//            $index++;
-//        }
-//        if ($doLogFinalUrl){
-//            error_log("leadImUpdateLead -  updating lead: " . $leadId . "UpdateUrl is: " .$url . "\n");
-//        }
-//        return httpGet($url);
-//    }
-//}
 function leadImSendSMS($crmAccountNumber, $leadId, $templateId, $userId){
     if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($templateId) || !isset($userId)){
         return [
@@ -262,9 +244,12 @@ function getSecondaryCustomerSsn($acc_id, $leadToPopulateJson){
 function getCallCenterName($acc_id, $leadToPopulateJson){
     switch ($acc_id){
         case 3328:
-            if ($leadToPopulateJson['lead']['campaign_id'] == 19578)
+            if ($leadToPopulateJson['lead']['campaign_id'] == 19578 || $leadToPopulateJson['lead']['campaign_id'] == 20696){
                 return "ezloans";
-            return "ezfind";
+            }
+            if ($leadToPopulateJson['lead']['campaign_id'] == 16018 || $leadToPopulateJson['lead']['campaign_id'] == 18571){
+                return "ezfind";
+            }
         case 3694:
             return $leadToPopulateJson['lead']['fields']['100098'];
             break;
