@@ -58,7 +58,12 @@ if ($_GET) {
     $cancelPolicyType = $fields['102104'];
     $cancelPolicyType = $configTypes['cisuyTypes'][$cancelPolicyType];
     $cancelPolicyNumber = $fields['102145'];
+    $actualPremia = $fields['102416'];
     $salesMan = $fields['100099'];
+    $supplier_id = $leadToPopulateJson['lead']['supplier_id'];
+   // $getUserJson  = getUser($acc_id,$supplier_id);
+    $getActiveUsers  = getActiveUsers($acc_id,60);
+  //  $supplierEmail  = $getUserJson['result']['email'];
 }
 
 ?>
@@ -69,9 +74,10 @@ if ($_GET) {
             <img src="logo3.png" class="rounded">
         </div>
         <div class="row" >
-            <form id="main-form" action="openLead.php" class="" method="post" >
+            <form id="main-form" action="openLead.php"  class="" method="post" >
                 <div class="form-group">
                     <input type="hidden" class="input-group form-control" value="<?php print $leadId; ?>"  name="leadId"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $actualPremia; ?>"  name="actualPremia"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $cancelPolicyNumber; ?>"  name="cancelPolicyNumber"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $customerPhone; ?>" name="customerPhone"/>
@@ -79,11 +85,12 @@ if ($_GET) {
                     <input type="hidden" class="input-group form-control" value="<?php print $email ?>"  name="customerEmail"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $recordNumber ?>" name="recordNumber"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $acc_id ?>" name="crmAccountNumber"/>
-                    <input type="hidden" class="input-group form-control" value="<?php print $callCenterManager ?>" name="callCenterManager"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $callCenterManager ?>" name="callCenterManger"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $cancelMonthlyPremia ?>" name="cancelMonthlyPremia"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $cancelInsuranceCompany ?>" name="cancelInsuranceCompany"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $cancelPolicyType ?>" name="cancelPolicyType"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $userEmail ?>" name="userEmail"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $userName ?>" name="userName"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $supplier ?>" name="supplier"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $salesMan ?>" name="salesMan"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $callCenterName ?>" name="callCenterName"/>
@@ -118,9 +125,25 @@ if ($_GET) {
                 <div class="row" >
                     <div class="col-xs-4 "></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                        <label for="sel1">שם הספק</label>
+                        <select required class="form-control" id="" name="supplierNameEmail" placeholder="">
+                            <option value ="ספק מקורי לא קיים"> -- בחר את שם הספק --</option>
+                            <option value = "ספק מקורי לא קיים"> ספק מקורי לא קיים </option>
+                            <?php
+                            foreach($getActiveUsers['result'] as $key => $value){
+                                echo '<option value="'.$value['email'].";".$value['name'].'">'.$value['name'].'</option>';}
+                            ?>
+                        </select>
+                    </div>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-xs-4 "></div>
+                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                         <input type="submit" class="btn btn-primary" id="submit" name="sendForm" value="פתח פניה"/>
                     </div>
                 </div>
+
             </form>
         </div>
 
@@ -143,7 +166,7 @@ if ($_GET) {
             jQuery('.cat_name').val(optionSelected.text());
         });
         jQuery("#main-form").submit(function () {
-            $(this).find(':submit').val("פותח פניה...").attr('disabled', 'disabled');
+           $(this).find(':submit').val("פותח פניה...").attr('disabled', 'disabled');
         });
 
         jQuery("#submit").click(function () {

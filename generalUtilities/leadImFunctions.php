@@ -257,3 +257,33 @@ function getCallCenterName($acc_id, $leadToPopulateJson){
             return "";
     }
 }
+function getUser($acc_id,$user_id){
+    if (!isset($acc_id) || !isset($user_id)) {
+        return [
+            "errorMsg" => "All API parameters must exists"
+        ];
+    } else {
+        $searchPost = [
+            "key" => "3765d732472d44469e70a088caef3040",
+            "acc_id" => $acc_id,
+            "user_id" => $user_id
+        ];
+        return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getuser.ashx", $searchPost), true);
+
+    }
+}
+function getActiveUsers($acc_id,$type){
+    if (!isset($acc_id) || !isset($type)) {
+        return [
+            "errorMsg" => "All API parameters must exists"
+        ];
+    } else {
+        $searchPost = [
+            "key" => "3765d732472d44469e70a088caef3040",
+            "acc_id" => $acc_id,
+            "type" => $type
+        ];
+        return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getusers.ashx", $searchPost), true);
+
+    }
+}

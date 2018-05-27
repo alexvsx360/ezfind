@@ -39,35 +39,132 @@ $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $LOGGER = fopen("log.txt", "a");
 
 $configTypes = include('configTypes.php');
-$dataTicket = "";
-$collaborators = "";
-$callCenterManagerMail = "";
-$callCenterManger = "";
+//if policy from "masad yashan" there isn't 'callCenterManager' so take it by maping by callCenterName if there isnt callCenterName - doron
+function setCallCenterMangerName(){
+    global $callCenterName;
+    global $callCenterManger;
+    global $configTypes;
+    if ($callCenterManger !== "לא ידוע") {
+        $callCenterManger = $callCenterManger;
+    } else {
+        if ($callCenterName !== "לא ידוע") {
+            $callCenterManger = $configTypes['callCenterManagerName'][$callCenterName];
+        } else {
+            $callCenterManger = "דורון";
+        }
+    }
+    return $callCenterManger;
+}
 
+function setCallCenterEmail(){
+    global $callCenterName;
+    global $callCenterManger;
+    global $configTypes;
+    global $callCenterManagerEmail;
+    if ($callCenterManger !== "לא ידוע") {
+        $callCenterManagerEmail = $configTypes['callCenterManagerMail'][$callCenterManger];
+    } else {
+        if ($callCenterName !== "לא ידוע") {
+            $callCenterManagerEmail = $configTypes['callCenterManagerMail'][$callCenterManger];
+        } else {
+            $callCenterManagerEmail = "doron1098@tgeg1.onmicrosoft.com";
+        }
+    }
+    return $callCenterManagerEmail;
+}
+
+function InitiateDataFoTicket($supplierNameEmail){
+    $callCenterManger = setCallCenterMangerName();
+    global $customerName;
+    global $customerSsn;
+    global $cancelInsurenceCompany;
+    global $cancelPolicyType;
+    global $actualPremia;
+    global $collaborators;
+    global $statusTicket;
+    global $userName;
+    global $userEmail;
+    global $requesterName;
+    global $requesterEmail;
+    global $dataTicket;
+    if($supplierNameEmail[0] == "ספק מקורי לא קיים"){
+        $requesterName = $userName;
+        $requesterEmail = $userEmail;
+        $collaborators = ["michael@tgeg.co.il"];
+        $statusTicket = 'open';
+        $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור";
+    }else{
+        $requesterName = $supplierNameEmail[1];
+        $requesterEmail = $supplierNameEmail[0];
+        $collaborators = [setCallCenterEmail(),"michael@tgeg.co.il"];
+        $statusTicket = 'pending';
+        $dataTicket =
+            "הי "." ".$callCenterManger." ".","." ". $requesterName. " \n" .
+            "התקבלה בקשה לביטול מאת לקוח : "." ".$customerName. " \n" .
+            "ת.ז :"." ". $customerSsn. " \n" .
+            "חברת ביטוח :"." ". $cancelInsurenceCompany. " \n" .
+            "כיסוי :"." ".$cancelPolicyType. " \n" .
+            "פרמיה חודשית בפועל:"." ".$actualPremia. " \n" .
+            "יש לכם SLA של חמישה ימים קלנדרים לטפל בבקשת הביטול אחרת הטיקט נסגר והבקשה עוברת לשימור ". " \n" .
+            "בהצלחה !";
+
+    }
+}
+function updeteLeadBitulInCrm($newLeadId,$supplierNameEmail){
+    if ($supplierNameEmail[0] == "ספק מקורי לא קיים"){
+        $status = "108086";
+        $updateFieldsKeyValue = [107639 => "SLA_שימור_חלף"];
+        leadImUpdateLead(3694, $newLeadId, $updateFieldsKeyValue, true,$status);
+    }else{
+        $status = "103727";
+        $updateFieldsKeyValue = [107639 => "הועבר_לנציג_מכירות"];
+        leadImUpdateLead(3694, $newLeadId, $updateFieldsKeyValue, true,$status);
+    }
+}
+function setDefaultValue($postValue){
+    global $value;
+    if ($postValue == ""||$postValue == null){
+        $value = "לא ידוע";
+    }else{
+        $value =  $postValue;
+    }
+    return $value;
+}
 
 function updateTicket($collaborators,$dataTicket,$newLeadId){
     global $client;
-    global $callCenterManagerMail;
-    global $callCenterManger;
+    global $cancelTicketNumber;
+    global $customerName;
+    global $customerSsn;
+    global $cancelInsurenceCompany;
+    global $cancelPolicyType;
+    global $callCenter;
+    global $cancelMonthlyPremia;
+    global $actualPremia;
+    global $statusTicket;
+    global $requesterEmail;
+    global $requesterName;
     // Update a ticket
-    $client->tickets()->update($_POST['cancelTicketNumber'],[
+    $client->tickets()->update($cancelTicketNumber,[
+            'tags'=>['טיקט_ביטול_לאחר_עריכה'],
         'requester' =>array(
-            'name' => $callCenterManger,
-            'email' => $callCenterManagerMail
+            'name' => $requesterName,
+            'email' => $requesterEmail
         ),
-        'subject' => "הלקוח מבקש לבטל:"." ".$_POST['customerName']." ".$_POST['customerSsn']." ".$_POST['cancelInsuranceCompany']." ".$_POST['cancelPolicyType'],
+        'subject' => "הלקוח מבקש לבטל:"." ".$customerName." ".$customerSsn." ".$cancelInsurenceCompany." ".$cancelPolicyType,
         'collaborators' => $collaborators,
         'custom_fields' => array(
             '114096462111' => "תור_ביטולים",
-            '114096335892' => $_POST['callCenterName'],                 // מוקד ביטוח
-            '114096371131' => $_POST['cancelPolicyType'],                                                      //כיסוי ביטוחי
-            '114096335852' => $_POST['cancelInsuranceCompany'],                                // חברת ביטוח
-            '114096335872' => $_POST['cancelMonthlyPremia']                                         //פרמיה
-            //'114096405631' => $_POST['cancelPolicyNumber']  ,
-            //'114096470871' => ""
+            '114096335892' => $callCenter,                 // מוקד ביטוח
+            '114096371131' => $cancelPolicyType,                                                      //כיסוי ביטוחי
+            '114096335852' => $cancelInsurenceCompany,                                // חברת ביטוח
+            '114096335872' => $cancelMonthlyPremia  ,                                       //פרמיה
+            '114096470871' => $actualPremia,
+            '114101645711' => "ביטולים",
+            '360005283771' => date('Y-m-d', strtotime(' + 6 days'))
 
         ),
-        'status'  => 'pending',
+        'status'  => $statusTicket,
         'comment'=> $dataTicket." \n".
                     'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $newLeadId
     ]);
@@ -146,49 +243,41 @@ function generateDoublePayLeadData(){
 }
 
 if ($_POST){
+    $statusTicket = "";
+    $dataTicket = "";
+    $collaborators = "";
+    $callCenterManagerEmail = "";
+    $requesterEmail = "";
+    $requesterName = "";
     $newLeadId ="";
     $openLeadData = "";
-    $newLeadId = "";
     $result =0;
     $recordNumber = $_POST["recordNumber"];
     $crmAccountNumber = $_POST["crmAccountNumber"];
     $leadType = $_POST['leadType'] ;
-    $customerSsn = $_POST['customerSsn'];
-    $customerName = $_POST['customerName'];
+    $userEmail = setDefaultValue($_POST['userEmail']);
+    $userName = setDefaultValue($_POST['userName']);
+    $callCenterManger = setDefaultValue($_POST['callCenterManger']);
+    $customerName = setDefaultValue($_POST['customerName']);
+    $phone  = setDefaultValue($_POST['customerPhone']);
+    $id = setDefaultValue($_POST['customerSsn']);
+    $email= setDefaultValue($_POST['customerEmail']);
+    $callCenterName = setDefaultValue($_POST['callCenterName']);
+    $cancelDate = setDefaultValue($_POST['cancelDate']);
+    $cancelType = setDefaultValue($_POST['cancelType']);
+    $cancelPolicyType = setDefaultValue($_POST['cancelPolicyType']);
+    $cancelTicketNumber = setDefaultValue($_POST['cancelTicketNumber']);
+    $cancelLink = "https://ezfind.zendesk.com/agent/tickets/" . setDefaultValue($_POST['cancelTicketNumber']);
+    $cancelMonthlyPremia = setDefaultValue($_POST['cancelMonthlyPremia']);
+    $cancelInsurenceCompany = setDefaultValue($_POST['cancelInsuranceCompany']);
+    $salesMan = setDefaultValue($_POST['salesMan']);
+    $leadIdToCancel= setDefaultValue($_POST['leadId']);
+    $cancelPolicyNumber= setDefaultValue($_POST['cancelPolicyNumber']);
+    $linkToCustomer = 'https://crm.ibell.co.il/a/3694/leads/' . setDefaultValue($_POST['recordNumber']);
+    $customerSsn = setDefaultValue($_POST['customerSsn']);
+    $actualPremia = setDefaultValue($_POST['actualPremia']);
+    $supplierNameEmail = explode(";",setDefaultValue($_POST['supplierNameEmail']));
 
-//if policy from "masad yashan" there isn't 'callCenterManager' so take it by maping by callCenterName
-    if($_POST['callCenterManager']!== ""){
-        $callCenterManger = $_POST['callCenterManager'];
-        $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$_POST['callCenterManager']];
-    }else{
-        if ($_POST['callCenterName']!== ""){
-        $callCenterManger = $configTypes['callCenterManagerName'][$_POST['callCenterName']];
-        $callCenterManagerMail  = $configTypes['callCenterManagerMail'][$callCenterManger];
-        }else{
-            $callCenterManger = "doron";
-            $callCenterManagerMail = "doron1098@tgeg1.onmicrosoft.com";
-        }
-    }
-
-    //if supplier elad shimony/ callcenter not exist/ supplier not exist
-
-    if ($_POST['supplier'] == '14416'||$_POST['supplier'] == 0 || $callCenterManger == null){//elad shimoni
-        $collaborators = ["michael@tgeg.co.il"];//
-        $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור";
-        $callCenterManger = "doron";
-        $callCenterManagerMail = "doron1098@tgeg1.onmicrosoft.com";
-    }else{
-        $collaborators = ["michael@tgeg.co.il"]; /*/mail to supllier/*/
-        $dataTicket =
-            "הי "." ".$callCenterManger." ".","." ". $_POST['salesMan']. " \n" .
-            "התקבלה בקשה לביטול מאת לקוח : "." ".$_POST['customerName']. " \n" .
-            "ת.ז :"." ". $_POST['customerSsn']. " \n" .
-            "חברת ביטוח :"." ". $_POST['cancelInsuranceCompany']. " \n" .
-            "כיסוי :"." ". $_POST['cancelPolicyType']. " \n" .
-            "פרמיה חודשית :".$_POST['cancelMonthlyPremia']. " \n" .
-            "יש לכם SLA של חמישה ימים קלנדרים לטפל בבקשת הביטול אחרת הטיקט נסגר והבקשה עוברת לשימור ". " \n" .
-            "בהצלחה !";
-    }
     switch ($_POST['leadType']){
     case 'pigur':
             $openLeadData = generatePigurLeadPostData();
@@ -196,6 +285,7 @@ if ($_POST){
         case 'bitul':
             $openLeadData = generateBitulLeadData();
             $status = "107637";//התקבלה בקשה לביטול
+            // update status of polica mekorit in crm
             $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול"];
             leadImUpdateLead($crmAccountNumber, $recordNumber, $updateFieldsKeyValue, false,$status);
             break;
@@ -210,11 +300,13 @@ if ($_POST){
     $result = addSherutLeadToCustomerByLeadType($leadType,$newLeadId,$customerSsn,$crmAccountNumber);
 
     if ($_POST['leadType']== 'bitul'){
-       updateTicket($collaborators,$dataTicket,$newLeadId);
+        InitiateDataFoTicket($supplierNameEmail);
+        updeteLeadBitulInCrm($newLeadId,$supplierNameEmail);
+        updateTicket($collaborators,$dataTicket,$newLeadId);
+
     }
-
-
 }
+
 ?>
 <div class="container" role="main" id="button_block">
     <div class="text-center">
