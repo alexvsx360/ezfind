@@ -41,6 +41,7 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
     global $updateLeadUrl, $paramIndex;
         print_r($_GET);
         $myfile = fopen("proxyLog.txt", "a");
+
         /*log the iURL get parameters to the file*/
         foreach($_GET as $key => $value){
             fwrite($myfile, $key . " : " . $value . "\n");
@@ -70,6 +71,9 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
             }
             if (!empty($_GET['pendingStatus'])){
                 appendParameterToURL(104471, $_GET['pendingStatus'] );
+            }
+            if (!empty($_GET['ticketStatus'])) {
+            appendParameterToURL(107639, $_GET['ticketStatus']);
             }
 /*            if (! empty($_GET['cancelationLetterExists'])){
             appendParameterToURL(102137,    ($_GET['cancelationLetterExists'] == 0 ? "lfv102139" : "lfv102138"));
