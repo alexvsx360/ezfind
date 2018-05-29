@@ -14,6 +14,9 @@ class LeadPolicy extends BaseLead
     private $customerMaridgeStatus;
     private $customerAddress;
     private $policy;
+    private $DateCompletPanding;
+    private $dateSendToinsuranceCompany;
+    private $ticketStatus;
 
     function __construct($leadJson)
     {
@@ -23,6 +26,9 @@ class LeadPolicy extends BaseLead
         $this->setCustomerGender($leadJson['lead']['fields']['102094']);
         $this->setCustomerMaridgeStatus($leadJson['lead']['fields']['102097']);
         $this->setCustomerAddress($leadJson['lead']['fields']['102103']);
+        $this->setDateCompletPanding($leadJson['lead']['fields']['106545']);
+        $this->setDateSendToinsuranceCompany($leadJson['lead']['fields']['106546']);
+        $this->setTicketStatus($leadJson['lead']['fields']['107639']);
         $this->policy = new Policy($leadJson['lead']['fields']);
 
     }
@@ -133,7 +139,65 @@ class LeadPolicy extends BaseLead
     {
         $this->policy = $policy;
     }
+    /**
+     * @return mixed
+     */
+    public function getDateSendToinsuranceCompany()
+    {
+        return $this->dateSendToinsuranceCompany;
+    }
 
+    /**
+     * @param mixed $dateSendToinsuranceCompany
+     */
+    public function setDateSendToinsuranceCompany($dateSendToinsuranceCompany)
+    {
+if ($dateSendToinsuranceCompany!=="0"){
+    $this->dateSendToinsuranceCompany = new DateTime();
+    $this->dateSendToinsuranceCompany->setTimestamp($dateSendToinsuranceCompany);
+    $this->dateSendToinsuranceCompany->modify('+1 hour');
+}else {
+    $this->dateSendToinsuranceCompany = "";
+}
+
+    }
+    /**
+     * @return mixed
+     */
+    public function getDateCompletPanding()
+    {
+        return $this->DateCompletPanding;
+    }
+
+    /**
+     * @param mixed $DateCompletPanding
+     */
+    public function setDateCompletPanding($DateCompletPanding)
+    {
+        if ($DateCompletPanding!=="0"){
+            $this->DateCompletPanding = new DateTime();
+            $this->DateCompletPanding->setTimestamp($DateCompletPanding);
+            $this->DateCompletPanding->modify('+1 hour');
+        }else {
+            $this->DateCompletPanding = "";
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTicketStatus()
+    {
+        return $this->ticketStatus;
+    }
+
+    /**
+     * @param mixed $policy
+     */
+    public function setTicketStatus($ticketStatus)
+    {
+        $this->ticketStatus = $ticketStatus;
+    }
     public function generateUpdatePolicyPostData() {
         return [
             'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
@@ -154,9 +218,11 @@ class LeadPolicy extends BaseLead
             'productionStatus' => $this->getStatus(),
             'productionDate' => $this->policy->getProductionDate()->format(DateTime::ISO8601),
             'pendingStatus' => $this->policy->getPendingStatus(),
+            'sentToInsuranceCompanyDate' => ($this->getDateSendToinsuranceCompany()!=="")? $this->getDateSendToinsuranceCompany()->format(DateTime::ISO8601): "",
+            'completPandingDate' =>  ($this->getDateCompletPanding()!=="")? $this->getDateCompletPanding()->format(DateTime::ISO8601): "",
             'recordStatus' => "",
             'reference' => $this->getRecordId(),
-
+            'ticketStatus' => $this->getTicketStatus()
         ];
 
     }
