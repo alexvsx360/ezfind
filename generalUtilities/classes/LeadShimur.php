@@ -246,7 +246,7 @@ class LeadShimur extends BaseLead
         return [
             'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
             'data_source' => '367455c4622e4f22bd1764ddef85e224',
-            'member_api_provider' => 'leadsProxy',
+            'member_api_provider' => 'Lead Im CRM',
             'member_api_id' => $this->getSupplierId(),
             'member_name' => "supplier_" . $this->getSupplierId(),
             'callCenterName' => $this->getCallCenterName(),
