@@ -37,7 +37,6 @@ $token     = "Bdt7m6GAv0VQghQ6CRr81nhCMXcjq2fIfZHwMjMW"; // replace this with yo
 $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $LOGGER = fopen("log.txt", "a");
-
 $configTypes = include('configTypes.php');
 //if policy from "masad yashan" there isn't 'callCenterManager' so take it by maping by callCenterName if there isnt callCenterName - doron
 function setCallCenterMangerName(){
@@ -199,11 +198,14 @@ function generatePigurLeadPostData(){
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber']
     ];
 }
-function generateBitulLeadData(){
+function generateBitulLeadData($supplierNameEmail){
     return [
         'lm_form' => 18600,
         'lm_key' => "b15219b165",
         'lm_redirect' => "no",
+
+
+        'lm_supplier' => $supplierNameEmail[2] ,
         'name' => $_POST['customerName'],
         'phone' => $_POST['customerPhone'],
         'id' => $_POST['customerSsn'],
@@ -275,7 +277,7 @@ if ($_POST){
     $cancelPolicyNumber= setDefaultValue($_POST['cancelPolicyNumber']);
     $linkToCustomer = 'https://crm.ibell.co.il/a/3694/leads/' . setDefaultValue($_POST['recordNumber']);
     $customerSsn = setDefaultValue($_POST['customerSsn']);
-    $actualPremia = setDefaultValue($_POST['actualPremia']);
+    $actualPremia =($_POST['actualPremia'])!="" ?($_POST['actualPremia']):0;
     $supplierNameEmail = explode(";",setDefaultValue($_POST['supplierNameEmail']));
 
     switch ($_POST['leadType']){
@@ -283,7 +285,7 @@ if ($_POST){
             $openLeadData = generatePigurLeadPostData();
         break;
         case 'bitul':
-            $openLeadData = generateBitulLeadData();
+            $openLeadData = generateBitulLeadData($supplierNameEmail);
             $status = "107637";//התקבלה בקשה לביטול
             // update status of polica mekorit in crm
             $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול"];

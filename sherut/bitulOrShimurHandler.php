@@ -24,11 +24,12 @@
  * Date: 25/04/2018
  * Time: 14:33
  */
-
+include_once('../generalUtilities/plectoFunctions.php');
 include_once('../generalUtilities/functions.php');
 include_once('../generalUtilities/leadImFunctions.php');
 require '../vendor/autoload.php';
 include_once('../generalUtilities/classes/ticket_classes/CreateTicket.php');
+include_once('../generalUtilities/classes/LeadShimur.php');
 use Zendesk\API\HttpClient as ZendeskAPI;
 session_start();
 $subdomain = "ezfind";
@@ -37,6 +38,7 @@ $token     = "Bdt7m6GAv0VQghQ6CRr81nhCMXcjq2fIfZHwMjMW"; // replace this with yo
 $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $LOGGER = fopen("log.txt", "a");
+
 $configTypes = include('configTypes.php');
 $dataBodyTicket = "";
 $leadToPopulateJson = "";
@@ -56,6 +58,7 @@ if ($_POST){
          $leadSugPolica = $leadToPopulateJson['lead']['fields'][102104];
         switch ($status){
             case "שימור":
+                fwrite($file,"מתחיל תהליך שימור!");
                 $cancelPolicyType = $_POST['cancelPolicyType'];
                 $premia = $_POST['premiaAferShimur'];
                 $saveDate = $_POST['saveDate'];
@@ -92,6 +95,7 @@ if ($_POST){
                     $type = $_FILES['file']['type'][$i];
                     array_push($array_types, $type);
                 };
+                fwrite($file,"!מעדכן ליד בCRM");
                 //update status of leadBitul to "shimur"
                 $updateFieldsKeyValue = [107639 => "שימור"];
                 $status = 103733;//shimur
@@ -107,6 +111,7 @@ if ($_POST){
                     ];
                 $status = 104259; //ufak veshumar
                 leadImUpdateLead($crmAccountNumber, $leadIdToCancel, $updateFieldsKeyValue, false, $status);
+                fwrite($file,"!מאתחל נתונים לטיקט");
                 //Initializing data returned from leadImGetLead function to use in ticket
                 $leadFields = $leadToPopulateJson['lead']['fields'];
                 $leadInsuranceCompany = $leadFields['102112'];
@@ -168,6 +173,7 @@ if ($_POST){
                     'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $leadIdToCancel . " \n\n";
 
                 //create new ticket with new details to tor bakara (tiful)
+                fwrite($file,"!יוצר טיקט חדש");
                 $newTicket = $client->tickets()->create([
                     'subject' => $ticketSubject,
                     'requester' => array(
@@ -191,8 +197,21 @@ if ($_POST){
                 ]);
                 //update crm with link to the new ticket of shimur policy
                 $ticketId = $newTicket->ticket->id;
+                fwrite($file,"מעדכן CRM 2");
                 $updateFieldsKeyValue = [104157 => 'https://ezfind.zendesk.com/agent/tickets/' . $ticketId];
                 leadImUpdateLead($crmAccountNumber, $leadIdToCancel, $updateFieldsKeyValue, false);
+
+                fwrite($file,"יוצר ליד שימור בפלקטו");
+                $leadToPopulateJson = getLeadJson($leadIdToCancel,$crmAccountNumber, $_POST['agentId']);
+                $lead =  new LeadShimur($leadToPopulateJson);
+                if (is_null($lead)){
+                   // error_log("Received create Request but cannot instantiate Lead object for lead id: " . $leadIdToCancel);
+                } else {
+                    //error_log("Received create Request and instantiate Lead object: " . get_class($lead) ." for lead id: " . $leadIdToCancel);
+                    $leadPostDate = $lead->generateShimurPolicyPostData();
+                    /*update the BI and return a result code*/
+                    $output = addLeadToPlecto($leadPostDate);
+                }
                 break;
             case "ביטול" :
                 $updateFieldsKeyValue = [107639 => "ביטול"];

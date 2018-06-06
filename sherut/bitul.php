@@ -131,7 +131,7 @@ if ($_GET) {
                             <option value = "ספק מקורי לא קיים"> ספק מקורי לא קיים </option>
                             <?php
                             foreach($getActiveUsers['result'] as $key => $value){
-                                echo '<option value="'.$value['email'].";".$value['name'].'">'.$value['name'].'</option>';}
+                                echo '<option value="'.$value['email'].";".$value['name'].";".$value['id'].'">'.$value['name'].'</option>';}
                             ?>
                         </select>
                     </div>
