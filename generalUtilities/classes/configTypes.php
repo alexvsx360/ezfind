@@ -48,12 +48,14 @@ return [
         'איזי_ביטוח' => "יוני מידן",
         'אלעד_שמעוני' => "מיטל כהן",
         'בולוטין' => "אלי ברי",
+        'מוקד_בולוטין' => "אלי ברי",
     ],
     'mochranMeshamer'=>[
         '104606' => 'מוכרן מקורי',
         '104605' => 'יהונתן שורקי',
         '107465' => 'שלי לוייב',
-        '107466' => 'בן אסרף'
+        '107466' => 'בן אסרף',
+        "108241" => "יפית ויטמן"
     ],
     //in crm  value from sugcisuy (section:bakasha lbitul polica)is diffrent from value from sugPolica (section:pertey polica)
     'compareSugPolicaAndSugCisuy'=>[
