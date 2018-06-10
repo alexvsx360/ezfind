@@ -127,8 +127,8 @@ if ($_GET) {
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                         <label for="sel1">שם הספק</label>
                         <select required class="form-control" id="" name="supplierNameEmail" placeholder="">
-                            <option value ="ספק מקורי לא קיים"> -- בחר את שם הספק --</option>
-                            <option value = "ספק מקורי לא קיים"> ספק מקורי לא קיים </option>
+                            <option value ="אימייל;בקשה לביטול איש מכירות עזב;15348"> -- בחר את שם הספק --</option>
+
                             <?php
                             foreach($getActiveUsers['result'] as $key => $value){
                                 echo '<option value="'.$value['email'].";".$value['name'].";".$value['id'].'">'.$value['name'].'</option>';}

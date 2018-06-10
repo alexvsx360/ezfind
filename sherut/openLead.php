@@ -86,7 +86,7 @@ function InitiateDataFoTicket($supplierNameEmail){
     global $requesterName;
     global $requesterEmail;
     global $dataTicket;
-    if($supplierNameEmail[0] == "ספק מקורי לא קיים"){
+    if($supplierNameEmail[1] == "בקשה לביטול איש מכירות עזב"){
         $requesterName = $userName;
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
@@ -110,7 +110,7 @@ function InitiateDataFoTicket($supplierNameEmail){
     }
 }
 function updeteLeadBitulInCrm($newLeadId,$supplierNameEmail){
-    if ($supplierNameEmail[0] == "ספק מקורי לא קיים"){
+    if ($supplierNameEmail[1] == "בקשה לביטול איש מכירות עזב"){
         $status = "108086";
         $updateFieldsKeyValue = [107639 => "SLA_שימור_חלף"];
         leadImUpdateLead(3694, $newLeadId, $updateFieldsKeyValue, true,$status);
@@ -203,8 +203,6 @@ function generateBitulLeadData($supplierNameEmail){
         'lm_form' => 18600,
         'lm_key' => "b15219b165",
         'lm_redirect' => "no",
-
-
         'lm_supplier' => $supplierNameEmail[2] ,
         'name' => $_POST['customerName'],
         'phone' => $_POST['customerPhone'],
