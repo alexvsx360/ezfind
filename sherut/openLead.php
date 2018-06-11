@@ -94,14 +94,7 @@ function InitiateDataFoTicket($supplierNameEmail){
         $collaborators = ["michael@tgeg.co.il"];
         $statusTicket = 'solved';
         $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור";
-        $tags=['טיקט_ביטול_לאחר_עריכה'];
-     }if($viturShimur=="נציג מוותר על זכות השימור") {
-        $requesterName = $userName;
-        $requesterEmail = $userEmail;
-        $collaborators = ["michael@tgeg.co.il"];
-        $statusTicket = 'solved';
-        $dataTicket  = "נציג מכירות מוותר על זכות השימור";
-        $tags=['טיקט_ביטול_לאחר_עריכה'];
+        $tags=[''];
     }else{
         $requesterName = $supplierNameEmail[1];
         $requesterEmail = $supplierNameEmail[0];
@@ -118,7 +111,14 @@ function InitiateDataFoTicket($supplierNameEmail){
             "בהצלחה !";
         $tags = ['טיקט_ביטול_לאחר_עריכה','שימור_באחריות_המוקדים'];
 
-
+    }
+    if($viturShimur == "נציג מוותר על זכות השימור") {
+    $requesterName = $userName;
+    $requesterEmail = $userEmail;
+    $collaborators = ["michael@tgeg.co.il"];
+    $statusTicket = 'solved';
+    $dataTicket  = "נציג מכירות מוותר על זכות השימור";
+    $tags=[''];
     }
 }
 function updeteLeadBitulInCrm($newLeadId,$supplierNameEmail){
