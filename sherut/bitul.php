@@ -135,8 +135,16 @@ if ($_GET) {
                             ?>
                         </select>
                     </div>
-                    </div>
                 </div>
+                    <div class="row" >
+                        <div class="col-xs-5"></div>
+                        <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name = "viturShimur" value="נציג מוותר על זכות השימור">נציג מוותר על זכות השימור</label>
+                    </div>
+                    </div>
+                    </div>
+
                 <div class="row" >
                     <div class="col-xs-4 "></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">

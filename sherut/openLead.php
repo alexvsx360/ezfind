@@ -74,6 +74,8 @@ function setCallCenterEmail(){
 
 function InitiateDataFoTicket($supplierNameEmail){
     $callCenterManger = setCallCenterMangerName();
+    global $viturShimur;
+    global $tags;
     global $customerName;
     global $customerSsn;
     global $cancelInsurenceCompany;
@@ -90,8 +92,16 @@ function InitiateDataFoTicket($supplierNameEmail){
         $requesterName = $userName;
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
-        $statusTicket = 'open';
+        $statusTicket = 'solved';
         $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור";
+        $tags=['טיקט_ביטול_לאחר_עריכה'];
+     }if($viturShimur=="נציג מוותר על זכות השימור") {
+        $requesterName = $userName;
+        $requesterEmail = $userEmail;
+        $collaborators = ["michael@tgeg.co.il"];
+        $statusTicket = 'solved';
+        $dataTicket  = "נציג מכירות מוותר על זכות השימור";
+        $tags=['טיקט_ביטול_לאחר_עריכה'];
     }else{
         $requesterName = $supplierNameEmail[1];
         $requesterEmail = $supplierNameEmail[0];
@@ -106,11 +116,14 @@ function InitiateDataFoTicket($supplierNameEmail){
             "פרמיה חודשית בפועל:"." ".$actualPremia. " \n" .
             "יש לכם SLA של חמישה ימים קלנדרים לטפל בבקשת הביטול אחרת הטיקט נסגר והבקשה עוברת לשימור ". " \n" .
             "בהצלחה !";
+        $tags = ['טיקט_ביטול_לאחר_עריכה','שימור_באחריות_המוקדים'];
+
 
     }
 }
 function updeteLeadBitulInCrm($newLeadId,$supplierNameEmail){
-    if ($supplierNameEmail[1] == "בקשה לביטול איש מכירות עזב"){
+    global $viturShimur;
+    if ($supplierNameEmail[1] == "בקשה לביטול איש מכירות עזב"||$viturShimur=="נציג מוותר על זכות השימור"){
         $status = "108086";
         $updateFieldsKeyValue = [107639 => "SLA_שימור_חלף"];
         leadImUpdateLead(3694, $newLeadId, $updateFieldsKeyValue, true,$status);
@@ -131,6 +144,7 @@ function setDefaultValue($postValue){
 }
 
 function updateTicket($collaborators,$dataTicket,$newLeadId){
+    global $tags;
     global $client;
     global $cancelTicketNumber;
     global $customerName;
@@ -145,7 +159,7 @@ function updateTicket($collaborators,$dataTicket,$newLeadId){
     global $requesterName;
     // Update a ticket
     $client->tickets()->update($cancelTicketNumber,[
-            'tags'=>['טיקט_ביטול_לאחר_עריכה'],
+            'tags'=> $tags,
         'requester' =>array(
             'name' => $requesterName,
             'email' => $requesterEmail
@@ -243,6 +257,8 @@ function generateDoublePayLeadData(){
 }
 
 if ($_POST){
+    $torAvoda = "";
+    $tags = "";
     $statusTicket = "";
     $dataTicket = "";
     $collaborators = "";
@@ -277,7 +293,7 @@ if ($_POST){
     $customerSsn = setDefaultValue($_POST['customerSsn']);
     $actualPremia =($_POST['actualPremia'])!="" ?($_POST['actualPremia']):0;
     $supplierNameEmail = explode(";",setDefaultValue($_POST['supplierNameEmail']));
-
+    $viturShimur = $_POST['viturShimur'];
     switch ($_POST['leadType']){
     case 'pigur':
             $openLeadData = generatePigurLeadPostData();
