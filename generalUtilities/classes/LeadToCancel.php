@@ -18,6 +18,8 @@ class LeadToCancel extends BaseLead
     private $cancelPolicyType;
     private $salesMan;
     private $linkToCustomer;
+    private $payWith;
+
 
     function __construct($leadJson)
     {
@@ -32,7 +34,19 @@ class LeadToCancel extends BaseLead
         $this->setCancelPolicyType($leadJson['lead']['fields']['103701']);
         $this->setSalesMan($leadJson['lead']['fields']['103714']);
         $this->setLinkToCustomer($leadJson['lead']['fields']['103646']);
+        $this->setPayWith($leadJson['lead']['fields']['106839']);
 
+    }
+
+    //getPayWith()
+    public function getPayWith()
+    {
+        return $this->payWith;
+    }
+
+    public function setPayWith($payWith)
+    {
+        $this->payWith = $payWith;
     }
     //CancelDate
     public function getCancelDate()
@@ -42,7 +56,9 @@ class LeadToCancel extends BaseLead
 
     public function setCancelDate($cancelDate)
     {
-        $this->cancelDate = $cancelDate;
+        $this->cancelDate = new DateTime();
+        $this->cancelDate->setTimestamp($cancelDate);
+
     }
 
     //cancelType
@@ -172,12 +188,12 @@ class LeadToCancel extends BaseLead
             'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
             'data_source' => '87c813ef9f41418282d6e77ab982ee1d',
             'member_api_provider' => 'Lead Im CRM',
-            'member_api_id' => $this->getSupplierId(),
-            'member_name' => "supplier_" . $this->getSupplierId(),
+            'member_api_id' => ($this->getSupplierId()=="0")?"15348":$this->getSupplierId(),
+            'member_name' =>($this->getSupplierId()=="0"? "בקשה לביטול איש מכירות עזב" : "supplier_" . $this->getSupplierId()),
             'callCenterName' => $this->getCallCenterName(),
             'callCenterName' => $this->getCallCenterName(),
             'status' => $this->getStatus(),
-            'cancelDate' => $this->getCancelDate(),
+            'cancelDate' => $this->getCancelDate()->format(DateTime::ISO8601),
             'cancelType' => $this->getCancelType(),
             'cancelTicketNumber' => $this->getCancelTicketNumber(),
             'cancelLink' => $this->getCancelLink(),
@@ -185,6 +201,7 @@ class LeadToCancel extends BaseLead
             'annualPremia' =>$this->getCancelAnnualPremia(),
             'cancelInsurenceCompany' => $this->getCancelInsurenceCompany(),
             'cancelPolicyType' => $this->getCancelPolicyType(),
+            'payWith' => $this-> getPayWith(),
             'salesMan' => $this->getSalesMan(),
             'reference' => $this->getRecordId(),
         ];

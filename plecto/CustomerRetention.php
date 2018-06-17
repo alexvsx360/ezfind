@@ -25,8 +25,8 @@ $leadPostDate = [
     'date' => $leadDate->format(DateTime::ISO8601), // Updated ISO8601,
     'data_source' => '87c813ef9f41418282d6e77ab982ee1d',
     'member_api_provider' => 'Lead Im CRM',
-    'member_api_id' =>$_GET['supplier_id'],
-    'member_name' => $_GET['lm_supplier'],
+    'member_api_id' => ($_GET['supplier_id']== ""?"15348":$_GET['supplier_id']),
+    'member_name' => ($_GET['lm_supplier']== "" ? "בקשה לביטול איש מכירות עזב" : $_GET['lm_supplier']),
     'status' => $_GET['status'],
     'callCenterName' => $_GET['callCenterName'],
     'cancelDate' => $cancelDate->format(DateTime::ISO8601),
@@ -38,6 +38,7 @@ $leadPostDate = [
     'cancelPolicyType' => $_GET['cancelPolicyType'],
     'salesMan' => $_GET['salesMan'],
     'reference' => $_GET['recordId'],
+    'payWith' => $_GET['payWith'],
     'recordStatus' => ""
 
 ];

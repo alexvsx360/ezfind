@@ -60,6 +60,7 @@ if ($_GET) {
     $cancelPolicyNumber = $fields['102145'];
     $actualPremia = $fields['102416'];
     $salesMan = $fields['100099'];
+    $payWith = $fields['106839'];
     $supplier_id = $leadToPopulateJson['lead']['supplier_id'];
    // $getUserJson  = getUser($acc_id,$supplier_id);
     $getActiveUsers  = getActiveUsers($acc_id,60);
@@ -76,6 +77,7 @@ if ($_GET) {
         <div class="row" >
             <form id="main-form" action="openLead.php"  class="" method="post" >
                 <div class="form-group">
+                    <input type="hidden" class="input-group form-control" value="<?php print $payWith; ?>"  name="payWith"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $leadId; ?>"  name="leadId"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $actualPremia; ?>"  name="actualPremia"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $cancelPolicyNumber; ?>"  name="cancelPolicyNumber"/>

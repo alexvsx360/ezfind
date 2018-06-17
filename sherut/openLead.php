@@ -233,7 +233,8 @@ function generateBitulLeadData($supplierNameEmail){
         'salesMan' => $_POST['salesMan'],
         'leadIdToCancel' => $_POST['leadId'],
         'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
-        'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber']
+        'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
+        'payingWidth' => $_POST['payWith']
     ];
 }
 
