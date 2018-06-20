@@ -224,12 +224,14 @@ if ($_POST){
                 $dataBodyTicket = "הפוליסה בוטלה";
         }
         // Update ticket bitul to solved
-        $client->tickets()->update($ticketNumber,[
-            'status' => 'solved',
-            'comment'  => $dataBodyTicket,
-        ]);
-        ?>
-        <div class="row">
+
+        try {
+            $ll =   $client->tickets()->update($ticketNumber,[
+                'status' => 'solved',
+                'comment'  => $dataBodyTicket,
+            ]);
+        }catch (Zendesk\API\Exceptions\ApiResponseException $e) {?>
+            <div class="row">
             <div class="col-md-5 offset-md-5">
                 <img src="logo3.png" class="rounded">
             </div>
@@ -237,11 +239,15 @@ if ($_POST){
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="alert alert-success" role="alert" id="requestAccepted" style="text-align: center">
-                    ! הבקשה נשלחה כמו שצריך
-                </div>
+                ! הבקשה נשלחה כמו שצריך
+            </div>
             </div>
         </div>
         <?php
+        }
+
+
+
     }else{?>
         <div class="row">
             <div class="col-md-5 offset-md-5">
