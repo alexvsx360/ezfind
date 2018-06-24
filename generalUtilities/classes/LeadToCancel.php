@@ -19,7 +19,10 @@ class LeadToCancel extends BaseLead
     private $salesMan;
     private $linkToCustomer;
     private $payWith;
-
+    private $bitulCategory;
+    private $bitulReason;
+    private $firstPayment;
+    private $policyLengthTime;
 
     function __construct($leadJson)
     {
@@ -35,9 +38,52 @@ class LeadToCancel extends BaseLead
         $this->setSalesMan($leadJson['lead']['fields']['103714']);
         $this->setLinkToCustomer($leadJson['lead']['fields']['103646']);
         $this->setPayWith($leadJson['lead']['fields']['106839']);
+        $this->setBitulCategory($leadJson['lead']['fields']['108936']);
+        $this->setFirstPayment($leadJson['lead']['fields']['108939']);
+        $this->setPolicyLengthTime($leadJson['lead']['fields']['108938']);
+        $this->setBitulReason($leadJson['lead']['fields']['108937']);
 
     }
+//BitulReason()
+    public function getBitulReason()
+    {
+        return $this->bitulReason;
+    }
 
+    public function setBitulReason($bitulReason)
+    {
+        $this->bitulReason = $bitulReason;
+    }
+    //setPolicyLengthTime()
+    public function getPolicyLengthTime()
+    {
+        return $this->policyLengthTime;
+    }
+
+    public function setPolicyLengthTime($policyLengthTime)
+    {
+        $this->policyLengthTime = $policyLengthTime;
+    }
+    //firstPayment()
+    public function getFirstPayment()
+    {
+        return $this->firstPayment;
+    }
+
+    public function setFirstPayment($firstPayment)
+    {
+        $this->firstPayment = $firstPayment;
+    }
+    //setBitulCategory()
+    public function getBitulCategory()
+    {
+        return $this->bitulCategory;
+    }
+
+    public function setBitulCategory($bitulCategory)
+    {
+        $this->bitulCategory = $bitulCategory;
+    }
     //getPayWith()
     public function getPayWith()
     {
@@ -202,6 +248,10 @@ class LeadToCancel extends BaseLead
             'cancelInsurenceCompany' => $this->getCancelInsurenceCompany(),
             'cancelPolicyType' => $this->getCancelPolicyType(),
             'payWith' => $this-> getPayWith(),
+            'cancelCategory' => $this-> getBitulCategory(),
+            'firstPayment' => $this-> getFirstPayment(),
+            'policyLengthTime' => $this-> getPolicyLengthTime(),
+            'cancelReason' => $this-> getBitulReason(),
             'salesMan' => $this->getSalesMan(),
             'reference' => $this->getRecordId(),
         ];

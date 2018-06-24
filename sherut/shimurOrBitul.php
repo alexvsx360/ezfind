@@ -106,6 +106,9 @@ if ($_GET) {
             <input type="hidden" class="input-group form-control" value="<?php print $ticketNumber?>" name="ticketNumber"/>
             <input type="hidden" class="input-group form-control" value="<?php print $salesMan?>" name="salesMan"/>
             <input type="hidden" class="input-group form-control" value="<?php if ($_GET['agentId']) { print $_GET['agentId']; } ?>"  name="agentId"/>
+            <input type="hidden"id="bitulCategory" class="input-group form-control" value="" name="bitulCategory"/>
+            <input type="hidden"id="bitulReason" class="input-group form-control" value="" name="bitulReason"/>
+
         </div>
         <div class="row justify-content-center">
             <div class="col-10">
@@ -123,6 +126,17 @@ if ($_GET) {
 <script>
 
     jQuery(document).ready(function () {
+        $("body").on('click', ".dropdown-item", function (event) {
+            $('#bitulReason').val($(this).attr('data-value'));
+            $('#bitulReasonText').val($(this).attr('data-value'));
+            $(".dropdown-menu").css("display", "none");
+            });
+
+        $("body").on('click', ".bitulCategoryButton", function (event) {
+            $('#bitulCategory').val($(this).attr('data-value'));
+            $(this).next(".dropdown-menu").slideToggle();
+            return false;
+        });
 
         $('#radioBtn button').on('click', function () {
             var sel = $(this).data('title');

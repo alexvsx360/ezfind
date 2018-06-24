@@ -30,6 +30,8 @@ include_once('../generalUtilities/leadImFunctions.php');
 require '../vendor/autoload.php';
 include_once('../generalUtilities/classes/ticket_classes/CreateTicket.php');
 include_once('../generalUtilities/classes/LeadShimur.php');
+include_once('../generalUtilities/classes/LeadToCancel.php');
+
 use Zendesk\API\HttpClient as ZendeskAPI;
 session_start();
 $subdomain = "ezfind";
@@ -214,9 +216,25 @@ if ($_POST){
                 }
                 break;
             case "ביטול" :
-                $updateFieldsKeyValue = [107639 => "ביטול"];
+                $bitulReason = str_replace(' ', '_',$_POST["bitulReason"]);
+                $bitulCategory = str_replace(' ', '_',$_POST["bitulCategory"]);
+                $policyLengthTime = str_replace(' ', '_',$_POST["policyLengthTime"]);
+                $updateFieldsKeyValue = [
+                        107639 => "ביטול",
+                        108939 => $_POST["firstPayment"],//האם בוצעה גביה ראשונה
+                        108938 => $policyLengthTime,//משך חיי הפוליסה
+                        108937 => $bitulReason, //סיבת הביטול
+                        108936 => $bitulCategory //קטגורית סיבת הביטול
+                ];
                 $status = 103734; //bitul
+                //update lead's status in lead bitul to "bitul"
                 leadImUpdateLead($crmAccountNumber, $leadIdBitulim, $updateFieldsKeyValue, false, $status);
+                //update lead bitul in plecto
+                $leadBitulToPopulateJson = getLeadJson($leadIdBitulim,$crmAccountNumber, $_POST['agentId']);
+                $lead = new LeadToCancel($leadBitulToPopulateJson);
+                $leadPostDate = $lead->generateUpdatePolicyPostData();
+                /*update the BI and return a result code*/
+                $output = addLeadToPlecto($leadPostDate);
                 //update lead's status in reshumat masad mekory to hufak vebutal
                 $updateFieldsKeyValue = [107639 => "הופק_ובוטל"];
                 $status = 104260; //hufak vebutal
@@ -229,8 +247,20 @@ if ($_POST){
             $ll =   $client->tickets()->update($ticketNumber,[
                 'status' => 'solved',
                 'comment'  => $dataBodyTicket,
-            ]);
-        }catch (Zendesk\API\Exceptions\ApiResponseException $e) {?>
+            ]);?>
+            <div class="row">
+            <div class="col-md-5 offset-md-5">
+                <img src="logo3.png" class="rounded">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="alert alert-success" role="alert" id="requestAccepted" style="text-align: center">
+                ! הבקשה נשלחה כמו שצריך
+            </div>
+            </div>
+        </div>
+      <?php  }catch (Zendesk\API\Exceptions\ApiResponseException $e) {?>
             <div class="row">
             <div class="col-md-5 offset-md-5">
                 <img src="logo3.png" class="rounded">
