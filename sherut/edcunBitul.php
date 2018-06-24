@@ -27,8 +27,8 @@ if($_SESSION["leadIdToCancel"]!==null){
         </div>
 <label for="sel1">? האם בוצעה גביה ראשונה</label>
 <div class="input-group mb-3">
-    <select class="custom-select"  id="firstPayment" name="firstPayment">
-        <option selected>-- ? האם בוצעה גביה ראשונה --</option>
+    <select  required class="custom-select"  id="firstPayment" name="firstPayment">
+        <option  value="">-- ? האם בוצעה גביה ראשונה --</option>
         <option value="כן">כן</option>
         <option value="לא">לא</option>
     </select>
@@ -37,8 +37,10 @@ if($_SESSION["leadIdToCancel"]!==null){
     </div>
 </div>
         <div class="col-12">
-            <label for="sel1"> משך חיי הפוליסה</label>
-            <input required type="text" class="input-group form-control" value = "" name="policyLengthTime" />
+            <label for="sel1"> משך חיי הפוליסה בחודשים</label>
+            <input required type="number" id="policyLengthTime" class="input-group form-control" value = "" name="policyLengthTime" />
+            <p id ="num_alert" class="alert-danger" style ="visibility: hidden">המספר חיב להיות גדול מ-0</p>
+            <br>
         </div>
 <div class="col-12">
     <br>
@@ -49,7 +51,7 @@ if($_SESSION["leadIdToCancel"]!==null){
             </button>
             <div class="dropdown-menu">
                 <p  data-value="פיגור/חוב" class="dropdown-item">פיגור/חוב</p>
-                <p  data-value="  שימור בחברה המבטלת" class="dropdown-item">  שימור בחברה המבטלת</p>
+                <p  data-value="שימור בחברה המבטלת" class="dropdown-item">  שימור בחברה המבטלת</p>
                 <p  data-value="חזר לסוכן הישן (שימור)" class="dropdown-item">חזר לסוכן הישן (שימור)</p>
                 <p  data-value="מכירה לקויה" class="dropdown-item">מכירה לקויה</p>
                 <p  data-value="חיוב כפול" class="dropdown-item">חיוב כפול</p>
@@ -72,7 +74,7 @@ if($_SESSION["leadIdToCancel"]!==null){
                 <p data-value="לקוח התחרט" class="dropdown-item" >לקוח התחרט</p>
             </div>
         </div>
-        <input type="text" class="input-group form-control" value="" name="" id ="bitulReasonText" readonly placeholder="בחר סיבת ביטול">
+        <input type="text" required class="input-group form-control" value="" name="" id ="bitulReasonText" readonly placeholder="בחר סיבת ביטול">
     </div>
 </div>
 

@@ -175,8 +175,9 @@ if ($_GET) {
         // Check if the premia is greater than 0.
         $("body").on('click', "#submit", function () {
             $("#num_alert").css("visibility", "hidden");
-            var num = $("#sumPremia").val();
-            if (num < 1) {
+            var sumPremia = $("#sumPremia").val();
+            var policyLengthTime = $("#policyLengthTime").val();
+            if (sumPremia < 1|| policyLengthTime < 1) {
                 $("#num_alert").css("visibility", "visible");
                 return false;
             }
