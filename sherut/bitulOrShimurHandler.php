@@ -69,6 +69,7 @@ if ($_POST){
                 $sellerNameMeshamer = $configTypes['sellerName'][$sellerNameMeshamerId];
                 $callCenterName = $_POST['callCenterName'];
                 $callCenterManagerMail = $_POST["callCenterManagerMail"];
+                $supplierName = $_POST["supplierName"];
 
                 /*save the file to the directory */
                 $files = $_FILES["file"]["name"];
@@ -163,6 +164,7 @@ if ($_POST){
                     'מספר נייד: ' . $customerPhone . " \n" .
                     'אימייל של הלקוח: ' . $customerEmail . "n\n\n\n\n\n" .
                     'מוקד: ' . $callCenterNameNoUnderline . " \n" .
+                    'מוכרן מקורי: '.$supplierName."\n".
                     'שם המוכרן המשמר: ' . $sellerNameMeshamer . " \n" .
                     'ערוץ מכירה : ' . $leadChannel . " \n" .
                     'כיסוי ביטוחי : ' . $sugCisuyLeadNoUnderline . " \n" .
