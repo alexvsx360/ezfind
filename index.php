@@ -109,7 +109,11 @@
             $agentid=$_POST['agentId'];
             $crmAccount=$_POST['crmAcccountNumber'];
             $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/user-upload/'.$leadid."/"; //папка для хранения файлов
-
+            if ($agentId == 11819){
+                $callCenterName = "מוקד_טאלנטים";
+            }else{
+                $callCenterName = getCallCenterById($crmAccount);
+            }
             $linkInformation = array(
                 'כלל'=> array(
                     'תאונות_אישיות' => 'https://bit.ly/2H5CsFe',
@@ -196,7 +200,7 @@
             $data->subject = $customerName . ' ' . $customerId . ' ' . $policy . ' ' . $insuranceCompany;
             $data->custom_fields = array(
                 '114100300592' => $hitum,                                          //מסלול חיתום
-                '114096335892' =>   getCallCenterById($crmAccount),                 // מוקד ביטוח
+                '114096335892' => $callCenterName,                 // מוקד ביטוח
                 '114096371131' => $policy,                                                      //כיסוי ביטוחי
                 '114096335852' => $insuranceCompany,                                // חברת ביטוח
                 '114096335872' => $premia,                                          //פרמיה
@@ -218,7 +222,7 @@
                             'כתובת מלאה: ' . $customerAddress . " \n" .
                             'מספר נייד: ' . $customerPhone . " \n" .
                             'אימייל של הלקוח: ' . $customerEmail . "n\n\n\n\n\n" .
-                            'מוקד: ' . getCallCenterById($crmAccount) . " \n" .
+                            'מוקד: ' . $callCenterName . " \n" .
                             'איש מכירות: ' . $userName . " \n" .
                             'ערוץ מכירה : ' . $leadChannel . " \n" .
                             'כיסוי ביטוחי : ' . $policy . " \n" .
@@ -261,7 +265,9 @@
 
 
             $ticketCreationResponse = json_decode($return, true);
-            $callCenterName = getCallCenterById($crmAccount);
+
+
+
             $baseUrl = "http://api.lead.im/v1/submit";
             $costumerPost = [
                 'lm_form' => '17993',
@@ -396,7 +402,7 @@
                             <div class="col-xs-2 "></div>
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">מספר תז:</label>
-                                <input required type="text" class="input-group form-control"  placeholder="מספר תז" name="customerId"/>
+                                <input required type="text" id ="ssn" class="input-group form-control"  placeholder="מספר תז" name="customerId"/>
                             </div>
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -464,7 +470,7 @@
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="sel1">תאריך הנפקת תעודת זהות:</label>
-                                <input required type="text" class="input-group form-control datepicker"  placeholder="תאריך הנפקת תעודת זהות" name="issueDate"/>
+                                <input required type="text"  class="input-group form-control datepicker"  placeholder="תאריך הנפקת תעודת זהות" name="issueDate"/>
                             </div>
 
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -599,7 +605,40 @@
             $( function() {
                 $( ".datepicker" ).datepicker({dateFormat: "dd-mm-yy"})
             });
-
+            function ssnValidate (ssn) {
+                var flag = "";
+                var arrayDoubledNumbers = [];
+                var arrayNumbersToSum = [];
+                var ssnToArray = ssn.split('');
+                // להכפיל לסרוגין באחד ובשתיים
+                for (i = 0; i < ssnToArray.length; i++) {
+                    if (i % 2 == 0) {
+                        arrayDoubledNumbers.push((ssnToArray[i] * 1));
+                    } else {
+                        arrayDoubledNumbers.push((ssnToArray[i] * 2));
+                    }
+                }
+                //כדי לחבר יחד את כל הספרות :1. מודולו עשר כדי לקבל את ספרת האחדות  2. חילוק בעשר כדי לקבל את ספרת העשרות
+                for (i = 0; i < arrayDoubledNumbers.length; i++) {
+                    var singleNumber = arrayDoubledNumbers[i]%10;
+                    arrayNumbersToSum.push(singleNumber);
+                    var tensNumber = parseInt((arrayDoubledNumbers[i])/10);
+                    arrayNumbersToSum.push(tensNumber);
+                }
+               //חיבור כל הספרות במערך
+                function getSum(total, num) {
+                    return total + num;
+                }
+                var sum =  arrayNumbersToSum.reduce(getSum);
+                // בדיקה אם המספר שהתקבל מתחלק בעשר ללא שארית המספר תקין
+                if(sum%10 == 0){
+                    flag = true;
+                }else {
+                    alert("מספר תעודת הזהות שגוי נא הזן שוב שדה זה");
+                    flag = false;
+                }
+                return flag;
+            }
             jQuery(document).ready(function(){
                 //to set defult value today in input '#saleDate', format:'dd-mm-yy'.
                 var now = new Date();
@@ -633,29 +672,53 @@
                     $("#date_alert").css("visibility", "hidden");
                     $("#num_alert").css("visibility","hidden");
 
-                    // Check if the premia is greater than 0.
+                    var ssn = $("#ssn").val();
+                    //valdite of Ssn
+                    var ssnAfterValidate = ssnValidate(ssn);
+                    if (ssnAfterValidate!== false) {
 
-                    var num =  $("#sum_premia").val();
-                    if ( num < 1) {
-                        $("#num_alert").css("visibility","visible");
-                        return false;
-                    }
+                        //valdite of file size
+                        var flag = true;
+                        var file = $('input[type="file"]').get(0).files;
+                        $(file).each(function (index, value) {
+                            if (Math.round((value.size / 1024)) > 3000) {
+                                alert("גודל הקובץ: " + value.name + " " + " גדול מידי, ולכן לא ניתן להעלותו, עליך להקטינו לפני ההעלאה");
+                                return flag = false;
+                            } else {
+                                return flag = true;
+                            }
+                            return flag;
+                        });
 
-                    //check that the insurance start date starts from now
-                    //to compare dates, format them for the same date type and reset the time.
+                        // Check if the premia is greater than 0.
+                        var num = $("#sum_premia").val();
+                        if (num < 1) {
+                            $("#num_alert").css("visibility", "visible");
+                            return false;
+                        }
 
-                    var tempDate = $('#insurance_start_date').datepicker('getDate');
-                    var newformattedDate = $.datepicker.formatDate('yy-mm-dd', tempDate);
-                    var dateNow = Date.now();
-                    dateNow = new Date(dateNow);
-                    dateNow.setHours(0,0,0,0);
-                    var formatStartDate = new Date(newformattedDate);
-                    formatStartDate.setHours(0,0,0,0);
-                    if (formatStartDate >= dateNow) {
-                        $(this).find(':submit').val("הבקשה נשלחת...").attr( 'disabled','disabled' );
-                        return true;
-                    } else {
-                        $("#date_alert").css("visibility", "visible");
+                        //check that the insurance start date starts from now
+                        //to compare dates, format them for the same date type and reset the time.
+                        var tempDate = $('#insurance_start_date').datepicker('getDate');
+                        var newformattedDate = $.datepicker.formatDate('yy-mm-dd', tempDate);
+                        var dateNow = Date.now();
+                        dateNow = new Date(dateNow);
+                        dateNow.setHours(0, 0, 0, 0);
+                        var formatStartDate = new Date(newformattedDate);
+                        formatStartDate.setHours(0, 0, 0, 0);
+
+                        if (formatStartDate >= dateNow) {
+                            if (flag === true) {
+                                $(this).find(':submit').val("הבקשה נשלחת...").attr('disabled', 'disabled');
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            $("#date_alert").css("visibility", "visible");
+                            return false;
+                        }
+                    }else{
                         return false;
                     }
                 });
