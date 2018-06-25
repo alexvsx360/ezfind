@@ -156,7 +156,7 @@ if ($_POST){
                 //remove underscore
                 $callCenterNameNoUnderline = str_replace('_', ' ', $callCenterName);
                 $sugCisuyLeadNoUnderline = str_replace('_', ' ', $sugCisuyLead);
-                $ticketSubject = 'שימור:' . " " . $customerName . " " . $leadIdToCancel . " " . $sugCisuyLead . " " . $insuranceCompany;
+                $ticketSubject = 'שימור:' . " " . $customerName . " " . $customerId . " " . $sugCisuyLead . " " . $insuranceCompany;
 
                 $commentBodyNewTicket = 'שם מלא: ' . $customerName . " \n" .
                     'תעודת זהות: ' . $customerId . " \n" .
