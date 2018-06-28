@@ -42,6 +42,17 @@ if($_SESSION["leadIdToCancel"]!==null){
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-12">
+                        <label for="sel1">? האם יש לבטל פוליסה בחברה נגדית</label>
+                        <select required class="form-control" id="policyCanceledInOppositeCompany" name="policyCanceledInOppositeCompany">
+                            <option value=""> --? האם יש לבטל פוליסה בחברה נגדית --
+                            </option>
+                            <option value="כן">כן</option>
+                            <option value="לא">לא</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-12">
                         <label for="sel1">פרמיה בפועל לאחר שימור</label>
                         <input  id="sumPremia" type="number" class="input-group form-control" placeholder="פרמיה בפועל לאחר שימור" name="premiaAferShimur" />
                         <p id ="num_alert" class="alert-danger" style ="visibility: hidden">הפרמיה חיבת להיות גדולה מ-0</p>

@@ -70,6 +70,7 @@ if ($_POST){
                 $callCenterName = $_POST['callCenterName'];
                 $callCenterManagerMail = $_POST["callCenterManagerMail"];
                 $supplierName = $_POST["supplierName"];
+                $policyCanceledInOppositeCompany = $_POST['policyCanceledInOppositeCompany'];
 
                 /*save the file to the directory */
                 $files = $_FILES["file"]["name"];
@@ -173,6 +174,7 @@ if ($_POST){
                     'מסלול חיתום : ' . $hitum . " \n" .
                     'תאריך השימור : ' . $saveDate . " \n" .
                     'אמצעי תשלום : ' . $payingWith . " \n" .
+                    ' האם יש לבטל פוליסה בחברה נגדית ? : ' . $policyCanceledInOppositeCompany . " \n" .
                     'הערות להצעה: ' . $insuranceComment . " \n" .
                     'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $leadIdToCancel . " \n\n";
 
