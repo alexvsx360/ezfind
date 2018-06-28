@@ -273,7 +273,7 @@ $newTicket = $client->tickets()->create([
         'email' => $_POST['userEmail'],
         'name' => $_POST['userName']
     ],
-    'collaborators' =>[$_POST['userEmail'], 'yariv.d@ezfind.co.il'],
+    'collaborators' =>[$_POST['userEmail'], ""],
     'comment'  => [
         'body' => $Ticket->getTicket(),
         'uploads'   => [$upload_token]
