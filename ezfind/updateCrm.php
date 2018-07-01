@@ -21,16 +21,20 @@ $statusToFieldNumJson = [
     "נשלח_לחברת_הביטוח" => "100085",
     "ריגקט_מחברת_הביטוח" => '102338',
     "חריגים" => "2",
-    "ממתין_לקיט_הלוואה" => "108437"
+    "ממתין_לקיט_הלוואה" => "108437",
+    "תור_נדחה" => "102339",
+    "תור_גנוזות" => "102700",
+    "תור_בוצע" =>  "102340"
 ];
 
 $updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
 $updateLeadUrl .= "&lead_ticket=" . $_GET['lead_ticket'];
-if ($_GET['status'] == "Solved" || $_GET['status'] == "פתורה"){
-    $updateLeadUrl .="&status=102340"; //הופק
-} else {
-    $updateLeadUrl .= "&status=" . $statusToFieldNumJson[$_GET['workingQueue']];
-}
+//if ($_GET['status'] == "Solved" || $_GET['status'] == "פתורה"){
+//    $updateLeadUrl .="&status=102340"; //הופק
+//} else {
+//    $updateLeadUrl .= "&status=" . $statusToFieldNumJson[$_GET['workingQueue']];
+//}
+$updateLeadUrl .= "&status=" . $statusToFieldNumJson[$_GET['workingQueue']];
 $updateLeadUrl .= "&update_fields[fld_id]=104484&update_fields[fld_val]=" . $_GET['workingQueue'];
 fwrite($fp, $updateLeadUrl."\n" );
 $response = httpGet($updateLeadUrl);
