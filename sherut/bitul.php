@@ -138,6 +138,20 @@ if ($_GET) {
                         </select>
                     </div>
                 </div>
+                <div class="row" >
+                    <div class="col-xs-4 "></div>
+                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                        <label for="sel1">סיווג מכתב ביטול</label>
+                        <select required class="form-control" id="" name="moreDetailsOfBitul" placeholder="">
+                            <option value ="">--סיווג מכתב ביטול--</option>
+                            <option value ="טופס נחתם טלפונית">טופס נחתם טלפונית</option>
+                            <option value ="אין מכתב ביטול">אין מכתב ביטול</option>
+                            <option value ="לוגו של חברה מתחרה">לוגו של חברה מתחרה</option>
+                            <option value ="נשלח על ידי סוכן">נשלח ע"י סוכן</option>
+                            <option value ="נשלח על ידי מוקד -נחתם מרחוק">נשלח ע"י מוקד -נחתם מרחוק</option>
+                        </select>
+                    </div>
+                </div>
                     <div class="row" >
                         <div class="col-xs-5"></div>
                         <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">

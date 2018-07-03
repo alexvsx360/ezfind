@@ -234,7 +234,8 @@ function generateBitulLeadData($supplierNameEmail){
         'leadIdToCancel' => $_POST['leadId'],
         'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
-        'payingWidth' => $_POST['payWith']
+        'payingWidth' => $_POST['payWith'],
+        'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"]
     ];
 }
 
@@ -294,6 +295,7 @@ if ($_POST){
     $customerSsn = setDefaultValue($_POST['customerSsn']);
     $actualPremia =($_POST['actualPremia'])!="" ?($_POST['actualPremia']):0;
     $supplierNameEmail = explode(";",setDefaultValue($_POST['supplierNameEmail']));
+    $moreDetailsOfBitul = $_POST["moreDetailsOfBitul"];
     $viturShimur = $_POST['viturShimur'];
     switch ($_POST['leadType']){
     case 'pigur':
