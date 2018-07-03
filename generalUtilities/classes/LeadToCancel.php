@@ -23,6 +23,7 @@ class LeadToCancel extends BaseLead
     private $bitulReason;
     private $firstPayment;
     private $policyLengthTime;
+    private $sortingCancellLetters;
 
     function __construct($leadJson)
     {
@@ -42,6 +43,7 @@ class LeadToCancel extends BaseLead
         $this->setFirstPayment($leadJson['lead']['fields']['108939']);
         $this->setPolicyLengthTime($leadJson['lead']['fields']['108938']);
         $this->setBitulReason($leadJson['lead']['fields']['108937']);
+        $this->setSortingCancellLetters($leadJson['lead']['fields']['109408']);
 
     }
 //BitulReason()
@@ -53,6 +55,16 @@ class LeadToCancel extends BaseLead
     public function setBitulReason($bitulReason)
     {
         $this->bitulReason = $bitulReason;
+    }
+    //SortingCancellLetters()
+    public function getSortingCancellLetters()
+    {
+        return $this->sortingCancellLetters;
+    }
+
+    public function setSortingCancellLetters($sortingCancellLetters)
+    {
+        $this->sortingCancellLetters = $sortingCancellLetters;
     }
     //setPolicyLengthTime()
     public function getPolicyLengthTime()
@@ -252,6 +264,7 @@ class LeadToCancel extends BaseLead
             'firstPayment' => $this-> getFirstPayment(),
             'policyLengthTime' => $this-> getPolicyLengthTime(),
             'cancelReason' => $this-> getBitulReason(),
+            'sortingCancellLetters' =>$this->getSortingCancellLetters(),
             'salesMan' => $this->getSalesMan(),
             'reference' => $this->getRecordId(),
         ];

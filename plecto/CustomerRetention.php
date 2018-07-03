@@ -39,6 +39,7 @@ $leadPostDate = [
     'salesMan' => $_GET['salesMan'],
     'reference' => $_GET['recordId'],
     'payWith' => $_GET['payWith'],
+    'sortingCancellLetters'=> $_GET["sortingCancellLetters"],
     'recordStatus' => ""
 
 ];
