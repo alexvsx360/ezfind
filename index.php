@@ -25,6 +25,7 @@
 		<?php
         include ('functions.php');
 
+
         $yesNoJson = [
           "כן" => true,
           "לא" => false
@@ -74,6 +75,22 @@
             $currentUserName = $leadToPopulateJson['user']['name'];
             $currentUserEmail = $leadToPopulateJson['user']['email'];
             $channelName = $leadToPopulateJson['lead']['channel_name'];
+            $harBituahFile = null;
+            switch ($acc_id){
+                case 3305://mechirot bolotin
+                    $harBituahFile = $fieldsValuesJsonArray["121"];
+                    break;
+                case 3327://mekadmim eazy biyuah
+                case 3325://mechirot elad shimoni
+                    $harBituahFile = $fieldsValuesJsonArray["123"];
+                    break;
+                case 3326://mechirot eazy bitua
+                    $harBituahFile = $fieldsValuesJsonArray["122"];
+                    break;
+                default:
+                    $harBituahFile = null;
+            }
+
 
         }
 
@@ -108,6 +125,7 @@
             $leadid=$_POST['recordNumber'];
             $agentid=$_POST['agentId'];
             $crmAccount=$_POST['crmAcccountNumber'];
+
             $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/user-upload/'.$leadid."/"; //папка для хранения файлов
             if ($agentId == 11819){
                 $callCenterName = "מוקד_טאלנטים";
@@ -123,7 +141,6 @@
                     'ביטוח_משכנתא'=>'https://bit.ly/2J0av18',
                     'אובדן_כושר_עבודה' => 'https://bit.ly/2qG1eDM',
                     'סיעודי' => 'https://bit.ly/2H2plnY'
-
                 ),
                 'הראל'=>array(
                     'תאונות_אישיות' => 'https://bit.ly/2pWEI9l',
@@ -238,6 +255,7 @@
                             'אמצעי תשלום : ' . $payingWith  . " \n" .
                             'גילוי נאות: '. $linkInformation[$insuranceCompany][$policy]. " \n" .
                             'לינק למסמכים : ' . 'https://portal.ibell.co.il/user-upload/' . $leadid . '/' . $newnameimg . " \n\n" .
+                            'קישור להר הביטוח : '. $harBituahFile."\n".
                             'הערות להצעה: ' . $insuranceComment
 
             );
@@ -317,7 +335,8 @@
                 'cancelPolicyNumber' => $cancelPolicyNumber,
                 'saleDate' => $saleDate,
                 'payingWidth' => $payingWith ,
-                'giluy_naot' => $linkInformation[$insuranceCompany][$policy]
+                'giluy_naot' => $linkInformation[$insuranceCompany][$policy],
+                'fld_103757'=> $harBituahFile
            ];
 
 
@@ -352,6 +371,13 @@
 
             <?php
         } else {
+        if($harBituahFile == null){
+            echo
+            '<div class="alert alert-danger" role="alert" style="text-align: center">
+             עליך להעלות קודם את קובץ הר ביטוח של הליד ורק אחר כך תוכל להגיש את ההצעה
+            </div>';
+            return false;
+        }
             ?>
             <div class="container" role="main" id="back_form">
 <!--
@@ -573,32 +599,23 @@
                                 <label for="sel1">הערות להצעה:</label>
                                 <textarea class="form-control" rows="4"  id="insuranceComment" name="insuranceComment"></textarea>
                             </div>
-
-
-
                         </div>
-
                         <div class="row" >
                             <div class="col-xs-2 "></div>
-
                             <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                                 <label for="exampleInputFile">בחר מסמך</label>
                                 <input required type="file" name="file" class="custom-file-input" id="exampleInputFile" aria-describedby="fileHelp">
                             </div>
-
                             <div class="btn-group col-xs-10 col-sm-4 col-md-4 col-lg-4" role="group" aria-label="">
                                 <input type="submit" class="btn btn-primary" id="submit" name="sendForm" value="שלח הצעה"/>
                             </div>
-
-                        </div>
                             </div>
-
                     </form>
 
                 </div>
-            <?php
-
-        } ?>
+        <?php
+        }
+        ?>
 
         <script>
 
@@ -681,7 +698,7 @@
                         var flag = true;
                         var file = $('input[type="file"]').get(0).files;
                         $(file).each(function (index, value) {
-                            if (Math.round((value.size / 1024)) > 3000) {
+                            if (Math.round((value.size / 1024)) > 7000) {
                                 alert("גודל הקובץ: " + value.name + " " + " גדול מידי, ולכן לא ניתן להעלותו, עליך להקטינו לפני ההעלאה");
                                 return flag = false;
                             } else {
