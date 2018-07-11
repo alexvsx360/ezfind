@@ -8,8 +8,20 @@
 include ('functions.php');
 
 $paramIndex = 0;
-$updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
+$fieldId = 0;
+//$updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
+$updateLeadUrl ="http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.2.ashx?acc_id=3694";
 
+function getFieldId($fieldNumber){
+    global $updateLeadUrl;
+    global $fieldId;
+    if($fieldId < 1){
+        $fieldId =  appendParameterToURL(109395, $fieldNumber);
+        $fieldId =  $fieldId-1;
+    }else{
+        $updateLeadUrl = $updateLeadUrl ."&update_fields[fld_val_$fieldId]=$fieldNumber";
+    }
+}
 $statusToFieldNumJson = [
     "תור_בקרה" => "100084",
     "תור_בקרה_להפקה_מהירה" => "100084",
@@ -34,6 +46,7 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
         $updateLeadUrl  = $updateLeadUrl . "&update_fields[fld_id_" . $paramIndex . "]=" . $fieldToUpdate . "&update_fields[fld_val_" .$paramIndex . "]=" . $fieldValue;
     }
     $paramIndex ++;
+    return $paramIndex;
 }
 
 
@@ -75,6 +88,48 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
             if (!empty($_GET['ticketStatus'])) {
             appendParameterToURL(107639, $_GET['ticketStatus']);
             }
+        if (!empty($_GET['reasonForDifferentPremia'])) {
+            $reasonForDifferentPremiaString = $_GET['reasonForDifferentPremia'];
+            $reasonForDifferentPremiaArray =  (explode(" ",$reasonForDifferentPremiaString));
+            $reasonForDifferentPremiaArrayLength = count($reasonForDifferentPremiaArray);
+            for($i=0;$i<$reasonForDifferentPremiaArrayLength;$i++){
+                switch ($reasonForDifferentPremiaArray[$i]){
+                    case "בעית_נציג_-_סימונים_לא_נכונים_בהצעה":
+                        getFieldId(109396);
+                       break;
+                    case "בעית_נציג_-_גיל_ביטוחי":
+                        getFieldId(109398);
+                        break;
+                    case "בעית_נציג_-_מעשן_/_לא_מעשן":
+                        getFieldId(109397);
+                        break;
+                    case "בעית_נציג_-_תוספות_מקצועיות":
+                        getFieldId(109400);
+                        break;
+                    case "בעית_נציג_-_הנחות_לא_מאושרות":
+                        getFieldId(109401);
+                        break;
+                    case "בעית_תפעול_שלנו_-_לא_העבירו_דפי_הנחות":
+                        getFieldId(109402);
+                        break;
+                    case "בעית_חברות_הביטוח_-_לא_עדכנו_הנחות":
+                        getFieldId(109403);
+                        break;
+                    case "בעית_חברות_הביטוח_-_לא_סימנו_מוצר_נכון":
+                        getFieldId(109404);
+                        break;
+                    case "בעית_חברות_הביטוח_-_טעות_בהקלדה_פרטים_של_הלקוח":
+                        getFieldId(109405);
+                        break;
+                    case "פער_תקין_-_תוספות_חיתום_בלבד":
+                        getFieldId(109406);
+                        break;
+                }
+
+            }
+
+        }
+
 /*            if (! empty($_GET['cancelationLetterExists'])){
             appendParameterToURL(102137,    ($_GET['cancelationLetterExists'] == 0 ? "lfv102139" : "lfv102138"));
             }
