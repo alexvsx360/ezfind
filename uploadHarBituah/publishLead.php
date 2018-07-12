@@ -86,12 +86,12 @@ if ($_GET) {
         </div>
             <div class="col-12" style="text-align: right">
                 <label for="exampleInputFile" >צרף קובץ הר ביטוח</label>
-                <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file" id="InputFile"  multiple/>
+                <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file" id="InputFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
             </div>
         <br/>
         <div class="row justify-content-center">
             <div class="col-2">
-                <button type="submit" class="btn btn-primary" id="submit">הגש מכירה</button>
+                <button type="submit" class="btn btn-primary" id="submit">הגש ליד</button>
             </div>
         </div>
     </form>

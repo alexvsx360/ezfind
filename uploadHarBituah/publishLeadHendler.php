@@ -75,6 +75,9 @@ function generateNewOfferLeadData($laedStatus,$leadToPopulateJson,$result){
         'issue-date' => $_POST['issue-date'],
         'email' => $_POST['customerEmail'],
         'isSmoker' => $leadToPopulateJson['lead']['fields']['94535'],
+        'totalHealth' => $leadToPopulateJson['lead']['fields']['106440'],
+        'totalLife' => $leadToPopulateJson['lead']['fields']['106441'],
+        'totalInsurenceMountain' => $leadToPopulateJson['lead']['fields']['106442'],
         'iturStatus' => $laedStatus,
         'insurmt' => "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file];
 }
@@ -90,6 +93,9 @@ function generateHarBituahLeadData($laedStatus,$leadToPopulateJson,$result){
         'issue-date' => $_POST['issue-date'],
         'email' => $_POST['customerEmail'],
         'isSmoker' => $leadToPopulateJson['lead']['fields']['94535'],
+        'totalHealth' => $leadToPopulateJson['lead']['fields']['106440'],
+        'totalLife' => $leadToPopulateJson['lead']['fields']['106441'],
+        'totalInsurenceMountain' => $leadToPopulateJson['lead']['fields']['106442'],
         'iturStatus' => $laedStatus,
         'insurmt' => "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file
     ];
@@ -111,7 +117,7 @@ if ($_POST) {
             throw new Exception('failed to initialize');
         }
         //http://192.168.150.223/api.phpכתובת חיצונית
-        curl_setopt($curl, CURLOPT_URL, 'http://212.143.233.53/api.php');//כתובת/ פנימית
+        curl_setopt($curl, CURLOPT_URL, 'http://212.143.233.53/api.php');//כתובת/ פנימית http://212.143.233.53/api.php
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
@@ -129,10 +135,26 @@ if ($_POST) {
             'issue-date' => $issueDate
         ));
         $out = curl_exec($curl);
+
         if ($out === false) {
             throw new Exception(curl_error($curl), curl_errno($curl));
         }
         $result = json_decode(trim($out));
+        if($result == null){
+            ?>
+            <div class="container" role="main" id="">
+                <br/>
+                <br/>
+                <div class="row justify-content-center" style="text-align: center">
+                    <div class="col-12">
+                        <div class="alert alert-danger" role="alert">
+                            יש בעיה בקובץ שצירפת, נא נסה שוב
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php }
+
         curl_error($curl);
         if ($result->success != true) {
             if ($result->error == '["File already exist"]') {
