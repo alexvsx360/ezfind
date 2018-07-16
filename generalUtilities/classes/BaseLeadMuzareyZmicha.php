@@ -123,9 +123,9 @@ abstract class BaseLeadMuzareyZmicha extends BaseLead
       return [
           'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
           'data_source' => 'd9f8ce743a3540b09da09c3aa5882ea2',
-          'member_api_provider' => 'leadsProxy',
-          'member_api_id' =>"1234",
-          'member_name' => 'Leads Proxy',
+          'member_api_provider' => 'Lead Im CRM',
+          'member_api_id' => $this->getSupplierId(),
+          'member_name' => "supplier_" . $this->getSupplierId(),
           'productName' =>$this->getProductName(),
           'callCenterName' =>$this->getCallCenterName(),
           'sellerName' => $this->getSellerName(),

@@ -105,6 +105,7 @@ class LeadShimur extends BaseLead
     {
         $this->dateOfShimur = new DateTime();
         $this->dateOfShimur->setTimestamp($dateOfShimur);
+        $this->dateOfShimur->modify('+1 hour');
     }
     /**
      * @return mixed
@@ -242,6 +243,8 @@ class LeadShimur extends BaseLead
 //
 //    }
 
+
+//create lead shimur
     public function generateShimurPolicyPostData() {
         return [
             'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
@@ -260,9 +263,26 @@ class LeadShimur extends BaseLead
             'reference' => $this->getRecordId(),
         ];
     }
+//update lead shimur
     public function generateUpdatePolicyPostData(){
+        return [
+            'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
+            'data_source' => '367455c4622e4f22bd1764ddef85e224',
+            'member_api_provider' => 'Lead Im CRM',
+            'member_api_id' => $this->getSupplierId(),
+            'member_name' => "supplier_" . $this->getSupplierId(),
+            'callCenterName' => $this->getCallCenterName(),
+            'premiaBeforeShimur' => $this->policy->getActualPremia(),
+            'insuranceCompany' => $this->policy->getInsuranceCompany(),
+            'policyType' => $this->policy->getPolicyType(),
+            'dateOfShimur' => $this->getDateOfShimur()->format(DateTime::ISO8601),
+            'dateOfCancel' => $this->getDateOfCancel()->format(DateTime::ISO8601),
+            'premiaAferShimur' => $this->getPremiaAferShimur(),
+            'sellerNameMeshamer' => $this->getSellerNameMeshamer(),
+            'reference' => $this->getRecordId(),
+        ];
         //if wiil need update policy here
-        return null;
+        //return null;
     }
 
 }

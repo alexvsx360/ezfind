@@ -16,8 +16,13 @@ class LeadFactory
             case 17967:// policy campaign
                 switch ($channel_id){
                     case 19582: //old DB channel
+                        //when policy from masad yashan update it only on dataSource shimurim
+                        $leadShimur = new LeadShimur($leadToPopulateJson);
+                        if ($leadShimur->getPremiaAferShimur() != ""){
+                        return new LeadShimur($leadToPopulateJson);
+                        }
                         //do nothing
-                        return null;
+                        //return null;
                     default:
                         return new LeadPolicy($leadToPopulateJson);
                 }

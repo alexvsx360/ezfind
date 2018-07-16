@@ -29,8 +29,10 @@ $plectoDataSourceMapping = array(
         '18600' => '87c813ef9f41418282d6e77ab982ee1d',//channelב bitulim
     ),
     '17967' => array( //campaigan: policy
-        '18003' => '610a2983898a41d299700b16cebd0987',//channel: poloiceot prat(ydani)
-        '17968' => '610a2983898a41d299700b16cebd0987',//channel: poloiceot prat
+        '18003' => ['610a2983898a41d299700b16cebd0987','367455c4622e4f22bd1764ddef85e224'],//channel: poloiceot prat(ydani)
+        '17968' => ['610a2983898a41d299700b16cebd0987','367455c4622e4f22bd1764ddef85e224'],//channel: poloiceot prat
+        //when policy from masad yashan delete it only from dataSource shimurim
+        '19582' => '367455c4622e4f22bd1764ddef85e224'//channel:poloiceot prat masad yashan
     ),
     '18679' => array( //campaigan: muzarey zmicha
         '18681' => 'c19a89078ccf4c89b5603277b54eb7c7', //channel: mislaka pensyonit
@@ -44,8 +46,6 @@ $plectoDataSourceMapping = array(
     ),
 
 );
-
-
 $lead = null;
 $method = $_GET['method'];
 
@@ -64,15 +64,31 @@ if ($method == "update") {
         error_log("Received " . $method . " Request and instantiate Lead object: " . get_class($lead) ." for lead id: " . $recordNumber);
         $leadPostDate = $lead->generateUpdatePolicyPostData();
         /*update the BI and return a result code*/
-        $output = addLeadToPlecto($leadPostDate);
+        $count = count($leadPostDate);
+        //if $count == 2, need to update 2 datasource : insurance policies and shimurim
+        if ($count == 2){
+            foreach ($leadPostDate as $value){
+                $output = addLeadToPlecto($value);
+            }
+        }else {
+            $output = addLeadToPlecto($leadPostDate);
+        }
     }
 
 } else if ($method == "delete") {
     $recordDate = new DateTime();
     $recordDate->setTimestamp($_GET['date']);
     $dataSource = $plectoDataSourceMapping[ $_GET['campaign_id']][ $_GET['channel_id']];
-    $leadPostDate = BaseLead::generateDeletePolicyPostData($recordNumber, $_GET['agentId'], $recordDate, $dataSource);
-    $output = addLeadToPlecto($leadPostDate);
+    // if $dataSource is array need to delete in two dataSources
+    if(is_array($dataSource)){
+        foreach ($dataSource as $value){
+            $leadPostDate = BaseLead::generateDeletePolicyPostData($recordNumber, $_GET['agentId'], $recordDate, $value);
+            $output = addLeadToPlecto($leadPostDate);
+        }
+    }else{
+        $leadPostDate = BaseLead::generateDeletePolicyPostData($recordNumber, $_GET['agentId'], $recordDate, $dataSource);
+        $output = addLeadToPlecto($leadPostDate);
+    }
 } else {
     /*lead is not from the correct campaign*/
     error_log("received lead from the wrong campaign " . $leadToPopulateJson['lead']['campaign_id'] . "\n");

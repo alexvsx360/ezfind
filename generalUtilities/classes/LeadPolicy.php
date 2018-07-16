@@ -6,6 +6,7 @@
  * Time: 10:35
  */
 include_once 'BaseLead.php';
+include_once 'LeadShimur.php';
 class LeadPolicy extends BaseLead
 {
     private $customerSsnIssueDate;
@@ -17,6 +18,7 @@ class LeadPolicy extends BaseLead
     private $DateCompletPanding;
     private $dateSendToinsuranceCompany;
     private $ticketStatus;
+    private $leadJson;
 
     function __construct($leadJson)
     {
@@ -30,6 +32,7 @@ class LeadPolicy extends BaseLead
         $this->setDateSendToinsuranceCompany($leadJson['lead']['fields']['106546']);
         $this->setTicketStatus($leadJson['lead']['fields']['107639']);
         $this->policy = new Policy($leadJson['lead']['fields']);
+        $this->leadJson = $leadJson;
 
     }
     /**
@@ -199,32 +202,65 @@ if ($dateSendToinsuranceCompany!=="0"){
         $this->ticketStatus = $ticketStatus;
     }
     public function generateUpdatePolicyPostData() {
-        return [
-            'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
-            'data_source' => '610a2983898a41d299700b16cebd0987',//Insurance policies
-            'member_api_provider' => 'Lead Im CRM',
-            'member_api_id' => $this->getSupplierId(),
-            'member_name' => "supplier_" . $this->getSupplierId(),
-            'callCenterName' => $this->getCallCenterName(),
-            'sellingChannel' => $this->policy->getSellingChannel(),
-            'saleDate' => $this->policy->getSaleDate()->format(DateTime::ISO8601), // Updated ISO8601,
-            'sellerName' => $this->policy->getSellerName(),
-            'promoterName' => $this->policy->getPromoterName(),
-            'insuranceType' => $this->policy->getPolicyType(),
-            'insuranceCompany' => $this->policy->getInsuranceCompany(),
-            'monthlyPremia' => $this->policy->getMonthlyPremia(),
-            'anualPremia' => $this->policy->getAnnualPremia(),
-            'hitum' => $this->policy->getHitum(),
-            'productionStatus' => $this->getStatus(),
-            'productionDate' => $this->policy->getProductionDate()->format(DateTime::ISO8601),
-            'pendingStatus' => $this->policy->getPendingStatus(),
-            'sentToInsuranceCompanyDate' => ($this->getDateSendToinsuranceCompany()!=="")? $this->getDateSendToinsuranceCompany()->format(DateTime::ISO8601): "",
-            'completPandingDate' =>  ($this->getDateCompletPanding()!=="")? $this->getDateCompletPanding()->format(DateTime::ISO8601): "",
-            'recordStatus' => "",
-            'reference' => $this->getRecordId(),
-            'ticketStatus' => $this->getTicketStatus()
-        ];
+        $leadJsonArray =$this->leadJson;
+        $laedShimur = new LeadShimur($leadJsonArray);
+        $premiaAferShimur =  $laedShimur->getPremiaAferShimur();
+        if($premiaAferShimur!= ""){
+            return [[
+                'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
+                'data_source' => '610a2983898a41d299700b16cebd0987',//Insurance policies
+                'member_api_provider' => 'Lead Im CRM',
+                'member_api_id' => $this->getSupplierId(),
+                'member_name' => "supplier_" . $this->getSupplierId(),
+                'callCenterName' => $this->getCallCenterName(),
+                'sellingChannel' => $this->policy->getSellingChannel(),
+                'saleDate' => $this->policy->getSaleDate()->format(DateTime::ISO8601), // Updated ISO8601,
+                'sellerName' => $this->policy->getSellerName(),
+                'promoterName' => $this->policy->getPromoterName(),
+                'insuranceType' => $this->policy->getPolicyType(),
+                'insuranceCompany' => $this->policy->getInsuranceCompany(),
+                'monthlyPremia' => $this->policy->getMonthlyPremia(),
+                'anualPremia' => $this->policy->getAnnualPremia(),
+                'hitum' => $this->policy->getHitum(),
+                'productionStatus' => $this->getStatus(),
+                'productionDate' => $this->policy->getProductionDate()->format(DateTime::ISO8601),
+                'pendingStatus' => $this->policy->getPendingStatus(),
+                'sentToInsuranceCompanyDate' => ($this->getDateSendToinsuranceCompany()!=="")? $this->getDateSendToinsuranceCompany()->format(DateTime::ISO8601): "",
+                'completPandingDate' =>  ($this->getDateCompletPanding()!=="")? $this->getDateCompletPanding()->format(DateTime::ISO8601): "",
+                'recordStatus' => "",
+                'reference' => $this->getRecordId(),
+                'ticketStatus' => $this->getTicketStatus()
+            ],
+                $laedShimur->generateShimurPolicyPostData(),
+            ];
 
+        }else{
+            return [
+                'date' =>  $this->getCreateDate()->format(DateTime::ISO8601), // Updated ISO8601,
+                'data_source' => '610a2983898a41d299700b16cebd0987',//Insurance policies
+                'member_api_provider' => 'Lead Im CRM',
+                'member_api_id' => $this->getSupplierId(),
+                'member_name' => "supplier_" . $this->getSupplierId(),
+                'callCenterName' => $this->getCallCenterName(),
+                'sellingChannel' => $this->policy->getSellingChannel(),
+                'saleDate' => $this->policy->getSaleDate()->format(DateTime::ISO8601), // Updated ISO8601,
+                'sellerName' => $this->policy->getSellerName(),
+                'promoterName' => $this->policy->getPromoterName(),
+                'insuranceType' => $this->policy->getPolicyType(),
+                'insuranceCompany' => $this->policy->getInsuranceCompany(),
+                'monthlyPremia' => $this->policy->getMonthlyPremia(),
+                'anualPremia' => $this->policy->getAnnualPremia(),
+                'hitum' => $this->policy->getHitum(),
+                'productionStatus' => $this->getStatus(),
+                'productionDate' => $this->policy->getProductionDate()->format(DateTime::ISO8601),
+                'pendingStatus' => $this->policy->getPendingStatus(),
+                'sentToInsuranceCompanyDate' => ($this->getDateSendToinsuranceCompany()!=="")? $this->getDateSendToinsuranceCompany()->format(DateTime::ISO8601): "",
+                'completPandingDate' =>  ($this->getDateCompletPanding()!=="")? $this->getDateCompletPanding()->format(DateTime::ISO8601): "",
+                'recordStatus' => "",
+                'reference' => $this->getRecordId(),
+                'ticketStatus' => $this->getTicketStatus()
+            ];
+        }
     }
 
 }
