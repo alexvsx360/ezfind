@@ -188,16 +188,10 @@ if ($_POST) {
             $salesPotential = $leadToPopulateJson['lead']['fields']['106442'];
             $laedStatus = $leadToPopulateJson['lead']['status'];
             $laedStatus = $configTypes['ezfindStatus'][$laedStatus];
-            switch ($salesPotential) {
-                case $salesPotential > 100:
-                    $openLeadData = generateHarBituahLeadData($laedStatus, $leadToPopulateJson, $result);
-                    break;
-                case $salesPotential < 100:
-                    $openLeadData = generateNewOfferLeadData($laedStatus, $leadToPopulateJson, $result);
-                    break;
-                default:
-                    $openLeadData = null;
-
+            if($salesPotential <= 100 ){
+                $openLeadData = generateNewOfferLeadData($laedStatus, $leadToPopulateJson, $result);
+            }else{
+                $openLeadData = generateHarBituahLeadData($laedStatus, $leadToPopulateJson, $result);
             }
             $newLeadId = openNewLead($openLeadData);
 ?>
