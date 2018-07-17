@@ -63,7 +63,7 @@ function createMainRecord ($result){
     curl_close($ch);
 
 }
-function generateNewOfferLeadData($laedStatus,$leadToPopulateJson,$result){
+function generateNewOfferLeadData($laedStatus,$leadToPopulateJson,$result,$campaignName){
     return [
         'lm_supplier' => $_POST["agentId"],
         'lm_form' => "17356",
@@ -79,9 +79,11 @@ function generateNewOfferLeadData($laedStatus,$leadToPopulateJson,$result){
         'totalLife' => $leadToPopulateJson['lead']['fields']['106441'],
         'totalInsurenceMountain' => $leadToPopulateJson['lead']['fields']['106442'],
         'iturStatus' => $laedStatus,
+        'ezkamp' => $campaignName,
         'insurmt' => "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file];
+
 }
-function generateHarBituahLeadData($laedStatus,$leadToPopulateJson,$result){
+function generateHarBituahLeadData($laedStatus,$leadToPopulateJson,$result,$campaignName){
     return [
         'lm_supplier' => $_POST["agentId"],
         'lm_form' => "16713",
@@ -97,6 +99,7 @@ function generateHarBituahLeadData($laedStatus,$leadToPopulateJson,$result){
         'totalLife' => $leadToPopulateJson['lead']['fields']['106441'],
         'totalInsurenceMountain' => $leadToPopulateJson['lead']['fields']['106442'],
         'iturStatus' => $laedStatus,
+        'ezkamp' => $campaignName,
         'insurmt' => "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file
     ];
 }
@@ -117,7 +120,7 @@ if ($_POST) {
             throw new Exception('failed to initialize');
         }
         //http://192.168.150.223/api.phpכתובת חיצונית
-        curl_setopt($curl, CURLOPT_URL, 'http://212.143.233.53/api.php');//כתובת/ פנימית http://212.143.233.53/api.php
+        curl_setopt($curl, CURLOPT_URL, 'http://212.143.233.53/api.php');//הכתובת בשרת http://212.143.233.53/api.php
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
@@ -188,10 +191,12 @@ if ($_POST) {
             $salesPotential = $leadToPopulateJson['lead']['fields']['106442'];
             $laedStatus = $leadToPopulateJson['lead']['status'];
             $laedStatus = $configTypes['ezfindStatus'][$laedStatus];
+            $campaignId = $leadToPopulateJson['lead']['campaign_id'];
+            $campaignName = $configTypes['ezfindCampaignName'][$campaignId];
             if($salesPotential <= 100 ){
-                $openLeadData = generateNewOfferLeadData($laedStatus, $leadToPopulateJson, $result);
+                $openLeadData = generateNewOfferLeadData($laedStatus, $leadToPopulateJson, $result,$campaignName);
             }else{
-                $openLeadData = generateHarBituahLeadData($laedStatus, $leadToPopulateJson, $result);
+                $openLeadData = generateHarBituahLeadData($laedStatus, $leadToPopulateJson, $result,$campaignName);
             }
             $newLeadId = openNewLead($openLeadData);
 ?>
