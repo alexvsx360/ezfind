@@ -70,7 +70,7 @@
             fwrite($myfile, "leadToPopulateJson: " . $leadToPopulateJson);
             $fieldsValuesJsonArray = array_values($leadToPopulateJson['lead']['fields']);
             $fullName = $fieldsValuesJsonArray[0] . " " . $fieldsValuesJsonArray[1];
-            $phone =  $fieldsValuesJsonArray[4];
+            $phone =  $fieldsValuesJsonArray[3];
             $promoterName = $fieldsValuesJsonArray[16];
             $currentUserName = $leadToPopulateJson['user']['name'];
             $currentUserEmail = $leadToPopulateJson['user']['email'];
@@ -78,7 +78,7 @@
             $harBituahFile = null;
             switch ($acc_id){
                 case 3305://mechirot bolotin
-                    $harBituahFile = $fieldsValuesJsonArray["121"];
+                    $harBituahFile = $fieldsValuesJsonArray["124"];
                     break;
                 case 3327://mekadmim eazy biyuah
                 case 3325://mechirot elad shimoni
