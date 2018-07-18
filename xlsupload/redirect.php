@@ -21,6 +21,7 @@
 
 include ('functions.php');
 include_once ('leadImFunctions.php');
+
 function createMainRecord ($result){
     $crmAccountNumberNameJson =[
         "3328" => "ezfind",
@@ -105,14 +106,21 @@ if ($result->success == true) {
     move_uploaded_file($_FILES['file']['tmp_name'], $fileName);
 
     createMainRecord($result);
+    $today = strtotime('today');
     switch ($_POST['crmAcccountNumber']){
     case 3305:
         $updateFieldsKeyValue = [
             "90187" => $_POST['ssn'],
             "95896" => strtotime($_POST['issue-date']),
+            "110122" => $today
         ];
         leadImUpdateLead($_POST['crmAcccountNumber'], $_POST['recordNumber'], $updateFieldsKeyValue, true);
-}
+    case 3317:
+        $updateFieldsKeyValue = [ 110117 => "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file];
+        leadImUpdateLead($_POST['crmAcccountNumber'], $_POST['recordNumber'], $updateFieldsKeyValue, true);
+
+
+    }
 
     ?>
     <script type="text/javascript">
