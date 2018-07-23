@@ -23,7 +23,23 @@
 	</head>
 	<body>
 		<?php
-        include ('functions.php');
+        include_once   ('functions.php');
+        include_once ('leadImFunctions.php');
+
+
+        function getLeadDataSource($getLeadResult){
+            if ($getLeadResult['status'] == 'success'){
+                return $getLeadResult['lead']['channel_name'];
+            }
+            return "לא קיים במערכת אם";
+        }
+
+        function getLeadSuplaierName($getLeadResult){
+            if ($getLeadResult['status'] == 'success' && $getLeadResult['lead']['supplier_id'] != 0){
+                return getUser(3310, $getLeadResult['lead']['supplier_id'])['result']['name'];;
+            }
+            return "ללא ספק";
+        }
 
 
         $yesNoJson = [
@@ -76,16 +92,26 @@
             $currentUserEmail = $leadToPopulateJson['user']['email'];
             $channelName = $leadToPopulateJson['lead']['channel_name'];
             $harBituahFile = null;
+            $origLeadCampaignName = null;
+            $origLeadSupplaier = null;
             switch ($acc_id){
                 case 3305://mechirot bolotin
                     $harBituahFile = $fieldsValuesJsonArray["124"];
+                    $getLeadResult = leadImGetLead(3310, $leadToPopulateJson['lead']['fields']['91423']);
+                    $origLeadCampaignName = getLeadDataSource($getLeadResult);
+                    $origLeadSupplaier = getLeadSuplaierName($getLeadResult);
                     break;
-                case 3327://mekadmim eazy biyuah
                 case 3325://mechirot elad shimoni
                     $harBituahFile = $fieldsValuesJsonArray["123"];
+                    $getLeadResult = leadImGetLead(3310, $leadToPopulateJson['lead']['fields']['93794']);
+                    $origLeadCampaignName = getLeadDataSource($getLeadResult);
+                    $origLeadSupplaier = getLeadSuplaierName($getLeadResult);
                     break;
                 case 3326://mechirot eazy bitua
                     $harBituahFile = $fieldsValuesJsonArray["122"];
+                    $getLeadResult = leadImGetLead(3310, $leadToPopulateJson['lead']['fields']['94224']);
+                    $origLeadCampaignName = getLeadDataSource($getLeadResult);
+                    $origLeadSupplaier = getLeadSuplaierName($getLeadResult);
                     break;
                 default:
                     $harBituahFile = null;
@@ -125,6 +151,8 @@
             $leadid=$_POST['recordNumber'];
             $agentid=$_POST['agentId'];
             $crmAccount=$_POST['crmAcccountNumber'];
+            $origLeadCampaignName = $_POST['origLeadCampaignName'];
+            $origLeadSupplaier = $_POST['origLeadSupplaier'];
 
             $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/user-upload/'.$leadid."/"; //папка для хранения файлов
             if ($agentId == 11819){
@@ -336,7 +364,9 @@
                 'saleDate' => $saleDate,
                 'payingWidth' => $payingWith ,
                 'giluy_naot' => $linkInformation[$insuranceCompany][$policy],
-                'fld_103757'=> $harBituahFile
+                'fld_103757'=> $harBituahFile,
+                'origLeadCampaig' => $origLeadCampaignName,
+                'origLeadSupplier' => $origLeadSupplaier
            ];
 
 
@@ -399,6 +429,8 @@
                             <input type="hidden" class="input-group form-control" value="<?php print $currentUserName; ?>" placeholder="שם הנציג" name="userName"/>
                             <input type="hidden" class="input-group form-control" value="<?php print $currentUserEmail; ?>" placeholder="אימייל של הנציג" name="userEmail"/>
                             <input type="hidden" class="input-group form-control" value="<?php print $channelName ?>" placeholder="ערוץ הליד" name="leadChannel"/>
+                            <input type="hidden" class="input-group form-control" value="<?php print $origLeadCampaignName ?>"  name="origLeadCampaignName"/>
+                            <input type="hidden" class="input-group form-control" value="<?php print $origLeadSupplaier ?>"  name="origLeadSupplaier"/>
 
                         </div>
 
