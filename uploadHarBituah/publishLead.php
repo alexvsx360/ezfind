@@ -84,6 +84,40 @@ if ($_GET) {
                 <input type="date" class="input-group form-control" placeholder="" id="issue-date" name="issue-date" required/>
             </div>
         </div>
+        <div class="row justify-content-center">
+            <div class="col-12" style="text-align: right">
+                <label for="sel1" >: מעשן / לא מעשן</label>
+                <select required class="form-control" id="isSmoke" name="isSmoke">
+                    <option disabled selected value> -- בחר מעשן/ לא מעשן -- </option>
+                    <option value="1">מעשן</option>
+                    <option value="0">לא מעשן</option>
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12" style="text-align: right">
+                <label for="sel1" >: שכיר / עצמאי</label>
+                <select required class="form-control" id="workStatus" name="workStatus">
+                    <option disabled selected value> -- בחר שכיר / עצמאי -- </option>
+                    <option value="lfv92295">שכיר</option>
+                    <option value="lfv92294">עצמאי</option>
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12" style="text-align: right">
+                <label for="sel1" >: קופת חולים</label>
+                <select required class="form-control" id="kupa" name="kupa">
+                    <option disabled selected value> -- בחר קופת חולים -- </option>
+                    <option value="כללית">כללית</option>
+                    <option value="מכבי">מכבי</option>
+                    <option value="לאומית">לאומית</option>
+                    <option value="מאוחדת">מאוחדת</option>
+                    <option value="ללא קופת חולים">ללא קופת חולים</option>
+                </select>
+            </div>
+        </div>
+
             <div class="col-12" style="text-align: right">
                 <label for="exampleInputFile" >צרף קובץ הר ביטוח</label>
                 <input aria-describedby="fileHelp" required type="file" class="form-control-file" name="file" id="InputFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />

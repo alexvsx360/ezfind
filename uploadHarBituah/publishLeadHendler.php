@@ -74,12 +74,14 @@ function generateNewOfferLeadData($laedStatus,$leadToPopulateJson,$result,$campa
         'id' => $_POST['ssn'],
         'issue-date' => $_POST['issue-date'],
         'email' => $_POST['customerEmail'],
-        'isSmoker' => $leadToPopulateJson['lead']['fields']['94535'],
         'totalHealth' => $leadToPopulateJson['lead']['fields']['106440'],
         'totalLife' => $leadToPopulateJson['lead']['fields']['106441'],
         'totalInsurenceMountain' => $leadToPopulateJson['lead']['fields']['106442'],
         'iturStatus' => $laedStatus,
         'ezkamp' => $campaignName,
+        'isSmoker' => $_POST['isSmoke'],
+        'fld_92293' => $_POST['workStatus'],
+        'kupa' => $_POST['kupa'],
         'insurmt' => "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file];
 
 }
@@ -94,12 +96,14 @@ function generateHarBituahLeadData($laedStatus,$leadToPopulateJson,$result,$camp
         'id' => $_POST['ssn'],
         'issue-date' => $_POST['issue-date'],
         'email' => $_POST['customerEmail'],
-        'isSmoker' => $leadToPopulateJson['lead']['fields']['94535'],
         'totalHealth' => $leadToPopulateJson['lead']['fields']['106440'],
         'totalLife' => $leadToPopulateJson['lead']['fields']['106441'],
         'totalInsurenceMountain' => $leadToPopulateJson['lead']['fields']['106442'],
         'iturStatus' => $laedStatus,
         'ezkamp' => $campaignName,
+        'isSmoker' => $_POST['isSmoke'],
+        'fld_92293' => $_POST['workStatus'],
+        'kupa' => $_POST['kupa'],
         'insurmt' => "https://portal.ibell.co.il/user-upload/" . $_POST["recordNumber"] . "/" . $result->file
     ];
 }
@@ -120,7 +124,7 @@ if ($_POST) {
             throw new Exception('failed to initialize');
         }
         //http://192.168.150.223/api.phpכתובת חיצונית
-        curl_setopt($curl, CURLOPT_URL, 'http://212.143.233.53/api.php');//הכתובת בשרת http://212.143.233.53/api.php
+        curl_setopt($curl, CURLOPT_URL, 'http://192.168.150.223/api.php');//הכתובת בשרת http://212.143.233.53/api.php
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
