@@ -1,0 +1,351 @@
+body
+{
+	direction: rtl;
+}
+.container
+{
+	/*width: 1360px;*/
+}
+.clearfix
+{
+	clear: both;
+	
+}
+.row
+{
+	margin: 0;
+}
+.col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9
+{
+	float: right;
+}
+.btn-file {
+	position: relative;
+	overflow: hidden;
+}
+.btn-file input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	font-size: 100px;
+	text-align: right;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	outline: none;
+	background: white;
+	cursor: inherit;
+	display: block;
+}
+
+fieldset { 
+	display: block;
+	margin: 30px auto 0;
+	max-width: 500px;
+	padding-top: 0.35em;
+	padding-bottom: 0.625em;
+	padding-left: 0.75em;
+	padding-right: 0.75em;
+	border: 2px solid #f3f3f3;
+    
+}
+.button_center
+{
+	width: 90%;
+	margin: 30px auto;
+	display: block;
+}
+.logocenter{
+	text-align: center;
+}
+.logocenter-small{
+	text-align: center;
+	
+}
+.logocenter-small img{
+	width: 150px;	
+}
+.error
+{
+	display: none;	
+}
+
+.label
+{
+	color: #000;
+	float: right;
+	font-size: 100%;
+	    min-width: 90px;
+    text-align: right;
+    padding-right:0;
+}
+.table thead th
+{
+	text-align: center;
+}
+.table tbody tr.odd
+{
+	background: #f3f3f3;
+}
+
+.table tbody tr td
+{
+	text-align: center;
+	border: 1px solid #ddd;
+}
+.table tbody tr td .row-td
+{
+	clear: both;
+	display: block;
+}
+.table tbody tr td .row-td .value
+{
+	float: right;
+}
+.multiselect 
+{
+	direction: rtl;
+	text-align: right;
+}
+.multiselect-container>li>a
+{
+	direction: rtl;
+	text-align: right;
+}
+.input-group .form-control
+{
+	float: right;
+	width: 63%;
+	height: 28px;
+}
+.input-group-addon:first-child
+{
+	float: left;
+}
+.input-group-btn
+{
+	float: left;
+}
+.checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio]
+{
+	margin-right: -20px;
+}
+.multiselect-container
+{
+	max-height: 300px;
+	width: 250px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.multiselect-container>li
+{
+	width: 250px;
+}
+.multiselect-container>li>a
+{
+	white-space: normal;
+}
+.multiselect-container>li>a>label, .multiselect-container>li>a>label.radio, .multiselect-container>li>a>label.checkbox
+{
+	margin: 3px 20px 3px 20px;
+	width: 230px;
+}
+.select_control
+{	
+	margin-top: 10px;
+}
+.select_control input[type=radio]
+{
+	position: relative;
+	top: 2px;
+}
+
+.includeSelectAllOption
+{
+	width: 170px;
+}
+.btn-default
+{
+	background: none;
+}
+.form_filter
+{
+	margin: 20px 0;
+}
+
+.form_filter .label
+{
+	display: block;
+	float: none;
+	text-align: right;
+	margin-bottom: 3px;
+	margin-right: 0;
+	padding-right: 0;
+}
+.nopadding
+{
+	padding: 0;
+}
+#from_picker .ui-datepicker-calendar
+{
+	display: none;
+}
+.hide-calendar .ui-datepicker-calendar {
+	display: none;
+}
+.date-pickers
+{
+	display: none;
+}
+.date-picker#from
+{
+	display: block;
+}
+.label_from
+{
+	text-align: right;
+	float: right;
+}
+.control-block
+{
+	margin-top: 5px;
+	display: block;
+}
+.control-block input[type="text"]
+{
+	text-align: right;
+	width:300px;
+	border:1px solid #ccc;
+	height: 30px;
+	border-radius: 3px;
+}
+.control-block input
+{
+	text-align: right;
+	float: right;
+	margin-left:10px;
+	margin-bottom:10px;	
+}
+.control-block label
+{
+	display: block;
+	clear: both;
+	float: none;
+	text-align: right;
+}
+
+.date_block
+{
+	
+}
+.control-block.radio-block
+{
+	float: right;
+	height: 30px;
+	margin-left: 15px;
+}
+.control-block.radio-block label
+{
+	float: left;
+	display: inline-block;
+	text-align: right;	
+	clear: none;
+}
+.control-block.radio-blocks label
+{
+	float: left;
+	display: inline-block;
+	text-align: right;
+	width: 80%;
+	clear: none;
+}
+.control-block.radio-block input
+{
+	float: right;
+	margin-left: 5px;
+}
+.control-block.radio-blocks input
+{
+	float: right;
+}
+.btn .caret
+{
+	float: left;
+	margin-top: 9px;
+}
+.input-group-addon, .input-group-btn
+{
+	width: auto !important;
+}
+.search
+{
+	width:380px;
+}
+.price-block
+{
+	margin:0px 0;
+
+	padding: 10px 0;
+}
+.date_block
+{
+	margin-top:0;
+}
+.date_block .control-block
+{
+	margin-top:0;
+}
+.border_radius
+{
+	height:330px;
+	background: #F9F9F9;	
+	display: inline-block;
+}
+.button-block
+{
+	margin-top:10px;
+}
+.multiselect-container .input-group
+{
+	margin-left:20px;
+}
+.bg-color
+{
+	background: #FbFbFb;
+	height:330px;		
+	display: inline-block;
+}
+.bg-colors
+{
+	background: #FbFbFb;
+			
+	
+}
+.alert
+{
+	width:500px;
+	margin-top: 20px;
+}
+.pagination>li
+{
+	float:right;
+}
+.pagination>li:first-child>a, .pagination>li:first-child>span {
+    margin-left: 0;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 4px;
+    border-left:0;
+    }
+    .pagination>li:last-child>a, .pagination>li:last-child>span {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    }
+    .multiselect-native-select .btn-group .btn-default:hover
+    {
+		background:none;
+	}
