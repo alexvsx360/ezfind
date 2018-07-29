@@ -36,7 +36,8 @@ include ('../../../generalUtilities/leadImFunctions.php');
 $secondaryCustomerPhoneMapper = [
     '3305' => '90205', //mechirot bolotin
     '3325' => '93401', //elad shimoni
-    '3326' => '93831' //mechirot eazy bituah
+    '3326' => '93831', //mechirot eazy bituah
+    '3328' => '94490' //ezfind
 ];
 $key  = $secondaryCustomerPhoneMapper[$_POST['crmAcccountNumber']];
 if ($_POST) {
