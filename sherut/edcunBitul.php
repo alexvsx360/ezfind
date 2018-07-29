@@ -66,6 +66,7 @@ if($_SESSION["leadIdToCancel"]!==null){
             </button>
             <div class="dropdown-menu">
                 <p data-value="הועבר לסוכן חדש" class="dropdown-item" >הועבר לסוכן חדש</p>
+                <p data-value="לקוח לא עונה" class="dropdown-item" >לקוח לא עונה</p>
                 <p data-value="הצעה טובה יותר" class="dropdown-item" >הצעה טובה יותר</p>
                 <p data-value="הועבר לחברה אחרת" class="dropdown-item" >הועבר לחברה אחרת</p>
                 <p data-value="בעיה כלכלית" class="dropdown-item" >בעיה כלכלית</p>
