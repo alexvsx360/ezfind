@@ -19,6 +19,8 @@ class LeadPolicy extends BaseLead
     private $dateSendToinsuranceCompany;
     private $ticketStatus;
     private $leadJson;
+    private $origLeadCampaignName;
+    private $origLeadSupplaier;
 
     function __construct($leadJson)
     {
@@ -31,9 +33,38 @@ class LeadPolicy extends BaseLead
         $this->setDateCompletPanding($leadJson['lead']['fields']['106545']);
         $this->setDateSendToinsuranceCompany($leadJson['lead']['fields']['106546']);
         $this->setTicketStatus($leadJson['lead']['fields']['107639']);
+        $this->setOrigLeadCampaignName($leadJson['lead']['fields']['110283']);
+        $this->setOrigLeadSupplaier($leadJson['lead']['fields']['110284']);
         $this->policy = new Policy($leadJson['lead']['fields']);
         $this->leadJson = $leadJson;
 
+    //origLeadCampaignName
+    }
+    public function getOrigLeadCampaignName()
+    {
+        return $this->origLeadCampaignName;
+    }
+
+    /**
+     * @param mixed $origLeadCampaignName
+     */
+    public function setOrigLeadCampaignName($origLeadCampaignName)
+    {
+        $this->origLeadCampaignName = $origLeadCampaignName;
+    }
+    //origLeadSupplaier
+
+    public function getOrigLeadSupplaier()
+    {
+        return $this->origLeadSupplaier;
+    }
+
+    /**
+     * @param mixed $origLeadSupplaier
+     */
+    public function setOrigLeadSupplaier($origLeadSupplaier)
+    {
+        $this->origLeadSupplaier = $origLeadSupplaier;
     }
     /**
      * @return mixed
@@ -229,7 +260,9 @@ if ($dateSendToinsuranceCompany!=="0"){
                 'completPandingDate' =>  ($this->getDateCompletPanding()!=="")? $this->getDateCompletPanding()->format(DateTime::ISO8601): "",
                 'recordStatus' => "",
                 'reference' => $this->getRecordId(),
-                'ticketStatus' => $this->getTicketStatus()
+                'ticketStatus' => $this->getTicketStatus(),
+                'origLeadCampaignName'=>$this->getOrigLeadCampaignName(),
+                'origLeadSupplaier' => $this->getOrigLeadSupplaier(),
             ],
                 $laedShimur->generateShimurPolicyPostData(),
             ];
@@ -258,7 +291,9 @@ if ($dateSendToinsuranceCompany!=="0"){
                 'completPandingDate' =>  ($this->getDateCompletPanding()!=="")? $this->getDateCompletPanding()->format(DateTime::ISO8601): "",
                 'recordStatus' => "",
                 'reference' => $this->getRecordId(),
-                'ticketStatus' => $this->getTicketStatus()
+                'ticketStatus' => $this->getTicketStatus(),
+                'origLeadCampaignName'=>$this->getOrigLeadCampaignName(),
+                'origLeadSupplaier' => $this->getOrigLeadSupplaier(),
             ];
         }
     }

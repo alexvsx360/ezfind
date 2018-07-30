@@ -47,6 +47,8 @@ $leadPostDate = [
     'pendingStatus' => (isset($_GET["pendingStatus"]) ? $_GET["pendingStatus"] : ""),
     'productionDate' => ($productionDate instanceof DateTime ? $productionDate->format(DateTime::ISO8601) : "" ),
     'actualPremia' => $_GET['actualPremia'],
+    'origLeadCampaignName' => $_GET['origLeadCampaignName'],
+    'origLeadSupplaier' => $_GET['origLeadSupplaier'],
     'reference' => $_GET['recordId'],
 
 ];
