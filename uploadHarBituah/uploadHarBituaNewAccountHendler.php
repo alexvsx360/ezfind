@@ -145,10 +145,14 @@ if ($_POST) {
             move_uploaded_file($_FILES['file']['tmp_name'], $fileName);
 
             $mainRecordLead = createMainRecord($result);
+
+            $issueDateCrmFormat = strtotime($issueDate);
             $today = strtotime('today');
             $updateFieldsKeyValue = [
                     "110583" => "https://portal.ibell.co.il/user-upload/" . $recordNumber . "/" . $result->file,
-                    "110655" => $today];
+                    "110655" => $today,
+                    "110560" => $ssn ,
+                    "110561" => $issueDateCrmFormat];
 
             leadImUpdateLead($crmAccountNumber, $recordNumber, $updateFieldsKeyValue, true);
 
