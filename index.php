@@ -6,7 +6,7 @@
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<!-- Optional theme -->
-		<link rel="stylesheet" h    ref="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="css/style.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -23,8 +23,7 @@
 	</head>
 	<body>
 		<?php
-        include_once   ('functions.php');
-        include_once ('leadImFunctions.php');
+        include_once ("../generalUtilities/leadImFunctions.php");
 
 
         function getLeadDataSource($getLeadResult){
