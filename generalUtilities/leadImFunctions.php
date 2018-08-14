@@ -6,7 +6,66 @@
  * Time: 2:34 PM
  */
 include_once ('functions.php');
+require '../vendor/autoload.php';
+use Zendesk\API\HttpClient as ZendeskAPI;
 
+$subdomain = "ezfind-sherut";
+$username  = "yaki@tgeg.co.il";
+$token     = "r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF"; // replace this with your token
+$client = new ZendeskAPI($subdomain, $username);
+$client->setAuth('basic', ['username' => $username, 'token' => $token]);
+$LOGGER = fopen("log.txt", "a");
+function checkUpdate($result,$updateLeadUrl)
+{
+    global $client;
+    if ($result != "OK") {
+        for ($i = 0; $i < 3; $i++) {
+            sleep(1);
+            $result = httpGet($updateLeadUrl);
+            if ($result == "OK") {
+                break;
+            } else {
+                if ($i == 2 && $result != "OK") {
+                    $result = json_decode($result, true);
+                    // $file = fopen("error.txt","w");
+                    $current_file_name = basename($_SERVER['PHP_SELF']);
+                    $debug = debug_backtrace();
+                    $debug = array_shift($debug);
+//                  $sentfromServer = $_SERVER['SERVER_NAME'];
+                    $sentfromServer = $_SERVER['HTTP_HOST'];
+                    $parseUrl = parse_url($updateLeadUrl);
+                    $sentToServer = $parseUrl['host'];
+                    $prameters ="";
+                    foreach($_GET as $key => $value){
+                        $prameters.= $key . " : " . $value . "\n";
+                    }
+                    $newTicket = $client->tickets()->create([
+                        'tags' => 'error',
+                        'status' => 'new',
+                        'subject' => 'error in update crm',
+                        'requester' => array(
+                            'name' => 'dina',
+                            'email' => 'dina.r@ezfind.co.il'
+                        ),
+                        //   'collaborators' =>  ["Yaki@tgeg.co.il"],
+                        'comment' => [
+                            'body' => 'in date:' . date("d/m/Y") . " \n" .
+                                'in file: ' . $current_file_name . " \n" .
+                                'in line: ' . $debug["line"] . " \n" .
+                                'prameters: ' . $prameters . " \n" .
+                                'Error:' . $result['errmsg'] . " \n" .
+                                'request sent from server :' . $sentfromServer . " \n" .
+                                'to server:' . $sentToServer . " \n" .
+                                'orignalUrl:' . $updateLeadUrl
+                        ]
+                    ]);
+                }
+            }
+        }
+    } else {
+        return $result;
+    }
+}
 function getStatusAsString($statusCode){
     $statusCodeToSrting = [
         '1' => "New",
@@ -99,7 +158,8 @@ function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $do
         if ($doLogFinalUrl){
             error_log("leadImUpdateLead -  updating lead: " . $leadId . "UpdateUrl is: " .$url . "\n");
         }
-        return httpGet($url);
+        $result =  httpGet($url);
+        checkUpdate($result,$url);
     }
 }
 
