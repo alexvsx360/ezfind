@@ -28,8 +28,8 @@
 
 
 $configTypes = include('configTypes.php');
-include_once ('generalUtilities/functions.php');
-include_once ('generalUtilities/leadImFunctions.php');
+include_once ('../generatlUtilitiesPortalIbell/functions.php');
+include_once ('../generatlUtilitiesPortalIbell/leadImFunctions.php');
 
 function createMainRecord ($result){
     $crmAccountNumberNameJson =[
@@ -124,7 +124,7 @@ if ($_POST) {
             throw new Exception('failed to initialize');
         }
         //http://192.168.150.223/api.phpכתובת חיצונית
-        curl_setopt($curl, CURLOPT_URL, 'http://192.168.150.223/api.php');//הכתובת בשרת http://212.143.233.53/api.php
+        curl_setopt($curl, CURLOPT_URL, 'http://212.143.233.53/api.php');//הכתובת בשרת http://212.143.233.53/api.php
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));

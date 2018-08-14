@@ -25,10 +25,12 @@
 
 
 </head>
+<body>
 <?php
 $configTypes = include('configTypes.php');
-include_once ('generalUtilities/functions.php');
-include_once ('generalUtilities/leadImFunctions.php');
+include_once ('../generatlUtilitiesPortalIbell/functions.php');
+include_once ('../generatlUtilitiesPortalIbell/leadImFunctions.php');
+
 
 function createMainRecord ($result){
     $crmAccountNumberNameJson =[
@@ -174,4 +176,5 @@ if ($_POST) {
   }
 };
 ?>
-
+</body>
+</html>

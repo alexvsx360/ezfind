@@ -26,8 +26,9 @@
 </head>
 <body>
 <?php
-include_once ('generalUtilities/functions.php');
-include_once ('generalUtilities/leadImFunctions.php');
+
+include_once ('../generatlUtilitiesPortalIbell/functions.php');
+include_once ('../generatlUtilitiesPortalIbell/leadImFunctions.php');
 
 $customerFullName = ""; $customerPhone = ""; $ssn =""; $email =""; $callCenterName = ""; $recordNumber = "";
 $userName = ""; $userEmail = ""; $issueDate = ""; $customerFirstName = ""; $customerLastName="";
