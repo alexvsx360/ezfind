@@ -71,7 +71,7 @@ if ($_POST){
                 $callCenterManagerMail = $_POST["callCenterManagerMail"];
                 $supplierName = $_POST["supplierName"];
                 $policyCanceledInOppositeCompany = $_POST['policyCanceledInOppositeCompany'];
-
+                $moveToMokedShimur = $_POST["moveToMokedShimur"];
                 /*save the file to the directory */
                 $files = $_FILES["file"]["name"];
                 $extension_files = array();
@@ -111,7 +111,8 @@ if ($_POST){
                         104604 => $_POST['sellerNameMeshamer'],//שם המוכרן המשמר
                         104607 => $_POST['premiaAferShimur'],//פרמיה בפועל לאחר שימור
                         105113 => $_POST['cancelDate'],//תאריך ביטול
-                        107639 => "הופק_ושומר"
+                        107639 => "הופק_ושומר",
+                        111475 => $_POST["moveToMokedShimur"]
                     ];
                 $status = 104259; //ufak veshumar
                 leadImUpdateLead($crmAccountNumber, $leadIdToCancel, $updateFieldsKeyValue, false, $status);
