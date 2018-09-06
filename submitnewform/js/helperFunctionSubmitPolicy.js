@@ -160,8 +160,8 @@ console.log(arrayIdOfMainDivCancelLetters);
             '                    <option value="דיקלה">דיקלה</option>\n' +
             '                    <option value="איילון">איילון</option>\n' +
             '                    <option value="AIG">AIG</option>\n' +
-            '                    <option value="מליון9">מליון</option>\n' +
-            '                    <option value="ביטוח ישיר">ביטוח ישיר</option>\n' +
+            '                    <option value="IDI">IDI</option>\n' +
+            '                    <option value="פסגות">פסגות</option>\n' +
             '                </select>\n' +
                 '   </div>\n'+
                 '   <div class="col-sm">\n' +
@@ -657,8 +657,6 @@ console.log(arrayIdOfMainDivCancelLetters);
         '        </div>\n' +
         '        <div class="row" >\n' +
         '            <div class="col-sm">\n' +
-        '                <label for="sel1">מספר פוליסה לביטול</label>\n' +
-        '                <input required type="text" class="input-group form-control"  placeholder="מספר פוליסה לביטול" id="cancelPolicy" name="cancelPolicy"/>\n' +
         '            </div>\n' +
         '            <div class="col-sm file">\n' +
         '                <label for="sel1"> צרף מסמכים רלוונטיים</label>\n' +

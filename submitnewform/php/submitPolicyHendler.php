@@ -107,7 +107,7 @@ function saveFilestoNewDirectoryAndGetLink($file,$nameFileInPost,$leadid,$direct
     $count++;
     $nameFile = $file['name'];
     $extension =  pathinfo($nameFile,PATHINFO_EXTENSION);
-    $newName = $nameFile."_".$leadid."_".$count.".".$extension;
+    $newName = $leadid."_".$count.".".$extension;
     $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/'.$directoryName.'/'.$leadid."/";
     if (!file_exists($uploadDir)) {
         $new_dir = mkdir ($uploadDir, 0777);
