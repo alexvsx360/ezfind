@@ -1,0 +1,74 @@
+label{
+    font-weight: 700;
+}
+.addIcon{
+    /*color: #1b6d85;*/
+    float: right;
+
+}
+.castumerDetails{
+   /*visibility: hidden;*/
+    /*margin-bottom:12px;*/
+    /*margin-top: 12px;*/
+
+}
+.policyIcon{
+    color: #2ab27b;
+
+}
+
+.alert{
+    text-align: center;
+    margin-top: 25px
+}
+button{
+    width:200px;
+    margin-bottom: 20px;
+}
+.detailsPolicy,.castumerDetails{
+    border-radius: 3px;
+    border: 1px solid darkgray;
+    padding: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.fa-drivers-license-o,.fa-file-text-o{
+    float: right;
+    color: #17a2b8;
+    font-size: 24px;
+}
+#editCastumerDetails,#editPolicyDetails{
+    float: right;
+    font-size: 12px;
+    cursor: pointer;
+}
+.showCastumerDetails,.summeryDetailsPolicy{
+    cursor: pointer;
+}
+.summeryDetailsPolicy{
+    background-color:#c8e5bc;
+    border: #c8e5bc;
+}
+.fa-file-text-o{
+    color: #1c7430;
+    font-size: 24px;
+}
+#comment{
+    font-size: 12px;
+    float: right;
+}
+.cancelfiles{
+ /*//   opacity:0*/
+}
+.addcancellationletters{
+    border: 1px solid #b9bbbe;
+    padding: 15px;
+    border-radius: 5px;
+}
+.addMorecancellationletters{
+    cursor: pointer;
+    color:#e4606d;
+}
+.removecancellationletters{
+    cursor: pointer;
+}
