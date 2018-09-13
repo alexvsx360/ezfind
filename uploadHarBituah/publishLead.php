@@ -49,7 +49,7 @@ if ($_GET) {
     $leadToPopulateJson = getLeadJson($_GET['recordNumber'], $acc_id, $_GET['agentId']);
     $customerFullName = $leadToPopulateJson['lead']['fields']['94420']. " " . $leadToPopulateJson['lead']['fields']['102616'];
     $customerPhone = $leadToPopulateJson['lead']['fields']['94421'];
-    $customerEmail = $leadToPopulateJson['lead']['fields']['94518'];
+    $customerEmail = $leadToPopulateJson['lead']['fields']['94422'];
     $leadStatus = $leadToPopulateJson['lead']['status'];
     $userName = $leadToPopulateJson['user']['name'];
     $userEmail = $leadToPopulateJson['user']['email'];
