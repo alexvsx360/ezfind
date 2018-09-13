@@ -24,7 +24,9 @@ class LeadShimur extends BaseLead
 //    private $customerPhone;
 //    private $customerSsn;
 //    private $customerEmail;
-   private $callCenterName;
+    private $callCenterName;
+    private $bitulCategory;
+    private $bitulReason;
 
     function __construct($leadJson)
     {
@@ -39,6 +41,8 @@ class LeadShimur extends BaseLead
         $this->setPremiaAferShimur($leadJson['lead']['fields']['104607']);
         $this->setDateOfCancel($leadJson['lead']['fields']['105113']);
         $this->setCallCenterName($leadJson['lead']['fields']['100098']);
+        $this->setBitulCategory($leadJson['lead']['fields']['108936']);
+        $this->setBitulReason($leadJson['lead']['fields']['108937']);
         $this->policy = new Policy($leadJson['lead']['fields']);
 
     }
@@ -57,7 +61,26 @@ class LeadShimur extends BaseLead
 //    {
 //        $this->recordId = $recordId;
 //    }
+    //setBitulCategory()
+    public function getBitulCategory()
+    {
+        return $this->bitulCategory;
+    }
 
+    public function setBitulCategory($bitulCategory)
+    {
+        $this->bitulCategory = $bitulCategory;
+    }
+    //BitulReason()
+    public function getBitulReason()
+    {
+        return $this->bitulReason;
+    }
+
+    public function setBitulReason($bitulReason)
+    {
+        $this->bitulReason = $bitulReason;
+    }
     /**
      * @return mixed
      */
@@ -260,6 +283,8 @@ class LeadShimur extends BaseLead
             'dateOfCancel' => $this->getDateOfCancel()->format(DateTime::ISO8601),
             'premiaAferShimur' => $this->getPremiaAferShimur(),
             'sellerNameMeshamer' => $this->getSellerNameMeshamer(),
+            'cancelCategory' => $this-> getBitulCategory(),
+            'cancelReason' => $this-> getBitulReason(),
             'reference' => $this->getRecordId(),
         ];
     }
@@ -279,7 +304,10 @@ class LeadShimur extends BaseLead
             'dateOfCancel' => $this->getDateOfCancel()->format(DateTime::ISO8601),
             'premiaAferShimur' => $this->getPremiaAferShimur(),
             'sellerNameMeshamer' => $this->getSellerNameMeshamer(),
+            'cancelCategory' => $this-> getBitulCategory(),
+            'cancelReason' => $this-> getBitulReason(),
             'reference' => $this->getRecordId(),
+
         ];
         //if wiil need update policy here
         //return null;
