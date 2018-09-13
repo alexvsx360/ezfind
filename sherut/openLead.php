@@ -324,7 +324,8 @@ if ($_POST){
             $openLeadData = generateBitulLeadData($supplierNameEmail);
             $status = "107637";//התקבלה בקשה לביטול
             // update status of polica mekorit in crm
-            $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול"];
+            $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול",
+                103698 => $configTypes["typeOfCancel"][$_POST['cancelType']]];
             leadImUpdateLead($crmAccountNumber, $recordNumber, $updateFieldsKeyValue, false,$status);
             break;
         case 'doublePay':

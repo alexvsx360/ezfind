@@ -113,6 +113,7 @@ if ($_GET) {
                             <option disabled selected value> -- בחר את סוג הביטול -- </option>
                             <option value="מכתב ביטול">מכתב ביטול</option>
                             <option value="מינוי סוכן">מינוי סוכן</option>
+                            <option value="ביטול הרשאה לחיוב">ביטול הרשאה לחיוב</option>
                         </select>
                     </div>
                 </div>
