@@ -17,8 +17,8 @@ $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $LOGGER = fopen("log.txt", "a");
 $paramIndex = 0;
 $fieldId = 0;
-//$updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
-$updateLeadUrl ="http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.2.ashx?acc_id=3694";
+$updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
+//$updateLeadUrl ="http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.2.ashx?acc_id=3694";
 
 function getFieldId($fieldNumber){
     global $updateLeadUrl;
