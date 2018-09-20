@@ -42,7 +42,7 @@ $premia = $policy['premia'];
 $cancellationLetter = $policy['cancellationNumber'];
 $insuranceStartDate = $policy['insuranceStartDate'];
 $discount = $policy['discount'];
-//$insuranceComment = $policy['insuranceComment'];
+$insuranceComment = $policy['insuranceComment'];
 $saleDate = $policy['saleDate'];
 $cancelPolicyNumber = $policy['cancelPolicy'];
 $payingWith = $policy['payingWith'];
@@ -166,7 +166,6 @@ $ticketCommentBody =
     'תאריך תחילת ביטוח : ' .$insuranceStartDate. " \n" .
     'האם יש מכתב ביטול? : ' . $cancellationLetter  . " \n" .
     'מכתבי הביטול : ' . " \n" . $cancelLettersLinksToTicket  . " \n" .
-    'מספר פוליסה לבטל : ' . $cancelPolicyNumber  . " \n" .
     'תאריך המכירה : ' . $saleDate  . " \n" .
     'אמצעי תשלום : ' . $payingWith  . " \n" .
     'גילוי נאות: '. $linkInformation[$insuranceCompany][$policyName]. " \n" .
@@ -241,7 +240,6 @@ $policyPost = [
     'origLeadSupplier' => $origLeadSupplaier,
     'cancelLettersJson' => $cancelLettersJson,
     'leadPromoter' => str_replace('_'," ",$origLeadSupplaier),
-//    'cancelLettersLinks' => $arrayLinksCancelFiles[0]
 
 ];
 //open new lead policat prat in tiful sherut

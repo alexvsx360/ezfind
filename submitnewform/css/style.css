@@ -60,15 +60,15 @@ button{
 .cancelfiles{
  /*//   opacity:0*/
 }
-.addcancellationletters{
+.addcancellationletters,.updateCancellationletters{
     border: 1px solid #b9bbbe;
     padding: 15px;
     border-radius: 5px;
 }
-.addMorecancellationletters{
+.addMorecancellationletters,.addMoreUpdateCancellationletters{
     cursor: pointer;
     color:#e4606d;
 }
-.removecancellationletters{
+.removecancellationletters,.removeUpdateCancellationletters{
     cursor: pointer;
 }
