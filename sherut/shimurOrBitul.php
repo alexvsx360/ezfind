@@ -83,6 +83,7 @@ if ($_GET) {
     $supplierId = $leadToPopulateJson["lead"]["supplier_id"];
     $supplier = getUser($acc_id,$supplierId);
     $supplierName = $supplier["result"]["name"];
+    $moveToMokedShimur =$leadToPopulateJson['lead']['fields']['111475'];
     //$cancelPolicyNumber = $leadToPopulateJson['lead']['fields']['107754'];
     $_SESSION["leadIdToCancel"] = $leadIdToCancel;
 
@@ -96,6 +97,7 @@ if ($_GET) {
     </div>
     <form enctype="multipart/form-data" id="main-form" onsubmit="return validateFileSize()" action="bitulOrShimurHandler.php" class="" method="post" >
         <div class="form-group">
+            <input type="hidden" class="input-group form-control" value="<?php print $moveToMokedShimur ?>" name="moveToMokedShimur"/>
             <input type="hidden" class="input-group form-control" value="<?php print $supplierName ?>" name="supplierName"/>
             <input type="hidden" class="input-group form-control" value="<?php print $userEmail ?>" name="userEmail"/>
             <input type="hidden" class="input-group form-control" value="<?php print $userName ?>" name="userName"/>

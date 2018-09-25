@@ -113,6 +113,7 @@ if ($_GET) {
                             <option disabled selected value> -- בחר את סוג הביטול -- </option>
                             <option value="מכתב ביטול">מכתב ביטול</option>
                             <option value="מינוי סוכן">מינוי סוכן</option>
+                            <option value="ביטול הרשאה לחיוב">ביטול הרשאה לחיוב</option>
                         </select>
                     </div>
                 </div>
@@ -130,7 +131,6 @@ if ($_GET) {
                         <label for="sel1">שם הספק</label>
                         <select required class="form-control" id="" name="supplierNameEmail" placeholder="">
                             <option value ="אימייל;בקשה לביטול איש מכירות עזב;15348"> -- בחר את שם הספק --</option>
-
                             <?php
                             foreach($getActiveUsers['result'] as $key => $value){
                                 echo '<option value="'.$value['email'].";".$value['name'].";".$value['id'].'">'.$value['name'].'</option>';}
@@ -155,8 +155,10 @@ if ($_GET) {
                     <div class="row" >
                         <div class="col-xs-5"></div>
                         <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <div class="checkbox">
-                        <label><input type="checkbox" name = "viturShimur" value="נציג מוותר על זכות השימור">נציג מוותר על זכות השימור</label>
+                    <div class="checkbox" style="margin-right: 20px">
+                        <label><input type="checkbox" name = "viturShimur" value="נציג מוותר על זכות השימור">נציג מוותר על זכות השימור</label><br>
+                        <label><input type="checkbox" name = "policyThreeMonthsPassed" value="פוליסות מעל שלושה חודשים">פוליסות מעל שלושה חודשים</label>
+
                     </div>
                     </div>
                     </div>
@@ -175,6 +177,11 @@ if ($_GET) {
 
     <script>
     jQuery(document).ready(function () {
+
+
+            $('input:checkbox').click(function() {
+                $('input:checkbox').not(this).prop('checked', false);
+            });
 
 
         jQuery("#back_to_form").click(function () {

@@ -56,6 +56,8 @@ if ($_POST){
     $ticketNumber = $_POST['ticketNumber'];
     $cancelPolicyType = $_POST['cancelPolicyType'];
     $leadToPopulateJson = leadImGetLead($crmAccountNumber, $leadIdToCancel);
+    $bitulReason = str_replace(' ', '_',$_POST["bitulReason"]);
+    $bitulCategory = str_replace(' ', '_',$_POST["bitulCategory"]);
     if ($leadToPopulateJson['status'] !== "failure" ){
          $leadSugPolica = $leadToPopulateJson['lead']['fields'][102104];
         switch ($status){
@@ -71,7 +73,7 @@ if ($_POST){
                 $callCenterManagerMail = $_POST["callCenterManagerMail"];
                 $supplierName = $_POST["supplierName"];
                 $policyCanceledInOppositeCompany = $_POST['policyCanceledInOppositeCompany'];
-
+                $moveToMokedShimur = $_POST["moveToMokedShimur"];
                 /*save the file to the directory */
                 $files = $_FILES["file"]["name"];
                 $extension_files = array();
@@ -111,7 +113,10 @@ if ($_POST){
                         104604 => $_POST['sellerNameMeshamer'],//שם המוכרן המשמר
                         104607 => $_POST['premiaAferShimur'],//פרמיה בפועל לאחר שימור
                         105113 => $_POST['cancelDate'],//תאריך ביטול
-                        107639 => "הופק_ושומר"
+                        107639 => "הופק_ושומר",
+                        111475 => $_POST["moveToMokedShimur"],
+                        108937 => $bitulReason, //סיבת הביטול
+                        108936 => $bitulCategory //קטגורית סיבת הביטול
                     ];
                 $status = 104259; //ufak veshumar
                 leadImUpdateLead($crmAccountNumber, $leadIdToCancel, $updateFieldsKeyValue, false, $status);
@@ -220,8 +225,7 @@ if ($_POST){
                 }
                 break;
             case "ביטול" :
-                $bitulReason = str_replace(' ', '_',$_POST["bitulReason"]);
-                $bitulCategory = str_replace(' ', '_',$_POST["bitulCategory"]);
+
                 $policyLengthTime = str_replace(' ', '_',$_POST["policyLengthTime"]);
                 $updateFieldsKeyValue = [
                         107639 => "ביטול",

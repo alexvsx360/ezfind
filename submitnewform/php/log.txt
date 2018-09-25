@@ -1,0 +1,3 @@
+before create ticket to lead id:16623163ticket created ticket number is31687before open new lead in tiful sherut in crmnew lead opened with id: 19974924
+Update Lead URL http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_id=16876270&update_fields[fld_id]=102161&update_fields[fld_val]=https://crm.ibell.co.il/a/3694/leads/19974924
+Response from Lead.imOK

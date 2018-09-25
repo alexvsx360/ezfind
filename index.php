@@ -6,7 +6,7 @@
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<!-- Optional theme -->
-		<link rel="stylesheet" h    ref="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="css/style.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -23,8 +23,7 @@
 	</head>
 	<body>
 		<?php
-        include_once   ('functions.php');
-        include_once ('leadImFunctions.php');
+        include_once ("../generalUtilities/leadImFunctions.php");
 
 
         function getLeadDataSource($getLeadResult){
@@ -96,19 +95,22 @@
             $origLeadSupplaier = null;
             switch ($acc_id){
                 case 3305://mechirot bolotin
-                    $harBituahFile = $fieldsValuesJsonArray["124"];
+                    $harBituahFile = $leadToPopulateJson['lead']['fields']['102013'];
+                    //$harBituahFile = $fieldsValuesJsonArray["124"];
                     $getLeadResult = leadImGetLead(3310, $leadToPopulateJson['lead']['fields']['91423']);
                     $origLeadCampaignName = getLeadDataSource($getLeadResult);
                     $origLeadSupplaier = getLeadSuplaierName($getLeadResult);
                     break;
                 case 3325://mechirot elad shimoni
-                    $harBituahFile = $fieldsValuesJsonArray["123"];
+                    $harBituahFile = $leadToPopulateJson['lead']['fields']['102012'];
+                    //$harBituahFile = $fieldsValuesJsonArray["123"];
                     $getLeadResult = leadImGetLead(3310, $leadToPopulateJson['lead']['fields']['93794']);
                     $origLeadCampaignName = getLeadDataSource($getLeadResult);
                     $origLeadSupplaier = getLeadSuplaierName($getLeadResult);
                     break;
                 case 3326://mechirot eazy bitua
-                    $harBituahFile = $fieldsValuesJsonArray["122"];
+                    $harBituahFile = $leadToPopulateJson['lead']['fields']['102008'];
+                    //$harBituahFile = $fieldsValuesJsonArray["122"];
                     $getLeadResult = leadImGetLead(3310, $leadToPopulateJson['lead']['fields']['94224']);
                     $origLeadCampaignName = getLeadDataSource($getLeadResult);
                     $origLeadSupplaier = getLeadSuplaierName($getLeadResult);
@@ -401,7 +403,7 @@
 
             <?php
         } else {
-        if($harBituahFile == null){
+        if($harBituahFile == null || $harBituahFile == ""){
             echo
             '<div class="alert alert-danger" role="alert" style="text-align: center">
              עליך להעלות קודם את קובץ הר ביטוח של הליד ורק אחר כך תוכל להגיש את ההצעה

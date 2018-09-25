@@ -8,10 +8,18 @@
 include_once "../../generalUtilities/leadImFunctions.php";
 $ctcCounterFieldMapper = [
     '3305' => '110062',
+    '3325' => '110407',
+    '3326' => '110412',
+    '3328' => '110423',
+    '4196' => '110649'
 ];
 
 $callTimeFieldMapper = [
-    '3305' => '110063'
+    '3305' => '110063',
+    '3325' => '110408',
+    '3326' => '110413',
+    '3328' => '110425',
+    '4196' => '110650'
 ];
 
 function getCallCount(){

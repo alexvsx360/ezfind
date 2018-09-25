@@ -6,11 +6,19 @@
  * Time: 3:19 PM
  */
 include ('functions.php');
+require '../vendor/autoload.php';
+use Zendesk\API\HttpClient as ZendeskAPI;
 
+$subdomain = "ezfind-sherut";
+$username  = "yaki@tgeg.co.il";
+$token     = "r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF"; // replace this with your token
+$client = new ZendeskAPI($subdomain, $username);
+$client->setAuth('basic', ['username' => $username, 'token' => $token]);
+$LOGGER = fopen("log.txt", "a");
 $paramIndex = 0;
 $fieldId = 0;
-//$updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
-$updateLeadUrl ="http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.2.ashx?acc_id=3694";
+$updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
+//$updateLeadUrl ="http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.2.ashx?acc_id=3694";
 
 function getFieldId($fieldNumber){
     global $updateLeadUrl;
@@ -20,6 +28,57 @@ function getFieldId($fieldNumber){
         $fieldId =  $fieldId-1;
     }else{
         $updateLeadUrl = $updateLeadUrl ."&update_fields[fld_val_$fieldId]=$fieldNumber";
+    }
+}
+function checkUpdate($result,$updateLeadUrl)
+{
+    global $client;
+    if ($result != "OK") {
+        for ($i = 0; $i < 3; $i++) {
+            sleep(1);
+            $result = httpGet($updateLeadUrl);
+            if ($result == "OK") {
+                break;
+            } else {
+                if ($i == 2 && $result != "OK") {
+                    $result = json_decode($result, true);
+                    // $file = fopen("error.txt","w");
+                    $current_file_name = basename($_SERVER['PHP_SELF']);
+                    $debug = debug_backtrace();
+                    $debug = array_shift($debug);
+//                  $sentfromServer = $_SERVER['SERVER_NAME'];
+                    $sentfromServer = $_SERVER['HTTP_HOST'];
+                    $parseUrl = parse_url($updateLeadUrl);
+                    $sentToServer = $parseUrl['host'];
+                    $prameters ="";
+                    foreach($_GET as $key => $value){
+                        $prameters.= $key . " : " . $value . "\n";
+                    }
+                    $newTicket = $client->tickets()->create([
+                        'tags' => 'error',
+                        'status' => 'new',
+                        'subject' => 'error in update crm',
+                        'requester' => array(
+                            'name' => 'dina',
+                            'email' => 'dina.r@ezfind.co.il'
+                        ),
+                        //   'collaborators' =>  ["Yaki@tgeg.co.il"],
+                        'comment' => [
+                            'body' => 'in date:' . date("d/m/Y") . " \n" .
+                                'in file: ' . $current_file_name . " \n" .
+                                'in line: ' . $debug["line"] . " \n" .
+                                'prameters: ' . $prameters . " \n" .
+                                'Error:' . $result['errmsg'] . " \n" .
+                                'request sent from server :' . $sentfromServer . " \n" .
+                                'to server:' . $sentToServer . " \n" .
+                                'orignalUrl:' . $updateLeadUrl
+                        ]
+                    ]);
+                }
+            }
+        }
+    } else {
+        return $result;
     }
 }
 $statusToFieldNumJson = [
@@ -157,7 +216,8 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
 
         fwrite($myfile, "Update URL is: " . $updateLeadUrl ."\n");
         /*Update the CRM*/
-        httpGet($updateLeadUrl);
+        $result = httpGet($updateLeadUrl);
+        checkUpdate($result,$updateLeadUrl);
         /*Update the BI*/
         //updateRecordInBiScreen($_GET['lead_ticket'],  $statusToFieldNumJson[$_GET['status']], strtotime($_GET['productionDate']), $_GET['premia']);
         /*http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694&lead_ticket=4564&status=10084&update_fields[fld_id]=102145&update_fields[fld_val]=&update_fields[fld_id_1]=100100&update_fields[fld_val_1]=123456&update_fields[fld_id_2]=102416&update_fields[fld_val_2]=154&update_fields[fld_id_3]=102140&update_fields[fld_val_3]=2017-12-01&update_fields[fld_id_4]=102218&update_fields[fld_val_4]=2017-11-27&update_fields[fld_id_5]=102144&update_fields[fld_val_5]=2018-01-01&update_fields[fld_id_6]=102133&update_fields[fld_val_6]=ירוק*/

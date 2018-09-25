@@ -74,6 +74,7 @@ function setCallCenterEmail(){
 
 function InitiateDataFoTicket($supplierNameEmail){
     $callCenterManger = setCallCenterMangerName();
+    global $policyThreeMonthsPassed;
     global $viturShimur;
     global $tags;
     global $customerName;
@@ -112,7 +113,7 @@ function InitiateDataFoTicket($supplierNameEmail){
         $tags = ['טיקט_ביטול_לאחר_עריכה','שימור_באחריות_המוקדים'];
 
     }
-    if($viturShimur == "נציג מוותר על זכות השימור") {
+    if($viturShimur == "נציג מוותר על זכות השימור"||$policyThreeMonthsPassed == "פוליסות מעל שלושה חודשים") {
     $requesterName = $userName;
     $requesterEmail = $userEmail;
     $collaborators = ["michael@tgeg.co.il"];
@@ -120,13 +121,30 @@ function InitiateDataFoTicket($supplierNameEmail){
     $dataTicket  = "נציג מכירות מוותר על זכות השימור";
     $tags=[''];
     }
+    if($policyThreeMonthsPassed=="פוליסות מעל שלושה חודשים"){
+        $dataTicket  = "פוליסה מעל שלושה חודשים, עובר אוטומטית למחלקת שימור";
+    }
+
 }
+
 function updeteLeadBitulInCrm($newLeadId,$supplierNameEmail){
+    global $policyThreeMonthsPassed;
     global $viturShimur;
-    if ($supplierNameEmail[1] == "בקשה לביטול איש מכירות עזב"||$viturShimur=="נציג מוותר על זכות השימור"){
+    if ($supplierNameEmail[1] == "בקשה לביטול איש מכירות עזב"){
         $status = "108086";
-        $updateFieldsKeyValue = [107639 => "SLA_שימור_חלף"];
+        $updateFieldsKeyValue = [107639 => "SLA_שימור_חלף",111475=>"כן,בקשה_לביטול_איש_מכירות_עזב"];
         leadImUpdateLead(3694, $newLeadId, $updateFieldsKeyValue, true,$status);
+    }
+    elseif($viturShimur == "נציג מוותר על זכות השימור"){
+        $status = "108086";
+        $updateFieldsKeyValue = [107639 => "SLA_שימור_חלף",111475=>"כן,נציג_מוותר_על_זכות_השימור"];
+        leadImUpdateLead(3694, $newLeadId, $updateFieldsKeyValue, true,$status);
+    }
+    elseif($policyThreeMonthsPassed == "פוליסות מעל שלושה חודשים"){
+        $status = "108086";
+        $updateFieldsKeyValue = [107639 => "SLA_שימור_חלף",111475=>"כן,פוליסות_מעל_שלושה_חודשים"];
+        leadImUpdateLead(3694, $newLeadId, $updateFieldsKeyValue, true,$status);
+
     }else{
         $status = "103727";
         $updateFieldsKeyValue = [107639 => "הועבר_לנציג_מכירות"];
@@ -297,6 +315,7 @@ if ($_POST){
     $supplierNameEmail = explode(";",setDefaultValue($_POST['supplierNameEmail']));
     $moreDetailsOfBitul = $_POST["moreDetailsOfBitul"];
     $viturShimur = $_POST['viturShimur'];
+    $policyThreeMonthsPassed = $_POST['policyThreeMonthsPassed'];
     switch ($_POST['leadType']){
     case 'pigur':
             $openLeadData = generatePigurLeadPostData();
@@ -305,7 +324,8 @@ if ($_POST){
             $openLeadData = generateBitulLeadData($supplierNameEmail);
             $status = "107637";//התקבלה בקשה לביטול
             // update status of polica mekorit in crm
-            $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול"];
+            $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול",
+                103698 => $configTypes["typeOfCancel"][$_POST['cancelType']]];
             leadImUpdateLead($crmAccountNumber, $recordNumber, $updateFieldsKeyValue, false,$status);
             break;
         case 'doublePay':
