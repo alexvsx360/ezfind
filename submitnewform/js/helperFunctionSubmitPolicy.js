@@ -775,7 +775,7 @@ $(document).ready(function() {
                 var cancelInsuranceCompany = key;
                 var cancelLetters = cancelLatters[key];
                 for (i = 0; i < cancelLetters.length; i++) {
-                    data.append(i + ". cancelLetterTo: " + cancelInsuranceCompany, cancelLetters[i])
+                    data.append(i + "-" + cancelInsuranceCompany, cancelLetters[i])
                 }
             }
             data.append("policy", JSON.stringify(policy));
@@ -901,7 +901,8 @@ $("body").on('click', ".removeUpdateCancellationletters", function () {
                  var updateCancelInsuranceCompany = key;
                  var updateCancelLetters = arrayUpdateCancelInsuranceCompanyAndCancelLetters[key];
                  for (i = 0; i < updateCancelLetters.length; i++) {
-                     data.append(i + ". cancelLetterTo: " + updateCancelInsuranceCompany, updateCancelLetters[i])
+                     data.append(i + "-" +updateCancelInsuranceCompany, updateCancelLetters[i])
+
                  }
              }
              var crmAccountNumber = $("#crmAccountNumber").val();

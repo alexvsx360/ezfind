@@ -10,6 +10,7 @@ include_once ('../../generalUtilities/leadImFunctions.php');
 $arrayLinksCancelFilesByCancelInsuranceCompany =[];
 $arrayLinksCancelFiles= [];
 $count = 0;
+$formatArrayLinksCancelFilesByCancelInsuranceCompany =[];
 
 $leadId = $_POST['leadId'];
 
@@ -31,12 +32,15 @@ function saveFilestoNewDirectoryAndGetLink($file,$nameFileInPost,$leadId,$direct
 
 
 foreach ($_FILES as $key  => $val) {
-        $linkToCancelFile = saveFilestoNewDirectoryAndGetLink($val, $key, $leadId, "cancel_files");
-        $arrayLinksCancelFilesByCancelInsuranceCompany[$key] = $linkToCancelFile;
-        array_push($arrayLinksCancelFiles,$linkToCancelFile);
+    $linkToCancelFile = saveFilestoNewDirectoryAndGetLink($val, $key, $leadId, "cancel_files");
+    $nameInArray = explode("-",$key);
+    $nameString  = $nameInArray[1];
+    $formatArrayLinksCancelFilesByCancelInsuranceCompany[$nameString][]= $linkToCancelFile;
+    array_push($arrayLinksCancelFiles,$linkToCancelFile);
 
 }
-$cancelLettersJson =  json_encode($arrayLinksCancelFilesByCancelInsuranceCompany,JSON_UNESCAPED_UNICODE);
+
+$cancelLettersJson =  json_encode($formatArrayLinksCancelFilesByCancelInsuranceCompany,JSON_UNESCAPED_UNICODE);
 $updateFieldsKeyValue = [111678 => $cancelLettersJson];
 leadImUpdateLead(3694,$leadId, $updateFieldsKeyValue, true);
 $updateFieldsKeyValue = [111679 => '{reset}'];
