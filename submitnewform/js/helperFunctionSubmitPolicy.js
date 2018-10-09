@@ -20,7 +20,7 @@ itemCountUpdateCancellationletters = 0;
 
 function validateBeforeSubmit(num,tempDate){
     // Check if the premia is greater than 0.
- //   var num = $("#sum_premia").val();
+    //   var num = $("#sum_premia").val();
     if (num < 1) {
         textError = "הפרמיה חיבת להיות גדולה מ-0"
         return textError;
@@ -30,15 +30,15 @@ function validateBeforeSubmit(num,tempDate){
     var dateNow = Date.now();
     dateNow = new Date(dateNow);
     dateNow.setHours(0, 0, 0, 0);
-   //var formatStartDate = new Date(newformattedDate);
+    //var formatStartDate = new Date(newformattedDate);
     tempDate.setHours(0, 0, 0, 0);
 
     if (tempDate >= dateNow) {
-            return true;
-        } else {
+        return true;
+    } else {
         textError = "תאריך תחילת הביטוח יהיה מהיום והלאה"
-            return textError;
-        }
+        return textError;
+    }
     //valdite of file size
 
     // var file = $('input[type="file"]').get(0).files;
@@ -514,6 +514,7 @@ $(document).ready(function() {
             var elementId = 'detailsPolicy' + count;
             $(htmlInputsPolicy).insertAfter("#showPolicyDetails").attr('id', elementId);
             $('<button type="button" class="btn btn-danger delete" >מחיקת פוליסה</button>\n').insertAfter("#finishEditPolicyDetails");
+            addHtmlTOCancelLetters();
         }
     })
     $("body").on('click', "input:checkbox", function () {
@@ -772,10 +773,12 @@ $(document).ready(function() {
             data.append("castumerDetails", JSON.stringify(castumerDetailsArray));
 
             for (var key in cancelLatters) {
-                var cancelInsuranceCompany = key;
-                var cancelLetters = cancelLatters[key];
-                for (i = 0; i < cancelLetters.length; i++) {
-                    data.append(i + "-" + cancelInsuranceCompany, cancelLetters[i])
+                if (key !="undefined") {
+                    var cancelInsuranceCompany = key;
+                    var cancelLetters = cancelLatters[key];
+                    for (i = 0; i < cancelLetters.length; i++) {
+                        data.append(i + "-" + cancelInsuranceCompany, cancelLetters[i])
+                    }
                 }
             }
             data.append("policy", JSON.stringify(policy));
@@ -805,78 +808,78 @@ $(document).ready(function() {
 ////update cancell letters from tiful sherut acount
     $("body").on('click', ".addMoreUpdateCancellationletters", function() {
 
-         itemCountUpdateCancellationletters++;
-         var idOfMainDivUpdateCancellationletters = "updateCancellationletters" + itemCountUpdateCancellationletters;
-         var idOfInputsUpdateCancelLattersFiles = "updateCancelfiles" + itemCountUpdateCancellationletters;
-         var idOfInputsUpdateCancelInsuranceCompany = "updateCancelInsuranceCompany" + itemCountUpdateCancellationletters;
-         arrayidOfInputsUpdateCancelLattersFiles.push(idOfInputsUpdateCancelLattersFiles);
-         arrayidOfMainDivUpdateCancellationletters.push(idOfMainDivUpdateCancellationletters);
-         arrayidOfInputsUpdateCancelInsuranceCompany.push(idOfInputsUpdateCancelInsuranceCompany);
-         console.log(arrayidOfMainDivUpdateCancellationletters);
-         var htmlAddUpdatecancellationletters =
-    '        <div class="row updateCancellationletters" id="updateCancellationletters'+itemCountUpdateCancellationletters+'">\n' +
-    '            <br>\n' +
-    '            <br>\n' +
-    '               <div class="col-sm" >\n' +
-    '                     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
-    '                                <select required class="form-control updateCancelInsuranceCompany" id="updateCancelInsuranceCompany'+itemCountUpdateCancellationletters+'" name="updateCancelInsuranceCompany">\n' +
-    '                                        <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
-    '                                        <option value="הראל">הראל</option>\n' +
-    '                                        <option value="הפניקס">הפניקס</option>\n' +
-    '                                        <option value="מגדל">מגדל</option>\n' +
-    '                                        <option value="מנורה">מנורה</option>\n' +
-    '                                        <option value="כלל">כלל</option>\n' +
-    '                                        <option value="הכשרה">הכשרה</option>\n' +
-    '                                        <option value="שירביט">שירביט</option>\n' +
-    '                                        <option value="שומרה">שומרה</option>\n' +
-    '                                        <option value="דיקלה">דיקלה</option>\n' +
-    '                                        <option value="איילון">איילון</option>\n' +
-    '                                        <option value="AIG">AIG</option>\n' +
-    '                                        <option value="IDI">IDI</option>\n' +
-    '                                        <option value="פסגות">פסגות</option>\n' +
-    '                                        <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
-    '                                        <option value="אחר">אחר</option>\n' +
-    '                                    </select>\n' +
-    '                   </div>\n' +
-    '               <div class="col-sm">\n' +
-    '                     <label for="updateCancelfiles" style="cursor: pointer;">\n' +
-    '                           <i class="material-icons" style="float: right;color:#e4606d">add_circle</i>צרף מכתב ביטול\n' +
-    '                        </label>\n' +
-    '                   <input aria-describedby="fileHelp" required type="file" class="form-control-file updateCancelfiles" name="updateCancelfiles[]" id="updateCancelfiles'+itemCountUpdateCancellationletters+'"  multiple value=""/>\n' +
-    '                 </div>\n' +
-    '             <div class="w-100 d-none d-md-block"></div>\n' +
-    '              <div class="col-md-6 offset-md-3">\n' +
-    '                     <p class="addMoreUpdateCancellationletters" style="text-align: center"><u>להוספת מכתב ביטול נוסף </u></p>\n' +
-    '                     <p class="removeUpdateCancellationletters"  style="text-align: center"><u>להסרת מכתב הביטול</u></p>\n' +
-    '                  </div>\n' +
-    '            </div>';
+        itemCountUpdateCancellationletters++;
+        var idOfMainDivUpdateCancellationletters = "updateCancellationletters" + itemCountUpdateCancellationletters;
+        var idOfInputsUpdateCancelLattersFiles = "updateCancelfiles" + itemCountUpdateCancellationletters;
+        var idOfInputsUpdateCancelInsuranceCompany = "updateCancelInsuranceCompany" + itemCountUpdateCancellationletters;
+        arrayidOfInputsUpdateCancelLattersFiles.push(idOfInputsUpdateCancelLattersFiles);
+        arrayidOfMainDivUpdateCancellationletters.push(idOfMainDivUpdateCancellationletters);
+        arrayidOfInputsUpdateCancelInsuranceCompany.push(idOfInputsUpdateCancelInsuranceCompany);
+        console.log(arrayidOfMainDivUpdateCancellationletters);
+        var htmlAddUpdatecancellationletters =
+            '        <div class="row updateCancellationletters" id="updateCancellationletters'+itemCountUpdateCancellationletters+'">\n' +
+            '            <br>\n' +
+            '            <br>\n' +
+            '               <div class="col-sm" >\n' +
+            '                     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
+            '                                <select required class="form-control updateCancelInsuranceCompany" id="updateCancelInsuranceCompany'+itemCountUpdateCancellationletters+'" name="updateCancelInsuranceCompany">\n' +
+            '                                        <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
+            '                                        <option value="הראל">הראל</option>\n' +
+            '                                        <option value="הפניקס">הפניקס</option>\n' +
+            '                                        <option value="מגדל">מגדל</option>\n' +
+            '                                        <option value="מנורה">מנורה</option>\n' +
+            '                                        <option value="כלל">כלל</option>\n' +
+            '                                        <option value="הכשרה">הכשרה</option>\n' +
+            '                                        <option value="שירביט">שירביט</option>\n' +
+            '                                        <option value="שומרה">שומרה</option>\n' +
+            '                                        <option value="דיקלה">דיקלה</option>\n' +
+            '                                        <option value="איילון">איילון</option>\n' +
+            '                                        <option value="AIG">AIG</option>\n' +
+            '                                        <option value="IDI">IDI</option>\n' +
+            '                                        <option value="פסגות">פסגות</option>\n' +
+            '                                        <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
+            '                                        <option value="אחר">אחר</option>\n' +
+            '                                    </select>\n' +
+            '                   </div>\n' +
+            '               <div class="col-sm">\n' +
+            '                     <label for="updateCancelfiles" style="cursor: pointer;">\n' +
+            '                           <i class="material-icons" style="float: right;color:#e4606d">add_circle</i>צרף מכתב ביטול\n' +
+            '                        </label>\n' +
+            '                   <input aria-describedby="fileHelp" required type="file" class="form-control-file updateCancelfiles" name="updateCancelfiles[]" id="updateCancelfiles'+itemCountUpdateCancellationletters+'"  multiple value=""/>\n' +
+            '                 </div>\n' +
+            '             <div class="w-100 d-none d-md-block"></div>\n' +
+            '              <div class="col-md-6 offset-md-3">\n' +
+            '                     <p class="addMoreUpdateCancellationletters" style="text-align: center"><u>להוספת מכתב ביטול נוסף </u></p>\n' +
+            '                     <p class="removeUpdateCancellationletters"  style="text-align: center"><u>להסרת מכתב הביטול</u></p>\n' +
+            '                  </div>\n' +
+            '            </div>';
         $(htmlAddUpdatecancellationletters).insertBefore($(".updateCancellationletters:first"));
     })
 
-$("body").on('click', ".removeUpdateCancellationletters", function () {
+    $("body").on('click', ".removeUpdateCancellationletters", function () {
 
-    $(this).parent().parent().remove();
-    var idOfMainDivCancelLettersToRemove = $(this).parent().parent().attr('id');
-    var stringId = 'updateCancellationletters';
-    var numberId = idOfMainDivCancelLettersToRemove.replace(stringId, '');
-    arrayidOfMainDivUpdateCancellationletters.splice(numberId, 1, " ");
-})
+        $(this).parent().parent().remove();
+        var idOfMainDivCancelLettersToRemove = $(this).parent().parent().attr('id');
+        var stringId = 'updateCancellationletters';
+        var numberId = idOfMainDivCancelLettersToRemove.replace(stringId, '');
+        arrayidOfMainDivUpdateCancellationletters.splice(numberId, 1, " ");
+    })
 
-     $("body").on('click', "#submitUpdateCancelfiles", function() {
-         var emptyFields = checkEmptyFields();
+    $("body").on('click', "#submitUpdateCancelfiles", function() {
+        var emptyFields = checkEmptyFields();
 
-         if (!emptyFields) {
-             $(".alert-danger").remove();
-             var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלאות את כל הפרטים </div>';
-             $(html).insertBefore(".detailsPolicy:first");
-             ;
-             showEmptyFields(empty);
-             console.log(empty);
-         } else {
-         $(this).attr('disabled', true);
-         $(".updateCancellationletters").css("pointer-events", "none");
-         $(".updateCancellationletters").css('opacity', '0.4');
-         arrayUpdateCancelInsuranceCompanyAndCancelLetters={};
+        if (!emptyFields) {
+            $(".alert-danger").remove();
+            var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלאות את כל הפרטים </div>';
+            $(html).insertBefore(".detailsPolicy:first");
+            ;
+            showEmptyFields(empty);
+            console.log(empty);
+        } else {
+            $(this).attr('disabled', true);
+            $(".updateCancellationletters").css("pointer-events", "none");
+            $(".updateCancellationletters").css('opacity', '0.4');
+            arrayUpdateCancelInsuranceCompanyAndCancelLetters={};
             var fileInputUpdateCancelLetters;
             var cancelLettersUpdateValue;
             for (i = 0; i < arrayidOfMainDivUpdateCancellationletters.length; i++) {
@@ -896,38 +899,38 @@ $("body").on('click', ".removeUpdateCancellationletters", function () {
                 arrayUpdateCancelInsuranceCompanyAndCancelLetters[updateCancelInsuranceCompanyKey] = cancelLettersUpdateValue;
             }
 
-             var data = new FormData();
-             for (var key in arrayUpdateCancelInsuranceCompanyAndCancelLetters) {
-                 var updateCancelInsuranceCompany = key;
-                 var updateCancelLetters = arrayUpdateCancelInsuranceCompanyAndCancelLetters[key];
-                 for (i = 0; i < updateCancelLetters.length; i++) {
-                     data.append(i + "-" +updateCancelInsuranceCompany, updateCancelLetters[i])
+            var data = new FormData();
+            for (var key in arrayUpdateCancelInsuranceCompanyAndCancelLetters) {
+                var updateCancelInsuranceCompany = key;
+                var updateCancelLetters = arrayUpdateCancelInsuranceCompanyAndCancelLetters[key];
+                for (i = 0; i < updateCancelLetters.length; i++) {
+                    data.append(i + "-" +updateCancelInsuranceCompany, updateCancelLetters[i])
 
-                 }
-             }
-             var crmAccountNumber = $("#crmAccountNumber").val();
-             var leadId = $("#leadId").val();
-             data.append("crmAccountNumber",crmAccountNumber);
-             data.append("leadId",leadId);
-             $.ajax({
-                 processData: false,
-                 contentType: false,
-                 type: "POST",
-                 url: "php/updateCancelLettersHendler.php",
-                 data: data,
-                 success: function (response) {
-                     $("#response").css('visibility', 'visible');
-                     $(".updateCancellationletters").remove();
-                     $("#submitUpdateCancelfiles").remove();
+                }
+            }
+            var crmAccountNumber = $("#crmAccountNumber").val();
+            var leadId = $("#leadId").val();
+            data.append("crmAccountNumber",crmAccountNumber);
+            data.append("leadId",leadId);
+            $.ajax({
+                processData: false,
+                contentType: false,
+                type: "POST",
+                url: "php/updateCancelLettersHendler.php",
+                data: data,
+                success: function (response) {
+                    $("#response").css('visibility', 'visible');
+                    $(".updateCancellationletters").remove();
+                    $("#submitUpdateCancelfiles").remove();
 
-                 },
-                 error: function (xhr, status, error) {
-                     var err = eval("(" + xhr.responseText + ")");
-                     alert(err.Message);
-                 }
-             });
-          }
-     });
+                },
+                error: function (xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    alert(err.Message);
+                }
+            });
+        }
+    });
 })
 
 
