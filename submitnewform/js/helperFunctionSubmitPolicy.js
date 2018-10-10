@@ -123,12 +123,18 @@ $(document).ready(function() {
                 '     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
                 '                <select required class="form-control" id="cancelInsuranceCompany' + itemCount + '" name="cancelInsuranceCompany">\n' +
                 '                    <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
-                '                    <option value="הראל">הראל</option>\n' +
+                '                    <option value="הראל-חיים">הראל-חיים</option>\n' +
+                '                    <option value="הראל-בריאות">הראל-בריאות</option>\n' +
                 '                    <option value="הפניקס">הפניקס</option>\n' +
-                '                    <option value="מגדל">מגדל</option>\n' +
-                '                    <option value="מנורה">מנורה</option>\n' +
-                '                    <option value="כלל">כלל</option>\n' +
-                '                    <option value="הכשרה">הכשרה</option>\n' +
+                '                    <option value="מגדל-חיים/בריאות">מגדל-חיים/בריאות</option>\n' +
+                '                    <option value="מגדל-אלמנטרי">מגדל-אלמנטרי</option>\n' +
+                '                    <option value="מנורה-חיים/בריאות">מנורה-חיים/בריאות</option>\n' +
+                '                    <option value="מנורה-אלמנטרי">מנורה-אלמנטרי</option>\n' +
+                '                    <option value="כלל-חיים">כלל-חיים</option>\n' +
+                '                    <option value="כלל-בריאות">כלל-בריאות</option>\n' +
+                '                    <option value="כלל-אלמנטרי">כלל-אלמנטרי</option>\n' +
+                '                    <option value="הכשרה-חיים/בריאות">הכשרה-חיים/בריאות</option>\n' +
+                '                    <option value="הכשרה-אלמנטרי">הכשרה-אלמנטרי</option>\n' +
                 '                    <option value="שירביט">שירביט</option>\n' +
                 '                    <option value="שומרה">שומרה</option>\n' +
                 '                    <option value="דיקלה">דיקלה</option>\n' +
@@ -137,7 +143,6 @@ $(document).ready(function() {
                 '                    <option value="IDI">IDI</option>\n' +
                 '                    <option value="פסגות">פסגות</option>\n' +
                 '                    <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
-                '                    <option value="אחר">אחר</option>\n' +
                 '                </select>\n' +
                 '   </div>\n' +
                 '   <div class="col-sm">\n' +
@@ -211,12 +216,18 @@ $(document).ready(function() {
                 '     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
                 '                <select required class="form-control" id="cancelInsuranceCompany' + itemCount + '" name="cancelInsuranceCompany">\n' +
                 '                    <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
-                '                    <option value="הראל">הראל</option>\n' +
+                '                    <option value="הראל-חיים">הראל-חיים</option>\n' +
+                '                    <option value="הראל-בריאות">הראל-בריאות</option>\n' +
                 '                    <option value="הפניקס">הפניקס</option>\n' +
-                '                    <option value="מגדל">מגדל</option>\n' +
-                '                    <option value="מנורה">מנורה</option>\n' +
-                '                    <option value="כלל">כלל</option>\n' +
-                '                    <option value="הכשרה">הכשרה</option>\n' +
+                '                    <option value="מגדל-חיים/בריאות">מגדל-חיים/בריאות</option>\n' +
+                '                    <option value="מגדל-אלמנטרי">מגדל-אלמנטרי</option>\n' +
+                '                    <option value="מנורה-חיים/בריאות">מנורה-חיים/בריאות</option>\n' +
+                '                    <option value="מנורה-אלמנטרי">מנורה-אלמנטרי</option>\n' +
+                '                    <option value="כלל-חיים">כלל-חיים</option>\n' +
+                '                    <option value="כלל-בריאות">כלל-בריאות</option>\n' +
+                '                    <option value="כלל-אלמנטרי">כלל-אלמנטרי</option>\n' +
+                '                    <option value="הכשרה-חיים/בריאות">הכשרה-חיים/בריאות</option>\n' +
+                '                    <option value="הכשרה-אלמנטרי">הכשרה-אלמנטרי</option>\n' +
                 '                    <option value="שירביט">שירביט</option>\n' +
                 '                    <option value="שומרה">שומרה</option>\n' +
                 '                    <option value="דיקלה">דיקלה</option>\n' +
@@ -225,7 +236,6 @@ $(document).ready(function() {
                 '                    <option value="IDI">IDI</option>\n' +
                 '                    <option value="פסגות">פסגות</option>\n' +
                 '                    <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
-                '                    <option value="אחר">אחר</option>\n' +
                 '                </select>\n' +
                 '   </div>\n' +
                 '   <div class="col-sm">\n' +
@@ -322,7 +332,7 @@ $(document).ready(function() {
         //Checks if all customer details are complete
         var emptyFields = checkEmptyFields();
         if (!emptyFields) {
-            var html = '<div class="alert alert-danger" role="alert" style="">עליך למלאות  את כל פרטיו האישיים של הלקוח  </div>';
+            var html = '<div class="alert alert-danger" role="alert" style="">עליך למלא  את כל פרטיו האישיים של הלקוח  </div>';
             $(".alertCastumerDetails").html(html)
             $(".alertCastumerDetails").show();
             showEmptyFields(empty);
@@ -388,7 +398,7 @@ $(document).ready(function() {
 
         if (!emptyFields) {
             $(".alert-danger").remove();
-            var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלאות את פרטי הפוליסה </div>';
+            var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלא את פרטי הפוליסה </div>';
             $(html).insertBefore(".detailsPolicy:first");
             ;
             showEmptyFields(empty);
@@ -498,7 +508,7 @@ $(document).ready(function() {
         var emptyFields = checkEmptyFields();
         if (!emptyFields) {
             $(".alert-danger").remove();
-            var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלאות את פרטי הפוליסה </div>';
+            var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלא את פרטי הפוליסה </div>';
             $(html).insertBefore(".detailsPolicy:first");
             showEmptyFields(empty);
             console.log(empty);
@@ -822,24 +832,29 @@ $(document).ready(function() {
             '            <br>\n' +
             '               <div class="col-sm" >\n' +
             '                     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
-            '                                <select required class="form-control updateCancelInsuranceCompany" id="updateCancelInsuranceCompany'+itemCountUpdateCancellationletters+'" name="updateCancelInsuranceCompany">\n' +
-            '                                        <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
-            '                                        <option value="הראל">הראל</option>\n' +
-            '                                        <option value="הפניקס">הפניקס</option>\n' +
-            '                                        <option value="מגדל">מגדל</option>\n' +
-            '                                        <option value="מנורה">מנורה</option>\n' +
-            '                                        <option value="כלל">כלל</option>\n' +
-            '                                        <option value="הכשרה">הכשרה</option>\n' +
-            '                                        <option value="שירביט">שירביט</option>\n' +
-            '                                        <option value="שומרה">שומרה</option>\n' +
-            '                                        <option value="דיקלה">דיקלה</option>\n' +
-            '                                        <option value="איילון">איילון</option>\n' +
-            '                                        <option value="AIG">AIG</option>\n' +
-            '                                        <option value="IDI">IDI</option>\n' +
-            '                                        <option value="פסגות">פסגות</option>\n' +
-            '                                        <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
-            '                                        <option value="אחר">אחר</option>\n' +
-            '                                    </select>\n' +
+            '                        <select required class="form-control updateCancelInsuranceCompany" id="updateCancelInsuranceCompany'+itemCountUpdateCancellationletters+'" name="updateCancelInsuranceCompany">\n' +
+            '                           <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
+            '                           <option value="הראל-חיים">הראל-חיים</option>\n' +
+            '                           <option value="הראל-בריאות">הראל-בריאות</option>\n' +
+            '                           <option value="הפניקס">הפניקס</option>\n' +
+            '                           <option value="מגדל-חיים/בריאות">מגדל-חיים/בריאות</option>\n' +
+            '                           <option value="מגדל-אלמנטרי">מגדל-אלמנטרי</option>\n' +
+            '                           <option value="מנורה-חיים/בריאות">מנורה-חיים/בריאות</option>\n' +
+            '                           <option value="מנורה-אלמנטרי">מנורה-אלמנטרי</option>\n' +
+            '                           <option value="כלל-חיים">כלל-חיים</option>\n' +
+            '                           <option value="כלל-בריאות">כלל-בריאות</option>\n' +
+            '                           <option value="כלל-אלמנטרי">כלל-אלמנטרי</option>\n' +
+            '                           <option value="הכשרה-חיים/בריאות">הכשרה-חיים/בריאות</option>\n' +
+            '                           <option value="הכשרה-אלמנטרי">הכשרה-אלמנטרי</option>\n' +
+            '                           <option value="שירביט">שירביט</option>\n' +
+            '                           <option value="שומרה">שומרה</option>\n' +
+            '                           <option value="דיקלה">דיקלה</option>\n' +
+            '                           <option value="איילון">איילון</option>\n' +
+            '                           <option value="AIG">AIG</option>\n' +
+            '                           <option value="IDI">IDI</option>\n' +
+            '                           <option value="פסגות">פסגות</option>\n' +
+            '                           <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
+            '                        </select>\n' +
             '                   </div>\n' +
             '               <div class="col-sm">\n' +
             '                     <label for="updateCancelfiles" style="cursor: pointer;">\n' +
@@ -870,7 +885,7 @@ $(document).ready(function() {
 
         if (!emptyFields) {
             $(".alert-danger").remove();
-            var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלאות את כל הפרטים </div>';
+            var html = '<div class="alert alert-danger" role="alert" style="text-align: center;margin-top: 25px">עליך למלא את כל הפרטים </div>';
             $(html).insertBefore(".detailsPolicy:first");
             ;
             showEmptyFields(empty);
