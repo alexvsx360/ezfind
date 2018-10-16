@@ -123,18 +123,18 @@ $(document).ready(function() {
                 '     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
                 '                <select required class="form-control" id="cancelInsuranceCompany' + itemCount + '" name="cancelInsuranceCompany">\n' +
                 '                    <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
-                '                    <option value="הראל-חיים">הראל-חיים</option>\n' +
-                '                    <option value="הראל-בריאות">הראל-בריאות</option>\n' +
+                '                    <option value="הראל_חיים">הראל_חיים</option>\n' +
+                '                    <option value="הראל_בריאות">הראל_בריאות</option>\n' +
                 '                    <option value="הפניקס">הפניקס</option>\n' +
-                '                    <option value="מגדל-חיים/בריאות">מגדל-חיים/בריאות</option>\n' +
-                '                    <option value="מגדל-אלמנטרי">מגדל-אלמנטרי</option>\n' +
-                '                    <option value="מנורה-חיים/בריאות">מנורה-חיים/בריאות</option>\n' +
-                '                    <option value="מנורה-אלמנטרי">מנורה-אלמנטרי</option>\n' +
-                '                    <option value="כלל-חיים">כלל-חיים</option>\n' +
-                '                    <option value="כלל-בריאות">כלל-בריאות</option>\n' +
-                '                    <option value="כלל-אלמנטרי">כלל-אלמנטרי</option>\n' +
-                '                    <option value="הכשרה-חיים/בריאות">הכשרה-חיים/בריאות</option>\n' +
-                '                    <option value="הכשרה-אלמנטרי">הכשרה-אלמנטרי</option>\n' +
+                '                    <option value="מגדל_חיים/בריאות">מגדל_חיים/בריאות</option>\n' +
+                '                    <option value="מגדל_אלמנטרי">מגדל_אלמנטרי</option>\n' +
+                '                    <option value="מנורה_חיים/בריאות">מנורה_חיים/בריאות</option>\n' +
+                '                    <option value="מנורה_אלמנטרי">מנורה_אלמנטרי</option>\n' +
+                '                    <option value="כלל_חיים">כלל_חיים</option>\n' +
+                '                    <option value="כלל_בריאות">כלל_בריאות</option>\n' +
+                '                    <option value="כלל_אלמנטרי">כלל_אלמנטרי</option>\n' +
+                '                    <option value="הכשרה_חיים/בריאות">הכשרה_חיים/בריאות</option>\n' +
+                '                    <option value="הכשרה_אלמנטרי">הכשרה_אלמנטרי</option>\n' +
                 '                    <option value="שירביט">שירביט</option>\n' +
                 '                    <option value="שומרה">שומרה</option>\n' +
                 '                    <option value="דיקלה">דיקלה</option>\n' +
@@ -216,18 +216,18 @@ $(document).ready(function() {
                 '     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
                 '                <select required class="form-control" id="cancelInsuranceCompany' + itemCount + '" name="cancelInsuranceCompany">\n' +
                 '                    <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
-                '                    <option value="הראל-חיים">הראל-חיים</option>\n' +
-                '                    <option value="הראל-בריאות">הראל-בריאות</option>\n' +
+                '                    <option value="הראל_חיים">הראל_חיים</option>\n' +
+                '                    <option value="הראל_בריאות">הראל_בריאות</option>\n' +
                 '                    <option value="הפניקס">הפניקס</option>\n' +
-                '                    <option value="מגדל-חיים/בריאות">מגדל-חיים/בריאות</option>\n' +
-                '                    <option value="מגדל-אלמנטרי">מגדל-אלמנטרי</option>\n' +
-                '                    <option value="מנורה-חיים/בריאות">מנורה-חיים/בריאות</option>\n' +
-                '                    <option value="מנורה-אלמנטרי">מנורה-אלמנטרי</option>\n' +
-                '                    <option value="כלל-חיים">כלל-חיים</option>\n' +
-                '                    <option value="כלל-בריאות">כלל-בריאות</option>\n' +
-                '                    <option value="כלל-אלמנטרי">כלל-אלמנטרי</option>\n' +
-                '                    <option value="הכשרה-חיים/בריאות">הכשרה-חיים/בריאות</option>\n' +
-                '                    <option value="הכשרה-אלמנטרי">הכשרה-אלמנטרי</option>\n' +
+                '                    <option value="מגדל_חיים/בריאות">מגדל_חיים/בריאות</option>\n' +
+                '                    <option value="מגדל_אלמנטרי">מגדל_אלמנטרי</option>\n' +
+                '                    <option value="מנורה_חיים/בריאות">מנורה_חיים/בריאות</option>\n' +
+                '                    <option value="מנורה_אלמנטרי">מנורה_אלמנטרי</option>\n' +
+                '                    <option value="כלל_חיים">כלל_חיים</option>\n' +
+                '                    <option value="כלל_בריאות">כלל_בריאות</option>\n' +
+                '                    <option value="כלל_אלמנטרי">כלל_אלמנטרי</option>\n' +
+                '                    <option value="הכשרה_חיים/בריאות">הכשרה_חיים/בריאות</option>\n' +
+                '                    <option value="הכשרה_אלמנטרי">הכשרה_אלמנטרי</option>\n' +
                 '                    <option value="שירביט">שירביט</option>\n' +
                 '                    <option value="שומרה">שומרה</option>\n' +
                 '                    <option value="דיקלה">דיקלה</option>\n' +
@@ -833,27 +833,27 @@ $(document).ready(function() {
             '               <div class="col-sm" >\n' +
             '                     <label for="sel1">חברת הביטוח אליה ישלח הביטול</label>\n' +
             '                        <select required class="form-control updateCancelInsuranceCompany" id="updateCancelInsuranceCompany'+itemCountUpdateCancellationletters+'" name="updateCancelInsuranceCompany">\n' +
-            '                           <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
-            '                           <option value="הראל-חיים">הראל-חיים</option>\n' +
-            '                           <option value="הראל-בריאות">הראל-בריאות</option>\n' +
-            '                           <option value="הפניקס">הפניקס</option>\n' +
-            '                           <option value="מגדל-חיים/בריאות">מגדל-חיים/בריאות</option>\n' +
-            '                           <option value="מגדל-אלמנטרי">מגדל-אלמנטרי</option>\n' +
-            '                           <option value="מנורה-חיים/בריאות">מנורה-חיים/בריאות</option>\n' +
-            '                           <option value="מנורה-אלמנטרי">מנורה-אלמנטרי</option>\n' +
-            '                           <option value="כלל-חיים">כלל-חיים</option>\n' +
-            '                           <option value="כלל-בריאות">כלל-בריאות</option>\n' +
-            '                           <option value="כלל-אלמנטרי">כלל-אלמנטרי</option>\n' +
-            '                           <option value="הכשרה-חיים/בריאות">הכשרה-חיים/בריאות</option>\n' +
-            '                           <option value="הכשרה-אלמנטרי">הכשרה-אלמנטרי</option>\n' +
-            '                           <option value="שירביט">שירביט</option>\n' +
-            '                           <option value="שומרה">שומרה</option>\n' +
-            '                           <option value="דיקלה">דיקלה</option>\n' +
-            '                           <option value="איילון">איילון</option>\n' +
-            '                           <option value="AIG">AIG</option>\n' +
-            '                           <option value="IDI">IDI</option>\n' +
-            '                           <option value="פסגות">פסגות</option>\n' +
-            '                           <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
+            '                    <option disabled selected value> -- לאיזו חברת ביטוח ישלח הביטול -- </option>\n' +
+            '                    <option value="הראל_חיים">הראל_חיים</option>\n' +
+            '                    <option value="הראל_בריאות">הראל_בריאות</option>\n' +
+            '                    <option value="הפניקס">הפניקס</option>\n' +
+            '                    <option value="מגדל_חיים/בריאות">מגדל_חיים/בריאות</option>\n' +
+            '                    <option value="מגדל_אלמנטרי">מגדל_אלמנטרי</option>\n' +
+            '                    <option value="מנורה_חיים/בריאות">מנורה_חיים/בריאות</option>\n' +
+            '                    <option value="מנורה_אלמנטרי">מנורה_אלמנטרי</option>\n' +
+            '                    <option value="כלל_חיים">כלל_חיים</option>\n' +
+            '                    <option value="כלל_בריאות">כלל_בריאות</option>\n' +
+            '                    <option value="כלל_אלמנטרי">כלל_אלמנטרי</option>\n' +
+            '                    <option value="הכשרה_חיים/בריאות">הכשרה_חיים/בריאות</option>\n' +
+            '                    <option value="הכשרה_אלמנטרי">הכשרה_אלמנטרי</option>\n' +
+            '                    <option value="שירביט">שירביט</option>\n' +
+            '                    <option value="שומרה">שומרה</option>\n' +
+            '                    <option value="דיקלה">דיקלה</option>\n' +
+            '                    <option value="איילון">איילון</option>\n' +
+            '                    <option value="AIG">AIG</option>\n' +
+            '                    <option value="IDI">IDI</option>\n' +
+            '                    <option value="פסגות">פסגות</option>\n' +
+            '                    <option value="שלמה ביטוח">שלמה ביטוח</option>\n' +
             '                        </select>\n' +
             '                   </div>\n' +
             '               <div class="col-sm">\n' +
