@@ -191,7 +191,7 @@ if ($_POST){
                         'name' => $sellerNameMeshamer,
                         'email' => $sellerMeshamerEmail
                     ),
-                    'collaborators' =>  ["michael@tgeg.co.il","Yaki@tgeg.co.il", "Elad@tgeg.co.il", $callCenterManagerMail, "Tzvika@tgeg.co.il", "doron1098@tgeg1.onmicrosoft.com"],
+                    'collaborators' =>  ["michael@tgeg.co.il", $callCenterManagerMail, "Tzvika@tgeg.co.il", "doron1098@tgeg1.onmicrosoft.com"],
                     'custom_fields' => array(
                         '114096462111' => "תור_בקרה",
                         '114100300592' => $hitum,                                          //מסלול חיתום
@@ -204,7 +204,8 @@ if ($_POST){
                     'comment' => [
                         'body' => $commentBodyNewTicket,
                         'uploads' => [$upload_token]
-                    ]
+                    ],
+                    'assignee_id' => '360057374072'
                 ]);
                 //update crm with link to the new ticket of shimur policy
                 $ticketId = $newTicket->ticket->id;

@@ -195,6 +195,7 @@ function updateTicket($collaborators,$dataTicket,$newLeadId){
             '360005283771' => date('Y-m-d', strtotime(' + 6 days'))
 
         ),
+        'assignee_id' => '360057374072',
         'status'  => $statusTicket,
         'comment'=> $dataTicket." \n".
                     'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $newLeadId
