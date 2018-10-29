@@ -107,7 +107,7 @@ function saveFilestoNewDirectoryAndGetLink($file,$nameFileInPost,$leadid,$direct
     $count++;
     $nameFile = $file['name'];
     $extension =  pathinfo($nameFile,PATHINFO_EXTENSION);
-    $newName = $leadid."_".$count.".".$extension;
+    $newName = $leadid."_".$count.time().".".$extension;
     $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/'.$directoryName.'/'.$leadid."/";
     if (!file_exists($uploadDir)) {
         $new_dir = mkdir ($uploadDir, 0777);
@@ -136,8 +136,10 @@ foreach ($_FILES as $key  => $val) {
     }
 
     foreach ($arrayLinksCancelFilesByCancelInsuranceCompany as $key=>$value){
-        $cancelInsuranceCompany = substr($key,18);
+        $nameInArray = explode("-",$key);
+        $cancelInsuranceCompany = $nameInArray[1];
         $cancelLettersLinksToTicket .= "מכתב ביטול לחברת ".$cancelInsuranceCompany." : ".$value. " \n" ;
+        $formatArrayLinksCancelFilesByCancelInsuranceCompany[$cancelInsuranceCompany][]= $value;
     }
 
 
@@ -200,7 +202,7 @@ fwrite($myfile, "before create ticket to lead id:".$leadid);
     ]);
 
 
-$cancelLettersJson =  json_encode($arrayLinksCancelFilesByCancelInsuranceCompany,JSON_UNESCAPED_UNICODE);
+$cancelLettersJson =  json_encode($formatArrayLinksCancelFilesByCancelInsuranceCompany,JSON_UNESCAPED_UNICODE);
 $ticketId = $newTicket->ticket->id;
 
 fwrite($myfile, "ticket created ticket number is".$ticketId);
