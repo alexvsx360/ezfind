@@ -28,7 +28,7 @@ if ((json_last_error() == JSON_ERROR_NONE)) {
     //get the lead
     $getLeadResult = leadImGetLead(3328, $searchLeadResults['lead_id']);
 
-    leadImUpdateLead(3328, $searchLeadResults['lead_id'], [105345 => $callbackJson->videoUrl , 105348 => "http://ezfind.co.il/personalvideo/?sku=" . $getLeadResult['lead']['fields']['105346']], true);
+    leadImUpdateLead(3328, $searchLeadResults['lead_id'], [105345 => $callbackJson->videoUrl , 105348 => "http://tgeg.co.il/itur-personalvideo/?sku=" . $getLeadResult['lead']['fields']['105346']], true);
     if ($callbackJson->videoUrl == null){
         /*video is null failed to do create video...*/
         error_log("EzfindOnBoardingCallbackHandler -  Received null as video URL, will not send SMS...\n");
