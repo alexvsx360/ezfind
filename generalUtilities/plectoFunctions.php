@@ -14,7 +14,7 @@ function addLeadToPlecto($postData){
     $ch = curl_init("https://app.plecto.com/api/v2/registrations/");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_USERPWD, "yaki@tgeg.co.il:" . "alma@102030");
+    curl_setopt($ch, CURLOPT_USERPWD, "yaki@tgeg.co.il:" . "Ben.1.2.3.4.8");
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json; charset=utf-8"));
     curl_setopt($ch, CURLOPT_POST, 1);
