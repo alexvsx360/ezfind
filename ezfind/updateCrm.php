@@ -47,10 +47,6 @@ function checkUpdate($result,$updateLeadUrl)
                         'tags' => 'error',
                         'status' => 'new',
                         'subject' => 'error in update crm',
-                        'requester' => array(
-                            'name' => 'dina',
-                            'email' => 'dina.r@ezfind.co.il'
-                        ),
                         //   'collaborators' =>  ["Yaki@tgeg.co.il"],
                         'comment' => [
                             'body' => 'in date:' . date("d/m/Y") . " \n" .
@@ -87,12 +83,12 @@ $statusToFieldNumJson = [
 
 $updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694";
 $updateLeadUrl .= "&lead_ticket=" . $_GET['lead_ticket'];
-//if ($_GET['status'] == "Solved" || $_GET['status'] == "פתורה"){
-//    $updateLeadUrl .="&status=102340"; //הופק
-//} else {
-//    $updateLeadUrl .= "&status=" . $statusToFieldNumJson[$_GET['workingQueue']];
-//}
-$updateLeadUrl .= "&status=" . $statusToFieldNumJson[$_GET['workingQueue']];
+if ($_GET['status'] == "Solved" || $_GET['status'] == "פתורה"){
+    $updateLeadUrl .="&status=102340"; //הופק
+} else {
+    $updateLeadUrl .= "&status=" . $statusToFieldNumJson[$_GET['workingQueue']];
+}
+//$updateLeadUrl .= "&status=" . $statusToFieldNumJson[$_GET['workingQueue']];
 $updateLeadUrl .= "&update_fields[fld_id]=104484&update_fields[fld_val]=" . $_GET['workingQueue'];
 fwrite($fp, $updateLeadUrl."\n" );
 $response = httpGet($updateLeadUrl);
