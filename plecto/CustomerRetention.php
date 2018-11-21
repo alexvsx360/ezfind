@@ -6,7 +6,7 @@
  * Time: 13:13
  */
 include_once ('../generalUtilities/plectoFunctions.php');
-
+error_log($_GET);
 /*log the request*/
 //$myfile = fopen("log.txt", "a");
 //fwrite($myfile, "new Lead arrived: " . print_r($_REQUEST, true) . " \n");
