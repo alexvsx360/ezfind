@@ -6,7 +6,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Optional theme -->
-    <link rel="stylesheet" h    ref="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -217,7 +217,7 @@ if ($isPassedVodValidation){
     $vodPostData = [
         'accessToken' => $accessToken->accessToken,
         'sku' => $_POST['customerSsn'],
-        'templateId' => 1,
+        'templateId' => 2, /// todo continue here
         'requestData' => array(
             'name' => $_POST['customerFirstName'],
             'fname' => $_POST['customerLastName'],
