@@ -74,6 +74,9 @@ function setCallCenterEmail(){
 
 function InitiateDataFoTicket($supplierNameEmail){
     $callCenterManger = setCallCenterMangerName();
+    global $savedInPastBy;
+    global $moreDetailsOfBitul;
+    global $cancelType;
     global $policyThreeMonthsPassed;
     global $viturShimur;
     global $tags;
@@ -94,7 +97,8 @@ function InitiateDataFoTicket($supplierNameEmail){
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
         $statusTicket = 'solved';
-        $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור";
+        $dataTicket  = "איש המכירות לא קיים עובר אוטומטית למחלקת שימור". " \n" . " \n" .
+            moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
         $tags=[''];
     }else{
         $requesterName = $supplierNameEmail[1];
@@ -107,7 +111,9 @@ function InitiateDataFoTicket($supplierNameEmail){
             "ת.ז :"." ". $customerSsn. " \n" .
             "חברת ביטוח :"." ". $cancelInsurenceCompany. " \n" .
             "כיסוי :"." ".$cancelPolicyType. " \n" .
-            "פרמיה חודשית בפועל:"." ".$actualPremia. " \n" .
+            "פרמיה חודשית בפועל:"." ".$actualPremia. " \n" . " \n" .
+            moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy). " \n" . " \n" .
+
             "יש לכם SLA של חמישה ימים קלנדרים לטפל בבקשת הביטול אחרת הטיקט נסגר והבקשה עוברת לשימור ". " \n" .
             "בהצלחה !";
         $tags = ['טיקט_ביטול_לאחר_עריכה','שימור_באחריות_המוקדים'];
@@ -118,13 +124,29 @@ function InitiateDataFoTicket($supplierNameEmail){
     $requesterEmail = $userEmail;
     $collaborators = ["michael@tgeg.co.il"];
     $statusTicket = 'solved';
-    $dataTicket  = "נציג מכירות מוותר על זכות השימור";
+    $dataTicket  = "נציג מכירות מוותר על זכות השימור". " \n" . " \n" .
+        moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
     $tags=[''];
     }
     if($policyThreeMonthsPassed=="פוליסות מעל שלושה חודשים"){
-        $dataTicket  = "פוליסה מעל שלושה חודשים, עובר אוטומטית למחלקת שימור";
+        $dataTicket  = "פוליסה מעל שלושה חודשים, עובר אוטומטית למחלקת שימור". " \n" . " \n" .
+            moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
     }
 
+}
+
+/**
+ * @param $moreDetailsOfBitul
+ * @param $cancelType
+ * @param $savedInPastBy
+ * @return string
+ */
+function moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy): string
+{
+    return "פרטים נוספים: " . " \n" .
+        "סיווג מכתב הביטול: " . $moreDetailsOfBitul . " \n" .
+        "סוג הביטול: " . $cancelType . " \n" .
+        'שומר בעבר ע"י: ' . $savedInPastBy;
 }
 
 function updeteLeadBitulInCrm($newLeadId,$supplierNameEmail){
@@ -243,7 +265,7 @@ function generateBitulLeadData($supplierNameEmail){
         'email' => $_POST['customerEmail'],
         'callCenter' => $_POST['callCenterName'],
         'cancelDate' => strtotime($_POST['cancelDate']),
-        'cancelType' => $_POST['cancelType'],
+//        'cancelType' => $_POST['cancelType'],
         'cancelPolicyType' => $_POST['cancelPolicyType'],
         'cancelTicketNumber' => $_POST['cancelTicketNumber'],
         'cancelLink' => "https://ezfind.zendesk.com/agent/tickets/" . $_POST['cancelTicketNumber'],
@@ -254,7 +276,8 @@ function generateBitulLeadData($supplierNameEmail){
         'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
         'payingWidth' => $_POST['payWith'],
-        'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"]
+        'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"],
+        'savedInPastBy' => $_POST["savedInPastBy"]
     ];
 }
 
@@ -277,7 +300,19 @@ function generateDoublePayLeadData(){
     ];
 }
 
+
+function getArrNumFieldCancelType($configTypes)
+{
+    $typeOfCancelArr = [];
+    foreach ($_POST['cancelType'] as $key => $val) {
+        $typeOfCancel = $configTypes["typeOfCancel"][$val];
+        array_push($typeOfCancelArr, $typeOfCancel);
+    }
+    return $typeOfCancelArr;
+}
+
 if ($_POST){
+    $cancelTypeNumFieldAsArr ="";
     $torAvoda = "";
     $tags = "";
     $statusTicket = "";
@@ -288,7 +323,7 @@ if ($_POST){
     $requesterName = "";
     $newLeadId ="";
     $openLeadData = "";
-    $result =0;
+    $result = 0;
     $recordNumber = $_POST["recordNumber"];
     $crmAccountNumber = $_POST["crmAccountNumber"];
     $leadType = $_POST['leadType'] ;
@@ -301,7 +336,6 @@ if ($_POST){
     $email= setDefaultValue($_POST['customerEmail']);
     $callCenterName = setDefaultValue($_POST['callCenterName']);
     $cancelDate = setDefaultValue($_POST['cancelDate']);
-    $cancelType = setDefaultValue($_POST['cancelType']);
     $cancelPolicyType = setDefaultValue($_POST['cancelPolicyType']);
     $cancelTicketNumber = setDefaultValue($_POST['cancelTicketNumber']);
     $cancelLink = "https://ezfind.zendesk.com/agent/tickets/" . setDefaultValue($_POST['cancelTicketNumber']);
@@ -317,6 +351,10 @@ if ($_POST){
     $moreDetailsOfBitul = $_POST["moreDetailsOfBitul"];
     $viturShimur = $_POST['viturShimur'];
     $policyThreeMonthsPassed = $_POST['policyThreeMonthsPassed'];
+    $savedInPastBy = $_POST["savedInPastBy"];
+    $cancelTypeAsArr = setDefaultValue($_POST['cancelType']);
+    $cancelType = implode(", ",$cancelTypeAsArr);
+
     switch ($_POST['leadType']){
     case 'pigur':
             $openLeadData = generatePigurLeadPostData();
@@ -325,8 +363,9 @@ if ($_POST){
             $openLeadData = generateBitulLeadData($supplierNameEmail);
             $status = "107637";//התקבלה בקשה לביטול
             // update status of polica mekorit in crm
+            $cancelTypeNumFieldAsArr = getArrNumFieldCancelType($configTypes);
             $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול",
-                103698 => $configTypes["typeOfCancel"][$_POST['cancelType']]];
+                103698 => $cancelTypeNumFieldAsArr];
             leadImUpdateLead($crmAccountNumber, $recordNumber, $updateFieldsKeyValue, false,$status);
             break;
         case 'doublePay':
@@ -337,6 +376,8 @@ if ($_POST){
         break;
     }
     $newLeadId = openNewLead($openLeadData);
+    $updateFieldsKeyValue = [103698 => $cancelTypeNumFieldAsArr];
+    leadImUpdateLead($crmAccountNumber, $newLeadId, $updateFieldsKeyValue, true);
     $result = addSherutLeadToCustomerByLeadType($leadType,$newLeadId,$customerSsn,$crmAccountNumber);
 
     if ($_POST['leadType']== 'bitul'){

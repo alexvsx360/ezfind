@@ -53,10 +53,11 @@ $acc_id = $_GET['crmAcccountNumber'];
 $recordNumber = $_GET['recordNumber'];
 
 $leadPostDate = "";
+///header("Location:https://ibell.frb.io//leadIm/lead/update?"."recordNumber=".$_GET["recordNumber"]."&crmAcccountNumber=".$_GET['crmAcccountNumber']."&method=".$_GET['method']."&channel_id=".$_GET['channel_id']."&campaign_id=".$_GET['campaign_id']."&date=".$_GET['date']);
 
 if ($method == "update") {
     /*get the Json from the CRM*/
-    $leadToPopulateJson = getLeadJson($_GET['recordNumber'], $acc_id, $_GET['agentId']);
+    $leadToPopulateJson = getLeadJson($_GET['recordNumber'], $acc_id, $_GET['agentId'],1);
     $lead = LeadFactory::create($leadToPopulateJson);
     if (is_null($lead)){
         error_log("Received " . $method . " Request but cannot instantiate Lead object for lead id: " . $recordNumber);

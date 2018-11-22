@@ -57,7 +57,7 @@ if ($_POST){
     $cancelPolicyType = $_POST['cancelPolicyType'];
     $leadToPopulateJson = leadImGetLead($crmAccountNumber, $leadIdToCancel);
     $bitulReason = str_replace(' ', '_',$_POST["bitulReason"]);
-    $bitulCategory = str_replace(' ', '_',$_POST["bitulCategory"]);
+//    $bitulCategory = str_replace(' ', '_',$_POST["bitulCategory"]);
     if ($leadToPopulateJson['status'] !== "failure" ){
          $leadSugPolica = $leadToPopulateJson['lead']['fields'][102104];
         switch ($status){
@@ -103,7 +103,7 @@ if ($_POST){
                 };
                 fwrite($file,"!מעדכן ליד בCRM");
                 //update status of leadBitul to "shimur"
-                $updateFieldsKeyValue = [107639 => "שימור"];
+                $updateFieldsKeyValue = [107639 => "שימור",108937 => $bitulReason];
                 $status = 103733;//shimur
                 leadImUpdateLead($crmAccountNumber, $leadIdBitulim, $updateFieldsKeyValue, false, $status);
                 //update lead's policy in crm
@@ -116,7 +116,7 @@ if ($_POST){
                         107639 => "הופק_ושומר",
                         111475 => $_POST["moveToMokedShimur"],
                         108937 => $bitulReason, //סיבת הביטול
-                        108936 => $bitulCategory //קטגורית סיבת הביטול
+//                        108936 => $bitulCategory //קטגורית סיבת הביטול
                     ];
                 $status = 104259; //ufak veshumar
                 leadImUpdateLead($crmAccountNumber, $leadIdToCancel, $updateFieldsKeyValue, false, $status);
@@ -233,13 +233,13 @@ if ($_POST){
                         108939 => $_POST["firstPayment"],//האם בוצעה גביה ראשונה
                         108938 => $policyLengthTime,//משך חיי הפוליסה
                         108937 => $bitulReason, //סיבת הביטול
-                        108936 => $bitulCategory //קטגורית סיבת הביטול
+//                        108936 => $bitulCategory //קטגורית סיבת הביטול
                 ];
                 $status = 103734; //bitul
                 //update lead's status in lead bitul to "bitul"
                 leadImUpdateLead($crmAccountNumber, $leadIdBitulim, $updateFieldsKeyValue, false, $status);
                 //update lead bitul in plecto
-                $leadBitulToPopulateJson = getLeadJson($leadIdBitulim,$crmAccountNumber, $_POST['agentId']);
+                $leadBitulToPopulateJson = leadImGetLead($crmAccountNumber,$leadIdBitulim,1);
                 $lead = new LeadToCancel($leadBitulToPopulateJson);
                 $leadPostDate = $lead->generateUpdatePolicyPostData();
                 /*update the BI and return a result code*/

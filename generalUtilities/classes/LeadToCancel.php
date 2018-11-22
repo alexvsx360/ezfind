@@ -125,15 +125,21 @@ class LeadToCancel extends BaseLead
         return $this->cancelType;
     }
 
-    public function setCancelType($cancelType)
+    public function setCancelType($cancelTypeArr)
     {
+        $cancelTypeAsText = [];
         $types = [
             '103699' => "מכתב ביטול",
             '103700' => "מינוי סוכן",
-
-
+            '112499' => "ביטול הרשאה לחויב",
+            '114763' => "שומר בעבר"
         ];
-        $this->cancelType = $types[$cancelType];
+        foreach ($cancelTypeArr as $cancelTypeNumField){
+            $cancelType = $types[$cancelTypeNumField];
+            array_push($cancelTypeAsText,$cancelType);
+        }
+        $cancelTypeToString = implode(";",$cancelTypeAsText);
+        $this->cancelType = $cancelTypeToString;
     }
 
     //cancelTicketNumber
@@ -248,7 +254,6 @@ class LeadToCancel extends BaseLead
             'member_api_provider' => 'Lead Im CRM',
             'member_api_id' => ($this->getSupplierId()=="0")?"15348":$this->getSupplierId(),
             'member_name' =>($this->getSupplierId()=="0"? "בקשה לביטול איש מכירות עזב" : "supplier_" . $this->getSupplierId()),
-            'callCenterName' => $this->getCallCenterName(),
             'callCenterName' => $this->getCallCenterName(),
             'status' => $this->getStatus(),
             'cancelDate' => $this->getCancelDate()->format(DateTime::ISO8601),

@@ -5,9 +5,10 @@
  * Date: 12/20/2017
  * Time: 2:34 PM
  */
-include_once ('functions.php');
+include_once('functions.php');
 
-function getStatusAsString($statusCode){
+function getStatusAsString($statusCode)
+{
     $statusCodeToSrting = [
         '1' => "New",
         '100084' => "תור בקרה",
@@ -39,17 +40,19 @@ function getStatusAsString($statusCode){
 }
 
 
-function appendParameterToURL ($updateLeadUrl, $fieldToUpdate, $fieldValue, $paramIndex){
-    if ($paramIndex == 0){
-        $updateLeadUrl  = $updateLeadUrl . "&update_fields[fld_id]=" . $fieldToUpdate . "&update_fields[fld_val]=" . $fieldValue;
+function appendParameterToURL($updateLeadUrl, $fieldToUpdate, $fieldValue, $paramIndex)
+{
+    if ($paramIndex == 0) {
+        $updateLeadUrl = $updateLeadUrl . "&update_fields[fld_id]=" . $fieldToUpdate . "&update_fields[fld_val]=" . $fieldValue;
     } else {
-        $updateLeadUrl  = $updateLeadUrl . "&update_fields[fld_id_" . $paramIndex . "]=" . $fieldToUpdate . "&update_fields[fld_val_" .$paramIndex . "]=" . $fieldValue;
+        $updateLeadUrl = $updateLeadUrl . "&update_fields[fld_id_" . $paramIndex . "]=" . $fieldToUpdate . "&update_fields[fld_val_" . $paramIndex . "]=" . $fieldValue;
     }
     return $updateLeadUrl;
 }
 
-function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign, $mult = 0 ){
-    if (! isset($crmAccountNumber) || ! isset($searchBy) || !isset($searchTerm) || !isset($campaign)){
+function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign, $mult = 0)
+{
+    if (!isset($crmAccountNumber) || !isset($searchBy) || !isset($searchTerm) || !isset($campaign)) {
         return [
             "errorMsg" => "All API parameters must exists"
         ];
@@ -59,7 +62,7 @@ function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign, 
             "acc_id" => $crmAccountNumber,
             "searchby" => $searchBy,
             "searchterm" => $searchTerm,
-            "campaign"  => $campaign,            // customers campaign
+            "campaign" => $campaign,            // customers campaign
             "mult" => $mult
             //"channel"   => "17993"
 
@@ -68,8 +71,9 @@ function leadInSearchLead($crmAccountNumber, $searchBy, $searchTerm, $campaign, 
     }
 }
 
-function leadImGetLead($crmAccountNumber, $leadId) {
-    if (! isset($crmAccountNumber) || ! isset($leadId) ){
+function leadImGetLead($crmAccountNumber, $leadId, $mult = 0)
+{
+    if (!isset($crmAccountNumber) || !isset($leadId)) {
         return [
             "errorMsg" => "All API parameters must exists"
         ];
@@ -79,32 +83,65 @@ function leadImGetLead($crmAccountNumber, $leadId) {
             "acc_id" => $crmAccountNumber,
             "lead_id" => $leadId,              // lead id
         ];
-        return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getlead.ashx", $searchPost), true);
+        if ($mult == 0) {
+            return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getlead.ashx", $searchPost), true);
+        } else {
+            $leadJson = httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getlead.ashx", $searchPost);
+            $leadArr = json_decode($leadJson, true);
+            $leadJsonToArr = str_replace("\n", "", $leadJson);
+            $leadJsonToArr = str_replace('{', "", $leadJsonToArr);
+            $leadJsonToArr = str_replace(' ', "", $leadJsonToArr);
+            $leadJsonToArr = str_replace("\r", "", $leadJsonToArr);
+            $leadJsonToArr = str_replace("'", "", $leadJsonToArr);
+            $leadJsonToArr = str_replace('"', "", $leadJsonToArr);
+            $query = explode(',', $leadJsonToArr);
+            $params = array();
+            foreach ($query as $param) {
+                list($name, $value) = explode(':', $param);
+                $params[$name][] = $value;
+            }
+            foreach ($params as $key => $value){
+                if (count($value) > 1){
+                    $leadArr['lead']['fields'][$key] = $value;
+                }
+            }
+            return ($leadArr);
+        }
+        //
     }
 }
 
-function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $doLogFinalUrl, $status = null){
-    if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($updateFieldsKeyValue)){
+function leadImUpdateLead($crmAccountNumber, $leadId, $updateFieldsKeyValue, $doLogFinalUrl, $status = null)
+{
+    if (!isset($crmAccountNumber) || !isset($leadId) || !isset($updateFieldsKeyValue)) {
         return [
             "errorMsg" => "All API parameters must exists"
         ];
     } else {
         $url = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?lead_id=" . $leadId . "&acc_id=" . $crmAccountNumber;
-        $url = $status!= null ? $url. "&status=" . $status : $url;
+        $url = $status != null ? $url . "&status=" . $status : $url;
         $index = 0;
-        foreach($updateFieldsKeyValue as $key => $value){
-            $url = appendParameterToURL($url, $key, $value, $index);
-            $index++;
+        foreach ($updateFieldsKeyValue as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $contain) {
+                    $url = appendParameterToURL($url, $key, $contain, $index);
+                    $index++;
+                }
+            } else {
+                $url = appendParameterToURL($url, $key, $value, $index);
+                $index++;
+            }
         }
-        if ($doLogFinalUrl){
-            error_log("leadImUpdateLead -  updating lead: " . $leadId . "UpdateUrl is: " .$url . "\n");
+        if ($doLogFinalUrl) {
+            error_log("leadImUpdateLead -  updating lead: " . $leadId . "UpdateUrl is: " . $url . "\n");
         }
         return httpGet($url);
     }
 }
 
-function leadImSendSMS($crmAccountNumber, $leadId, $templateId, $userId){
-    if (! isset($crmAccountNumber) || ! isset($leadId)  || !isset($templateId) || !isset($userId)){
+function leadImSendSMS($crmAccountNumber, $leadId, $templateId, $userId)
+{
+    if (!isset($crmAccountNumber) || !isset($leadId) || !isset($templateId) || !isset($userId)) {
         return [
             "errorMsg" => "All API parameters must exists"
         ];
@@ -120,7 +157,8 @@ function leadImSendSMS($crmAccountNumber, $leadId, $templateId, $userId){
     }
 }
 
-function addOrCreateCustomerandUpdateNewSale($saleId, $customerPhone, $createCustomerPost){
+function addOrCreateCustomerandUpdateNewSale($saleId, $customerPhone, $createCustomerPost)
+{
     /*search lead by customer phone */
     $searchBaseUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/searchlead.ashx";
     $searchPost = [
@@ -128,19 +166,19 @@ function addOrCreateCustomerandUpdateNewSale($saleId, $customerPhone, $createCus
         "acc_id" => "3694",
         "searchby" => "100090",              // customer phone
         "searchterm" => $customerPhone,
-        "campaign"  => "17992"            // customers campaign
+        "campaign" => "17992"            // customers campaign
     ];
 
-    $response="";
+    $response = "";
     $isExists = httpPost($searchBaseUrl, $searchPost);
     $isExists = json_decode($isExists, true);
-    if ($isExists['lead_id'] > 0){
+    if ($isExists['lead_id'] > 0) {
         //customer exists - $isExists == customer lead id
         //update the original lead id
         $updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694" .
             "&lead_id=" . $isExists['lead_id'] . "&update_fields[fld_id]=102161&update_fields[fld_val]=https://crm.ibell.co.il/a/3694/leads/" . $saleId;
         $response = httpGet($updateLeadUrl);
-    } else if ($isExists['lead_id']  ==  0){
+    } else if ($isExists['lead_id'] == 0) {
         //customer does not exist need to create new customer
         $newCustomerBaseUrl = "http://api.lead.im/v1/submit";
         $createCustomerPost['policies'] = "https://crm.ibell.co.il/a/3694/leads/" . $saleId;
@@ -150,7 +188,8 @@ function addOrCreateCustomerandUpdateNewSale($saleId, $customerPhone, $createCus
     return $response;
 }
 
-function addSherutLeadToCustomer($CustomerLeadId, $NewLeadId){
+function addSherutLeadToCustomer($CustomerLeadId, $NewLeadId)
+{
     $updateLeadUrl = "http://proxy.leadim.xyz/apiproxy/acc3305/updatelead.ashx?acc_id=3694" .
         "&lead_id=" . $CustomerLeadId .
         "&update_fields[fld_id]=102162" .
@@ -158,13 +197,15 @@ function addSherutLeadToCustomer($CustomerLeadId, $NewLeadId){
     return httpGet($updateLeadUrl);
 }
 
-function openNewLead($postData){
+function openNewLead($postData)
+{
     return httpPost('http://api.lead.im/v1/submit', $postData);
 }
 
 
-function getCustomerPhone($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getCustomerPhone($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3694:
             return $leadToPopulateJson['lead']['fields']['100090'];
         case 3328:
@@ -174,8 +215,9 @@ function getCustomerPhone($acc_id, $leadToPopulateJson){
     }
 }
 
-function getCustomerFullName($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getCustomerFullName($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3694:
             return $leadToPopulateJson['lead']['fields']['100086'];
         case 3328:
@@ -185,8 +227,9 @@ function getCustomerFullName($acc_id, $leadToPopulateJson){
     }
 }
 
-function getCustomerSsn($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getCustomerSsn($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3694:
             return $leadToPopulateJson['lead']['fields']['102092'];
         case 3328:
@@ -196,13 +239,14 @@ function getCustomerSsn($acc_id, $leadToPopulateJson){
     }
 }
 
-function getCustomerEmail($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getCustomerEmail($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3694:
             return $leadToPopulateJson['lead']['fields']['100091'];
         case 3328:
             $email = $leadToPopulateJson['lead']['fields']['94422'];
-            if ($email == ""){
+            if ($email == "") {
                 $email = $leadToPopulateJson['lead']['fields']['94518'];
             } else {
                 return $email;
@@ -214,8 +258,9 @@ function getCustomerEmail($acc_id, $leadToPopulateJson){
 }
 
 
-function getSecondaryCustomerName($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getSecondaryCustomerName($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3328:
             return $leadToPopulateJson['lead']['fields']['94486'] . " " . $leadToPopulateJson['lead']['fields']['94487'];
         default:
@@ -223,8 +268,9 @@ function getSecondaryCustomerName($acc_id, $leadToPopulateJson){
     }
 }
 
-function getCustomerAddress($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getCustomerAddress($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3328:
             return $leadToPopulateJson['lead']['fields']['94486'] . $leadToPopulateJson['lead']['fields']['95197'];
         default:
@@ -232,8 +278,9 @@ function getCustomerAddress($acc_id, $leadToPopulateJson){
     }
 }
 
-function getSecondaryCustomerSsn($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getSecondaryCustomerSsn($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3328:
             return $leadToPopulateJson['lead']['fields']['94492'];
         default:
@@ -241,13 +288,14 @@ function getSecondaryCustomerSsn($acc_id, $leadToPopulateJson){
     }
 }
 
-function getCallCenterName($acc_id, $leadToPopulateJson){
-    switch ($acc_id){
+function getCallCenterName($acc_id, $leadToPopulateJson)
+{
+    switch ($acc_id) {
         case 3328:
-            if ($leadToPopulateJson['lead']['campaign_id'] == 19578 || $leadToPopulateJson['lead']['campaign_id'] == 20696){
+            if ($leadToPopulateJson['lead']['campaign_id'] == 19578 || $leadToPopulateJson['lead']['campaign_id'] == 20696) {
                 return "משאבים_הלוואות";
             }
-            if ($leadToPopulateJson['lead']['campaign_id'] == 16018 || $leadToPopulateJson['lead']['campaign_id'] == 18571){
+            if ($leadToPopulateJson['lead']['campaign_id'] == 16018 || $leadToPopulateJson['lead']['campaign_id'] == 18571) {
                 return "משאבים_איתור_כספים_אבודים";
             }
         case 3694:
@@ -257,7 +305,9 @@ function getCallCenterName($acc_id, $leadToPopulateJson){
             return "";
     }
 }
-function getUser($acc_id,$user_id){
+
+function getUser($acc_id, $user_id)
+{
     if (!isset($acc_id) || !isset($user_id)) {
         return [
             "errorMsg" => "All API parameters must exists"
@@ -272,7 +322,9 @@ function getUser($acc_id,$user_id){
 
     }
 }
-function getActiveUsers($acc_id,$type){
+
+function getActiveUsers($acc_id, $type)
+{
     if (!isset($acc_id) || !isset($type)) {
         return [
             "errorMsg" => "All API parameters must exists"

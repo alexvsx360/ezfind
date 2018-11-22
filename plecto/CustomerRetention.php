@@ -6,11 +6,23 @@
  * Time: 13:13
  */
 include_once ('../generalUtilities/plectoFunctions.php');
-error_log($_GET);
+
+//error_log($_GET);
 /*log the request*/
 //$myfile = fopen("log.txt", "a");
 //fwrite($myfile, "new Lead arrived: " . print_r($_REQUEST, true) . " \n");
+
 var_dump($_REQUEST);
+//To get the url values that sent in  same name (a multivalued field in CRM), do the following:
+
+$query  = explode('&', $_SERVER['QUERY_STRING']);
+$params = array();
+foreach( $query as $param )
+{
+    list($name, $value) = explode('=', $param, 2);
+    $params[urldecode($name)][] = urldecode($value);
+}
+
 
 
 $leadDate = $_GET['date'];
@@ -30,7 +42,7 @@ $leadPostDate = [
     'status' => $_GET['status'],
     'callCenterName' => $_GET['callCenterName'],
     'cancelDate' => $cancelDate->format(DateTime::ISO8601),
-    'cancelType' => $_GET['cancelType'],
+    'cancelType' => implode(";",$params['cancelType']),
     'cancelTicketNumber' => $_GET['cancelTicketNumber'],
     'cancelMonthlyPremia' => $_GET['cancelMonthlyPremia'],
     'annualPremia' =>  $_GET['annualPremia'],

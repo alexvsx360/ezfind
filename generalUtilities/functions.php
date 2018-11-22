@@ -7,7 +7,7 @@
 
  */
 
-function getLeadJson ($lead_id, $acc_id ,$lm_initializer_id){
+function getLeadJson ($lead_id, $acc_id ,$lm_initializer_id, $mult = 0 ){
     $leadImKey = '3765d732472d44469e70a088caef3040';
     $populateLeadPostData = [
         'key' => $leadImKey,
@@ -15,9 +15,30 @@ function getLeadJson ($lead_id, $acc_id ,$lm_initializer_id){
         'lead_id' => $lead_id,
         'lm_initializer_id' => $lm_initializer_id
     ];
-    $leadInfoStr = httpPost('http://proxy.leadim.xyz/apiproxy/acc3305/getlead.ashx', $populateLeadPostData);
-    $leadToPopulateJson = json_decode($leadInfoStr, true);
-    return $leadToPopulateJson;
+    if ($mult == 0) {
+        return json_decode(httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getlead.ashx", $populateLeadPostData), true);
+    } else {
+        $leadJson = httpPost("http://proxy.leadim.xyz/apiproxy/acc3305/getlead.ashx", $populateLeadPostData);
+        $leadArr = json_decode($leadJson, true);
+        $leadJsonToArr = str_replace("\n", "", $leadJson);
+        $leadJsonToArr = str_replace('{', "", $leadJsonToArr);
+        $leadJsonToArr = str_replace(' ', "", $leadJsonToArr);
+        $leadJsonToArr = str_replace("\r", "", $leadJsonToArr);
+        $leadJsonToArr = str_replace("'", "", $leadJsonToArr);
+        $leadJsonToArr = str_replace('"', "", $leadJsonToArr);
+        $query = explode(',', $leadJsonToArr);
+        $params = array();
+        foreach ($query as $param) {
+            list($name, $value) = explode(':', $param);
+            $params[$name][] = $value;
+        }
+        foreach ($params as $key => $value){
+            if (count($value) > 1){
+                $leadArr['lead']['fields'][$key] = $value;
+            }
+        }
+        return ($leadArr);
+    }
 
 }
 
@@ -107,6 +128,8 @@ function getCallCenterById($crmAccountNum)
             return "אלעד_שמעוני";
         case 3305:
             return "מוקד_בולוטין";
+//        case 3694:
+//            return "מוקד_שימור";
         default:
             return "מוקד לא ידוע!";
     }

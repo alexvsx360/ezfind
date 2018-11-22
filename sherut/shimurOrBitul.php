@@ -132,17 +132,17 @@ if ($_GET) {
 <script>
 
     jQuery(document).ready(function () {
-        $("body").on('click', ".dropdown-item", function (event) {
-            $('#bitulReason').val($(this).attr('data-value'));
-            $('#bitulReasonText').val($(this).attr('data-value'));
-            $(".dropdown-menu").css("display", "none");
-            });
-
-        $("body").on('click', ".bitulCategoryButton", function (event) {
-            $('#bitulCategory').val($(this).attr('data-value'));
-            $(this).next(".dropdown-menu").slideToggle();
-            return false;
-        });
+        // $("body").on('click', ".dropdown-item", function (event) {
+        //     $('#bitulReason').val($(this).attr('data-value'));
+        //     $('#bitulReasonText').val($(this).attr('data-value'));
+        //     $(".dropdown-menu").css("display", "none");
+        //     });
+        //
+        // $("body").on('click', ".bitulCategoryButton", function (event) {
+        //     $('#bitulCategory').val($(this).attr('data-value'));
+        //     $(this).next(".dropdown-menu").slideToggle();
+        //     return false;
+        // });
 
         $('#radioBtn button').on('click', function () {
             var sel = $(this).data('title');

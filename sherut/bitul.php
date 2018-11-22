@@ -18,6 +18,11 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
 
     <title>פתח פנית שירות לקוחות חדשה</title>
 </head>
@@ -30,12 +35,27 @@ $configTypes = include('configTypes.php');
 
 $customerFullName = ""; $customerPhone = ""; $ssn =""; $email =""; $callCenterName = ""; $recordNumber = "";
 
+
+function savedInPastBy($selerMeshamer, $acc_id, $supplier_id)
+{
+
+    if ($selerMeshamer != "" && $selerMeshamer != "מוכרן מקורי") {
+         return $selerMeshamer;
+    } elseif ($selerMeshamer != "" && $selerMeshamer == "מוכרן מקורי") {
+        $userJson = getUser($acc_id, $supplier_id);
+        return $userJson['result']['name'];
+    }
+}
+
 if ($_GET) {
-    global $customerFullName,
+    global
+        $customerFullName,
         $customerPhone,
         $ssn,
         $email,
         $callCenterName;
+
+
 
     /*get lead information from the CRM*/
     $acc_id = $_GET['crmAcccountNumber'];
@@ -62,15 +82,19 @@ if ($_GET) {
     $salesMan = $fields['100099'];
     $payWith = $fields['106839'];
     $supplier_id = $leadToPopulateJson['lead']['supplier_id'];
-   // $getUserJson  = getUser($acc_id,$supplier_id);
+//    $getUserJson  = getUser($acc_id,$supplier_id);
     $getActiveUsers  = getActiveUsers($acc_id,60);
   //  $supplierEmail  = $getUserJson['result']['email'];
+    $selerMeshamerFieldNum = $leadToPopulateJson['lead']['fields']['104604'];
+    $selerMeshamer = $configTypes['sellerName'][$selerMeshamerFieldNum];
+    $savedInPastBy = savedInPastBy($selerMeshamer, $acc_id, $supplier_id);
+
 }
 
+
 ?>
+
     <div class="container" role="main" id="back_form">
-
-
         <div class="text-center">
             <img src="logo3.png" class="rounded">
         </div>
@@ -79,6 +103,7 @@ if ($_GET) {
                 <div class="form-group">
                     <input type="hidden" class="input-group form-control" value="<?php print $payWith; ?>"  name="payWith"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $leadId; ?>"  name="leadId"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $savedInPastBy; ?>"  name="savedInPastBy"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $actualPremia; ?>"  name="actualPremia"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $cancelPolicyNumber; ?>"  name="cancelPolicyNumber"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
@@ -109,8 +134,8 @@ if ($_GET) {
                     <div class="col-xs-4 "></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                         <label for="sel1">סוג הביטול:</label>
-                        <select required class="form-control" id="cancelType" name="cancelType">
-                            <option disabled selected value> -- בחר את סוג הביטול -- </option>
+                        <select data-style="btn-default" required  id="cancelType" name="cancelType[]" class="selectpicker form-control" multiple  >
+                            <option value="שומר בעבר">שומר בעבר</option>
                             <option value="מכתב ביטול">מכתב ביטול</option>
                             <option value="מינוי סוכן">מינוי סוכן</option>
                             <option value="ביטול הרשאה לחיוב">ביטול הרשאה לחיוב</option>
@@ -148,6 +173,7 @@ if ($_GET) {
                             <option value ="אין מכתב ביטול">אין מכתב ביטול</option>
                             <option value ="לוגו של חברה מתחרה">לוגו של חברה מתחרה</option>
                             <option value ="נשלח על ידי סוכן">נשלח ע"י סוכן</option>
+                            <option value ="הפניה משרות לקוחות">הפניה משרות לקוחות</option>
                             <option value ="נשלח על ידי מוקד -נחתם מרחוק">נשלח ע"י מוקד -נחתם מרחוק</option>
                         </select>
                     </div>
