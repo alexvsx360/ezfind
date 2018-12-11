@@ -253,12 +253,12 @@ function generatePigurLeadPostData(){
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber']
     ];
 }
-function generateBitulLeadData($supplierNameEmail){
-    return [
+function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel){
+    $postData = [
         'lm_form' => 18600,
         'lm_key' => "b15219b165",
         'lm_redirect' => "no",
-        'lm_supplier' => $supplierNameEmail[2] ,
+        'lm_supplier' => $supplierNameEmail[2],
         'name' => $_POST['customerName'],
         'phone' => $_POST['customerPhone'],
         'id' => $_POST['customerSsn'],
@@ -275,10 +275,10 @@ function generateBitulLeadData($supplierNameEmail){
         'leadIdToCancel' => $_POST['leadId'],
         'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
-        'payingWidth' => $_POST['payWith'],
         'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"],
         'savedInPastBy' => $_POST["savedInPastBy"]
     ];
+    return array_merge($postData, $extraDetailsToCancel);
 }
 
 function generateDoublePayLeadData(){
@@ -309,6 +309,33 @@ function getArrNumFieldCancelType($configTypes)
         array_push($typeOfCancelArr, $typeOfCancel);
     }
     return $typeOfCancelArr;
+}
+
+function getExtraDetailsToCancel($crmAccountNumber, $recordNumber){
+
+    try {
+        $origPolicy = leadImGetLead($crmAccountNumber, $recordNumber);
+        $dateTime = new DateTime(); $dateTime1 = new DateTime();
+        $policyProductionDate = $dateTime->setTimestamp($origPolicy['lead']['fields']['102218']);
+        $insuranceStartDateAsTime = $dateTime1->setTimestamp($origPolicy['lead']['fields']['102140']);
+        $cancelReceivedDateAsTime = new DateTime();
+        $diffHafakaAndBitul = $cancelReceivedDateAsTime->diff($policyProductionDate);
+        //echo $diffHafakaAndBitul->format('%m months');
+        $record = array (
+            'hadCancelLetter' => $origPolicy['lead']['fields']['102137'] == 102138 ? 'כן': 'לא',
+            'origLeadCampaig' => $origPolicy['lead']['fields']['110283'],
+            'origLeadSupplier' => $origPolicy['lead']['fields']['110284'],
+            'payingWidth' => $origPolicy['lead']['fields']['106839'],
+            'premia' => $origPolicy['lead']['fields']['100100'],
+            'actualPremia' => $origPolicy['lead']['fields']['102416'],
+            'policyLiveMonth' => $diffHafakaAndBitul->y == 0 ? $diffHafakaAndBitul->format('%m') : ((12*$diffHafakaAndBitul->y) + $diffHafakaAndBitul->format('%m')),
+            'policyLiveDays' => $diffHafakaAndBitul->format('%a'),
+        );
+    } catch (Exception $e){
+        return [];
+    }
+    return $record;
+
 }
 
 if ($_POST){
@@ -360,7 +387,8 @@ if ($_POST){
             $openLeadData = generatePigurLeadPostData();
         break;
         case 'bitul':
-            $openLeadData = generateBitulLeadData($supplierNameEmail);
+            $extraDetailsToCancel = getExtraDetailsToCancel($crmAccountNumber, $recordNumber);
+            $openLeadData = generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel);
             $status = "107637";//התקבלה בקשה לביטול
             // update status of polica mekorit in crm
             $cancelTypeNumFieldAsArr = getArrNumFieldCancelType($configTypes);
