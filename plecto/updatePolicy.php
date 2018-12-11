@@ -9,7 +9,7 @@
 include_once('../generalUtilities/functions.php');
 include_once('../generalUtilities/leadImFunctions.php');
 include_once('../generalUtilities/plectoFunctions.php');
-include_once('../generalUtilities/classes/Lead.php');
+/*include_once('../generalUtilities/classes/Lead.php');
 include_once('../generalUtilities/classes/LeadToCancel.php');
 include_once('../generalUtilities/classes/BaseLead.php');
 include_once('../generalUtilities/classes/LeadPolicy.php');
@@ -21,7 +21,7 @@ include_once ('../generalUtilities/classes/LeadPedion.php');
 include_once ('../generalUtilities/classes/LeadPedionHishtalmut.php');
 include_once ('../generalUtilities/classes/LeadPigurim.php');
 include_once ('../generalUtilities/classes/LeadEdKunPratim.php');
-include_once ('../generalUtilities/classes/LeadEdcunMutavim.php');
+include_once ('../generalUtilities/classes/LeadEdcunMutavim.php');*/
 
 
 $plectoDataSourceMapping = array(
@@ -54,6 +54,9 @@ $recordNumber = $_GET['recordNumber'];
 
 $leadPostDate = "";
 ///header("Location:https://ibell.frb.io//leadIm/lead/update?"."recordNumber=".$_GET["recordNumber"]."&crmAcccountNumber=".$_GET['crmAcccountNumber']."&method=".$_GET['method']."&channel_id=".$_GET['channel_id']."&campaign_id=".$_GET['campaign_id']."&date=".$_GET['date']);
+
+//http get with parameters to out laravel application
+httpGet('https://ibell.frb.io/leadIm/lead/update?' . $_SERVER['QUERY_STRING']);
 
 if ($method == "update") {
     /*get the Json from the CRM*/
