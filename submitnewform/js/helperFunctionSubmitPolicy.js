@@ -759,9 +759,15 @@ $(document).ready(function() {
             }
         }
         console.log("policyArraypolicyArray", policyArray);
-        var runRequests = function (policyIndex) {
+        var runRequests = function (policyIndex,response) {
+            console.log(response);
             if (policyArray.length == policyIndex) {
                 $("#response").css('visibility', 'visible');
+                $("#response").text(response);
+                // if(response.length > 60){
+                //     $("#response").text('לא ניתן לפתוח טיקט לליד זה, הבקשה נדחתה');
+                // }
+
                 $("#alertCastumerDetails").remove();
                 $(".summeryDetailsPolicy").remove();
                 $('#addPolicy').remove();
@@ -800,7 +806,8 @@ $(document).ready(function() {
                 url: "php/submitPolicyHendler.php",
                 data: data,
                 success: function (response) {
-                    runRequests(++policyIndex);
+
+                    runRequests(++policyIndex,response);
                 },
                 error: function (xhr, status, error) {
                     var err = eval("(" + xhr.responseText + ")");

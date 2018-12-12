@@ -1,4 +1,6 @@
 <?php
+$myfile = fopen("log.txt", "a");
+fwrite($myfile, "\n"."begin1"."\n");
 /**
  * Created by PhpStorm.
  * User: User
@@ -14,7 +16,7 @@ $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 include_once ('../../generalUtilities/functions.php');
 include_once ('../../generalUtilities/leadImFunctions.php');
-
+fwrite($myfile, "begin2"."\n");
 $arrayLinksToFile=[];
 $arrayLinksCancelFilesByCancelInsuranceCompany =[];
 $fileLinksToTicket="";
@@ -26,14 +28,14 @@ $yesNoJson = [
     "כן" => true,
     "לא" => false
 ];
-
+fwrite($myfile, "begin3"."\n");
 $str = file_get_contents('../agentNumbersJson.json');
 $agentNumbersJson =json_decode($str);
 
 $policy = json_decode($_POST['policy'], true);
 $castumerDetails = json_decode($_POST['castumerDetails'], true);
 
-$myfile = fopen("log.txt", "a");
+fwrite($myfile, "begin4"."\n");
 
 $policyName = $policy['policy'];
 $insuranceCompany = $policy['insuranceCompany'];
@@ -176,8 +178,8 @@ $ticketCommentBody =
     'הערות להצעה: ' . $insuranceComment;
 
 //create new ticket with new details to tor bakara (tiful)
-fwrite($myfile, "before create ticket to lead id:".$leadid);
-
+fwrite($myfile, "before create ticket to lead id:".$leadid."\n");
+try{
     $newTicket = $client->tickets()->create([
         'subject' => $customerName . ' ' . $customerId . ' ' . $policyName . ' ' . $insuranceCompany,
         'requester' => array(
@@ -200,12 +202,15 @@ fwrite($myfile, "before create ticket to lead id:".$leadid);
 
         ]
     ]);
-
-
+}catch (Zendesk\API\Exceptions\ApiResponseException $e) {
+    fwrite($myfile, "ticketError:".$e."\n");
+    echo "לא ניתן לפתוח טיקט לליד זה , הבקשה נדחתה";
+    exit;
+};
 $cancelLettersJson =  json_encode($formatArrayLinksCancelFilesByCancelInsuranceCompany,JSON_UNESCAPED_UNICODE);
 $ticketId = $newTicket->ticket->id;
 
-fwrite($myfile, "ticket created ticket number is".$ticketId);
+fwrite($myfile, "ticket created ticket number is".$ticketId."\n");
 
 $policyPost = [
     'lm_form' => '17968',
@@ -245,11 +250,11 @@ $policyPost = [
 
 ];
 //open new lead policat prat in tiful sherut
-fwrite($myfile, "before open new lead in tiful sherut in crm");
+fwrite($myfile, "before open new lead in tiful sherut in crm"."\n");
 
 $newLead = openNewLead($policyPost);
 
-fwrite($myfile, "new lead opened with id: ".$newLead);
+fwrite($myfile, "new lead opened with id: ".$newLead."\n");
 
 foreach ($arrayLinksCancelFiles as $link) {
 
@@ -274,6 +279,6 @@ $costumerPost = [
     'callCenter' => $callCenterName
 ];
 updateCustomer($newLead, $costumerPost, $customerPhone, $myfile);
-echo "נקלט בהצלחה ";
+echo "הפוליסות נקלטו בהצלחה";
 
 
