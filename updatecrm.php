@@ -58,10 +58,6 @@ function checkUpdate($result,$updateLeadUrl)
                         'tags' => 'error',
                         'status' => 'new',
                         'subject' => 'error in update crm',
-                        'requester' => array(
-                            'name' => 'dina',
-                            'email' => 'dina.r@ezfind.co.il'
-                        ),
                         //   'collaborators' =>  ["Yaki@tgeg.co.il"],
                         'comment' => [
                             'body' => 'in date:' . date("d/m/Y") . " \n" .
@@ -182,6 +178,12 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
                         break;
                     case "פער_תקין_-_תוספות_חיתום_בלבד":
                         getFieldId(109406);
+                        break;
+                    case "אחד_המבוטחים_נדחה_לביטוח":
+                        getFieldId(117803);
+                        break;
+                    case "ביטול_פוליסת_מבנה":
+                        getFieldId(117805);
                         break;
                 }
 
