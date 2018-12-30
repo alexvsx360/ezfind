@@ -149,6 +149,9 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
             $reasonForDifferentPremiaArrayLength = count($reasonForDifferentPremiaArray);
             for($i=0;$i<$reasonForDifferentPremiaArrayLength;$i++){
                 switch ($reasonForDifferentPremiaArray[$i]){
+                    case "בעית_נציג_-_סימונים_לא_נכונים_במחולל":
+                        getFieldId(118400);
+                        break;
                     case "בעית_נציג_-_סימונים_לא_נכונים_בהצעה":
                         getFieldId(109396);
                        break;
