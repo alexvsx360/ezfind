@@ -40,7 +40,7 @@ $token     = "Bdt7m6GAv0VQghQ6CRr81nhCMXcjq2fIfZHwMjMW"; // replace this with yo
 $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $LOGGER = fopen("log.txt", "a");
-
+$file = fopen('bitulOrShimurLog.txt',"a");
 $configTypes = include('configTypes.php');
 $dataBodyTicket = "";
 $leadToPopulateJson = "";
@@ -62,7 +62,7 @@ if ($_POST){
          $leadSugPolica = $leadToPopulateJson['lead']['fields'][102104];
         switch ($status){
             case "שימור":
-                fwrite($file,"מתחיל תהליך שימור!");
+                fwrite($file,"מתחיל תהליך שימור!"."\n");
                 $cancelPolicyType = $_POST['cancelPolicyType'];
                 $premia = $_POST['premiaAferShimur'];
                 $saveDate = $_POST['saveDate'];
@@ -101,7 +101,7 @@ if ($_POST){
                     $type = $_FILES['file']['type'][$i];
                     array_push($array_types, $type);
                 };
-                fwrite($file,"!מעדכן ליד בCRM");
+                fwrite($file,"!מעדכן ליד בCRM"."\n");
                 //update status of leadBitul to "shimur"
                 $updateFieldsKeyValue = [107639 => "שימור",108937 => $bitulReason];
                 $status = 103733;//shimur
@@ -120,7 +120,7 @@ if ($_POST){
                     ];
                 $status = 104259; //ufak veshumar
                 leadImUpdateLead($crmAccountNumber, $leadIdToCancel, $updateFieldsKeyValue, false, $status);
-                fwrite($file,"!מאתחל נתונים לטיקט");
+                fwrite($file,"!מאתחל נתונים לטיקט"."\n");
                 //Initializing data returned from leadImGetLead function to use in ticket
                 $leadFields = $leadToPopulateJson['lead']['fields'];
                 $leadInsuranceCompany = $leadFields['102112'];
@@ -184,7 +184,7 @@ if ($_POST){
                     'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $leadIdToCancel . " \n\n";
 
                 //create new ticket with new details to tor bakara (tiful)
-                fwrite($file,"!יוצר טיקט חדש");
+                fwrite($file,"!יוצר טיקט חדש"."\n");
                 $newTicket = $client->tickets()->create([
                     'subject' => $ticketSubject,
                     'requester' => array(
@@ -209,11 +209,11 @@ if ($_POST){
                 ]);
                 //update crm with link to the new ticket of shimur policy
                 $ticketId = $newTicket->ticket->id;
-                fwrite($file,"מעדכן CRM 2");
+                fwrite($file,"מעדכן CRM 2"."\n");
                 $updateFieldsKeyValue = [104157 => 'https://ezfind.zendesk.com/agent/tickets/' . $ticketId];
                 leadImUpdateLead($crmAccountNumber, $leadIdToCancel, $updateFieldsKeyValue, false);
 
-                fwrite($file,"יוצר ליד שימור בפלקטו");
+                fwrite($file,"יוצר ליד שימור בפלקטו"."\n");
                 $leadToPopulateJson = getLeadJson($leadIdToCancel,$crmAccountNumber, $_POST['agentId']);
                 $lead =  new LeadShimur($leadToPopulateJson);
                 if (is_null($lead)){
@@ -226,7 +226,7 @@ if ($_POST){
                 }
                 break;
             case "ביטול" :
-
+                fwrite($file,"מתחיל תהליך ביטול"."\n");
                 $policyLengthTime = str_replace(' ', '_',$_POST["policyLengthTime"]);
                 $updateFieldsKeyValue = [
                         107639 => "ביטול",
@@ -237,13 +237,15 @@ if ($_POST){
                 ];
                 $status = 103734; //bitul
                 //update lead's status in lead bitul to "bitul"
-                leadImUpdateLead($crmAccountNumber, $leadIdBitulim, $updateFieldsKeyValue, false, $status);
+                $update = leadImUpdateLead($crmAccountNumber, $leadIdBitulim, $updateFieldsKeyValue, false, $status);
+                fwrite($file," מעדכן CRM עבור ליד".$leadIdBitulim." =".$update."\n");
                 //update lead bitul in plecto
                 $leadBitulToPopulateJson = leadImGetLead($crmAccountNumber,$leadIdBitulim,1);
                 $lead = new LeadToCancel($leadBitulToPopulateJson);
                 $leadPostDate = $lead->generateUpdatePolicyPostData();
                 /*update the BI and return a result code*/
                 $output = addLeadToPlecto($leadPostDate);
+                fwrite($file," מעדכן פלקטו עבור ליד".$leadIdBitulim." =".$output."\n");
                 //update lead's status in reshumat masad mekory to hufak vebutal
                 $updateFieldsKeyValue = [107639 => "הופק_ובוטל"];
                 $status = 104260; //hufak vebutal
@@ -256,6 +258,7 @@ if ($_POST){
             $ll =   $client->tickets()->update($ticketNumber,[
                 'status' => 'solved',
                 'comment'  => $dataBodyTicket,
+                'tags' => 'עדכון_סטטוס_ביטול_ב_api'
             ]);?>
             <div class="row">
             <div class="col-md-5 offset-md-5">
