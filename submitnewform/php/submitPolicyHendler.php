@@ -51,6 +51,7 @@ $payingWith = $policy['payingWith'];
 
 $customerName = $castumerDetails['customerName'];
 $customerId = $castumerDetails['customerId'];
+$customerId = normalizeSsn($customerId);
 $leadid =$castumerDetails['leadId'];
 $agentid=$castumerDetails['agentId'];
 $crmAccount=$castumerDetails['crmAccountNumber'];
@@ -63,6 +64,7 @@ $sex = $castumerDetails['sex'];
 $marriageStatus = $castumerDetails['marriageStatus'];
 $customerAddress = $castumerDetails['customerAddress'];
 $customerPhone = $castumerDetails['customerPhone'];
+$customerPhone  = normalizePhone($customerPhone);
 $customerEmail = $castumerDetails['customerEmail'];
 $leadChannel = $castumerDetails['leadChannel'];
 $agentId = $castumerDetails['agentId'];
@@ -103,7 +105,16 @@ $linkInformation = array(
         'סיעודי' => 'https://bit.ly/2JTxa0A'
     )
 );
+ function normalizeSsn($val){
+    while(strlen($val) < 9){  /*9 is the str ssn length.*/
+        $val = '0' . $val;
+    }
+    return $val;
+};
 
+function normalizePhone($val){
+    return preg_replace("/[^0-9]/", "", $val );
+};
 function saveFilestoNewDirectoryAndGetLink($file,$nameFileInPost,$leadid,$directoryName){
     global $count;
     $count++;
@@ -181,6 +192,7 @@ $ticketCommentBody =
 fwrite($myfile, "before create ticket to lead id:".$leadid."\n");
 try{
     $newTicket = $client->tickets()->create([
+        'tags' => [$customerId, $customerPhone],
         'subject' => $customerName . ' ' . $customerId . ' ' . $policyName . ' ' . $insuranceCompany,
         'requester' => array(
             'name' => $userName,
