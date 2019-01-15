@@ -105,16 +105,7 @@ $linkInformation = array(
         'סיעודי' => 'https://bit.ly/2JTxa0A'
     )
 );
- function normalizeSsn($val){
-    while(strlen($val) < 9){  /*9 is the str ssn length.*/
-        $val = '0' . $val;
-    }
-    return $val;
-};
 
-function normalizePhone($val){
-    return preg_replace("/[^0-9]/", "", $val );
-};
 function saveFilestoNewDirectoryAndGetLink($file,$nameFileInPost,$leadid,$directoryName){
     global $count;
     $count++;
