@@ -48,20 +48,7 @@ $leadToPopulateJson = "";
 $leadSugPolica = "";
 $leadIdToCancel = "";
 
-function normalizeSsn($val)
-{
-    while (strlen($val) < 9) {  /*9 is the str ssn length.*/
-        $val = '0' . $val;
-    }
-    return $val;
-}
 
-function normalizePhone($val)
-{
-    return preg_replace("/[^0-9]/", "", $val);
-}
-
-;
 if ($_POST) {
     $sellerMeshamerEmail = $_POST['userEmail'];
     $sellerMeshamerFromUserName = $_POST['userName'];
@@ -277,7 +264,7 @@ if ($_POST) {
         // Update ticket bitul to solved
 
         try {
-            $ll = $client->tickets()->update(47534, [
+            $ll = $client->tickets()->update($ticketNumber, [
                 'status' => 'solved',
                 'comment' => $dataBodyTicket,
                 'tags' => ['עדכון_סטטוס_ביטול_ב_api', $customerId, $customerPhone]
