@@ -339,3 +339,15 @@ function getActiveUsers($acc_id, $type)
 
     }
 }
+function normalizeSsn($val)
+{
+    while (strlen($val) < 9) {  /*9 is the str ssn length.*/
+        $val = '0' . $val;
+    }
+    return $val;
+}
+
+function normalizePhone($val)
+{
+    return preg_replace("/[^0-9]/", "", $val);
+}

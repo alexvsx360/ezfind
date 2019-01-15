@@ -26,7 +26,6 @@
  * Functions
  * */
 
-
 $basicDataForLead=
 
     [ 'lm_supplier' => $_POST['agentId'],
@@ -261,8 +260,11 @@ $customerCount = $_POST['customerCount'];
 $Ticket = new CreateTicket();
 $Ticket->createTicket($_POST['typeForm'], $customerCount, $programDetails);
 
+$customerPhone = normalizePhone($_POST['customerPhone']);
+$customerSsn = normalizeSsn($_POST['customerSsn']);
 
 $newTicket = $client->tickets()->create([
+    'tags' => [$customerPhone, $customerSsn],
     'subject'  => generateTitle($customerCount),
     'custom_fields'  => [
         '114102615553' => 'בקשות_חדשות',
