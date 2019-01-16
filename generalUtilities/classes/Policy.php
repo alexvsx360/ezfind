@@ -229,6 +229,7 @@ class Policy{
             '102116' => "הכשרה",
             '102117' => "הפניקס",
             '102118' => "איילון",
+            '120445' => "מנורה"
         ];
         $this->insuranceCompany = $types[$insuranceCompany];
     }
