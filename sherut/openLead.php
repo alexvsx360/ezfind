@@ -206,9 +206,10 @@ function updateTicket($collaborators, $dataTicket, $newLeadId)
     global $statusTicket;
     global $requesterEmail;
     global $requesterName;
+    $allTags = array_merge($tags,[$customerSsn, $phone]);
     // Update a ticket
     $client->tickets()->update($cancelTicketNumber, [
-        'tags' => [$tags, $customerSsn, $phone],
+        'tags' => $allTags,
         'requester' => array(
             'name' => $requesterName,
             'email' => $requesterEmail
