@@ -202,20 +202,30 @@ function appendParameterToURL ($fieldToUpdate, $fieldValue){
             }*/
 
             /*Check if the ticket was transfered to תור_הפקות*/
-            if (!empty($_GET['status']) && $_GET['status'] == "תור_הפקות"){
-                //get lead status from lead im CRM
+            if (!empty($_GET['status']) && ($_GET['status'] == "תור_הפקות" || $_GET['status'] == "תור_הופק")){
                 $leadToPopulateJson = getPolicyLeadByTicketID(3694, $_GET['lead_ticket']);
-                if ($leadToPopulateJson != null){
-                    echo $leadToPopulateJson;
-                    if ($leadToPopulateJson['lead']['status'] == 102338  || $leadToPopulateJson['lead']['status'] == 102337 ){
-                        //מעבר מתור חיתום או תור חוסרים לתור הפקות
-                        //need to update "תאריך השלמת חוסר" - 106545
-                        appendParameterToURL(106545, time()); //current time milliseconds
-                    } else if($leadToPopulateJson['lead']['status'] == 100084 || $leadToPopulateJson['lead']['status'] == 1){
-                        //מעבר מתור בקרה לחברת הביטוח
-                        //need to update field 106546 תאריך שליחה לחברת הביטוח
-                        appendParameterToURL(106546, time()); //current time milliseconds
+                if ($_GET['status'] == "תור_הפקות"){
+                    //get lead status from lead im CRM
+                    if ($leadToPopulateJson != null) {
+                        echo $leadToPopulateJson;
+                        if ($leadToPopulateJson['lead']['status'] == 102338 || $leadToPopulateJson['lead']['status'] == 102337) {
+                            //מעבר מתור חיתום או תור חוסרים לתור הפקות
+                            //need to update "תאריך השלמת חוסר" - 106545
+                            appendParameterToURL(106545, time()); //current time milliseconds
+                        } else if ($leadToPopulateJson['lead']['status'] == 100084 || $leadToPopulateJson['lead']['status'] == 1) {
+                            //מעבר מתור בקרה לחברת הביטוח
+                            //need to update field 106546 תאריך שליחה לחברת הביטוח
+                            appendParameterToURL(106546, time()); //current time milliseconds
+                        }
                     }
+                } else if ($_GET['status'] == "תור_הופק" && $leadToPopulateJson['lead']['status'] != 102340) {         /*check if status was changed to "הופק"*/
+                    // dispach event
+                    $dispachHufakEventUrl = "https://ibell.frb.io/leadIm/lead/hufak?date=" . time() .
+                        "&recordNumber=" . $leadToPopulateJson['lead']['lead_id'] .
+                        "&crmAcccountNumber=3694&method=update" .
+                        "&campaign_id=" . $leadToPopulateJson['lead']['campaign_id'] .
+                        "&channel_id=" . $leadToPopulateJson['lead']['channel_id'];
+                    httpGet($dispachHufakEventUrl);
                 }
             }
 
