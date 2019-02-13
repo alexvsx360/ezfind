@@ -200,7 +200,7 @@ function updateTicket($collaborators, $dataTicket, $newLeadId)
     global $phone;
     global $cancelInsurenceCompany;
     global $cancelPolicyType;
-    global $callCenter;
+    global $callCenterName;
     global $cancelMonthlyPremia;
     global $actualPremia;
     global $statusTicket;
@@ -218,7 +218,7 @@ function updateTicket($collaborators, $dataTicket, $newLeadId)
         'collaborators' => $collaborators,
         'custom_fields' => array(
             '114096462111' => "תור_ביטולים",
-            '114096335892' => $callCenter,                 // מוקד ביטוח
+            '114096335892' => $callCenterName,                 // מוקד ביטוח
             '114096371131' => $cancelPolicyType,                                                      //כיסוי ביטוחי
             '114096335852' => $cancelInsurenceCompany,                                // חברת ביטוח
             '114096335872' => $cancelMonthlyPremia,                                       //פרמיה
