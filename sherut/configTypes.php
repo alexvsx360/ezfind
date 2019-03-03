@@ -16,12 +16,12 @@ return [
         '102110' => 'ביטוח_משכנתא',
         '102111' => 'סיעודי',
     ],
-'typeOfCancel'=>[
-    "מכתב ביטול" => 103699,
-    "מינוי סוכן" => 103700,
-    "ביטול הרשאה לחיוב" => 112499,
-    "שומר בעבר" => 114763
-],
+    'typeOfCancel' => [
+        "מכתב ביטול" => 103699,
+        "מינוי סוכן" => 103700,
+        "ביטול הרשאה לחיוב" => 112499,
+        "שומר בעבר" => 114763
+    ],
     'insuranceCompanyTypes' => [
         '102113' => "כלל",
         '102114' => "הראל",
@@ -31,7 +31,7 @@ return [
         '102118' => "איילון",
     ],
 
-    'sellerName' =>[
+    'sellerName' => [
         "104606" => "מוכרן מקורי",
         "108241" => "יפית ויטמן",
         "109356" => "אלינה",
@@ -42,24 +42,27 @@ return [
         "115600" => "עמית סעד",
         "119691" => "שגית אזולאי"
 
-     ],
-
-    'hitumTypes' =>[
+    ],
+    'sellerMeshamerEmail' => [
+        'שולמית אהרונוב' => 'Shulamit.a@TGEG.co.il',
+        'שגית אזולאי' => 'sagit.a@TGEG.co.il'
+    ],
+    'hitumTypes' => [
         '102134' => 'ירוק',
         '102135' => 'אדום'
     ],
     'callCenterManagerMail' => [
         'מיטל כהן' => "Meital.c@tgeg.co.il",
-        'יוני מידן'=> "yoni@ezfind.co.il",
+        'יוני מידן' => "yoni@ezfind.co.il",
         'אלי ברי' => "Eli@bolotin.co.il"
     ],
-    'callCenterManagerName' =>[
+    'callCenterManagerName' => [
         'איזי_ביטוח' => "יוני מידן",
         'אלעד_שמעוני' => "מיטל כהן",
         'בולוטין' => "אלי ברי",
         'מוקד_בולוטין' => "אלי ברי",
     ],
-    'mochranMeshamer'=>[
+    'mochranMeshamer' => [
         "104606" => "מוכרן מקורי",
         "108241" => "יפית ויטמן",
         "109356" => "אלינה",
@@ -70,9 +73,9 @@ return [
         "115600" => "עמית סעד",
         "119691" => "שגית אזולאי"
 
-],
+    ],
     //in crm  value from sugcisuy (section:bakasha lbitul polica)is diffrent from value from sugPolica (section:pertey polica)
-    'compareSugPolicaAndSugCisuy'=>[
+    'compareSugPolicaAndSugCisuy' => [
         //sugPolica => sugcisuy
         102106 => 103715,//אובדן כושר עבודה
         102105 => 103702,//תאונות אישיות

@@ -83,6 +83,7 @@ if ($_GET) {
     $supplierId = $leadToPopulateJson["lead"]["supplier_id"];
     $supplier = getUser($acc_id,$supplierId);
     $supplierName = $supplier["result"]["name"];
+    $supplierEmail = $supplier["result"]["email"];
     $moveToMokedShimur =$leadToPopulateJson['lead']['fields']['111475'];
     //$cancelPolicyNumber = $leadToPopulateJson['lead']['fields']['107754'];
     $_SESSION["leadIdToCancel"] = $leadIdToCancel;
@@ -99,6 +100,7 @@ if ($_GET) {
         <div class="form-group">
             <input type="hidden" class="input-group form-control" value="<?php print $moveToMokedShimur ?>" name="moveToMokedShimur"/>
             <input type="hidden" class="input-group form-control" value="<?php print $supplierName ?>" name="supplierName"/>
+            <input type="hidden" class="input-group form-control" value="<?php print $supplierEmail ?>" name="supplierEmail"/>
             <input type="hidden" class="input-group form-control" value="<?php print $userEmail ?>" name="userEmail"/>
             <input type="hidden" class="input-group form-control" value="<?php print $userName ?>" name="userName"/>
             <input type="hidden" class="input-group form-control" value="<?php print $callCenterManager ?>" name="callCenterManager"/>
