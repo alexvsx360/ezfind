@@ -38,6 +38,7 @@ function getStatusAsString($statusCode){
         '107637' => 'התקבלה בקשה לביטול',
         '108086' => 'SLA שימור חלף',
         '108437' => 'ממתין לקיט הלוואה',
+        '124896' => "התחיל תהליך שימור",
 
     ];
     return $statusCodeToSrting[$statusCode];
