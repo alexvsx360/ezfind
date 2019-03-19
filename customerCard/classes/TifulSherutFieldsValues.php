@@ -122,19 +122,26 @@ class TifulSherutFieldsValues extends BaseLeadFieldValues
     /**
      * @param mixed $policyLiveMonth
      */
-    public function setPolicyLiveMonth($policyLiveMonth): void
+    public function setPolicyLiveMonth($policyLiveMonth)
     {
         $dateTime = new DateTime();
         $dateTime1 = new DateTime();
+        if(!empty($policyLiveMonth['102218']) && $this->getStatus() == 'הופק ובוטל'){
+            $policyProductionDate = $dateTime->setTimestamp($policyLiveMonth['102218']);
+            $lastStatusDate = $dateTime1->setTimestamp($policyLiveMonth['103245']);
+            $diffHafakaAndLastStatusDate = $lastStatusDate->diff($policyProductionDate);
+            return $this->policyLiveMonth = $diffHafakaAndLastStatusDate->y == 0 ? $diffHafakaAndLastStatusDate->format('%m') : ((12 * $diffHafakaAndLastStatusDate->y) + $diffHafakaAndLastStatusDate->format('%m'));
+        }
         if (!empty($policyLiveMonth['102218'])) {
             $policyProductionDate = $dateTime->setTimestamp($policyLiveMonth['102218']);
             $insuranceStartDateAsTime = $dateTime1->setTimestamp($policyLiveMonth['102140']);
             $today = new DateTime();
             $diffHafakaAndToday = $today->diff($policyProductionDate);
-            $this->policyLiveMonth = $diffHafakaAndToday->y == 0 ? $diffHafakaAndToday->format('%m') : ((12 * $diffHafakaAndToday->y) + $diffHafakaAndToday->format('%m'));
+            return $this->policyLiveMonth = $diffHafakaAndToday->y == 0 ? $diffHafakaAndToday->format('%m') : ((12 * $diffHafakaAndToday->y) + $diffHafakaAndToday->format('%m'));
         } else {
-            $this->policyLiveMonth = "אין תאריך הפקה";
+            return $this->policyLiveMonth = "אין תאריך הפקה";
         }
+
     }
 
     /**
@@ -148,20 +155,27 @@ class TifulSherutFieldsValues extends BaseLeadFieldValues
     /**
      * @param mixed $policyLiveDays
      */
-    public function setPolicyLiveDays($policyLiveDays): void
+    public function setPolicyLiveDays($policyLiveDays)
     {
         $dateTime = new DateTime();
         $dateTime1 = new DateTime();
+        if(!empty($policyLiveDays['102218']) && $this->getStatus() == 'הופק ובוטל') {
+            $policyProductionDate = $dateTime->setTimestamp($policyLiveDays['102218']);
+            $lastStatusDate = $dateTime1->setTimestamp($policyLiveDays['103245']);
+            $diffHafakaAndLastStatusDate = $lastStatusDate->diff($policyProductionDate);
+            return $this->policyLiveDays = $diffHafakaAndLastStatusDate->format('%a');
+        }
         if (!empty($policyLiveDays['102218'])) {
             $policyProductionDate = $dateTime->setTimestamp($policyLiveDays['102218']);
             $insuranceStartDateAsTime = $dateTime1->setTimestamp($policyLiveDays['102140']);
             $today = new DateTime();
             $diffHafakaAndToday = $today->diff($policyProductionDate);
             $diffHafakaAndToday->format('%a');
-            $this->policyLiveDays = $diffHafakaAndToday->format('%a');
+            return $this->policyLiveDays = $diffHafakaAndToday->format('%a');
         } else {
-            $this->policyLiveDays = "אין תאריך הפקה";
+            return $this->policyLiveDays = "אין תאריך הפקה";
         }
+
     }
 
         public
