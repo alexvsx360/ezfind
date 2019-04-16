@@ -170,7 +170,8 @@ $mislakaPost = generateMislakeLead($ticketCreationResponse);
 $newMislakaLeadId = openNewLead($mislakaPost);
 
 $updateCustomerResponse = addOrCreateCustomerandUpdateNewSale($newMislakaLeadId, $_POST['customerPhone'], generateCustomerPostData());
-
+$customerLeadId = leadInSearchLead(3694, 100090, $_POST['customerPhone'], 17992, $mult = 0);
+$updateCustomer = leadImUpdateLead(3694, $customerLeadId['lead_id'], [ 126583 => "true"], true);
 
 
 /******************************START VOD REQUEST*************************************************/
