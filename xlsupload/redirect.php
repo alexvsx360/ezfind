@@ -65,7 +65,7 @@ if ($curl = curl_init()) {
 //print_r('CURL START');
 //curl_setopt($curl, CURLOPT_URL, 'http://xlsx_parse.webmind28.com/api.php');
 //ladress 'http://192.168.150.223/api.php'
-curl_setopt($curl, CURLOPT_URL,'http://212.143.233.53/api.php');//'http://212.143.233.53/api.php'
+curl_setopt($curl, CURLOPT_URL,'http://199.203.203.237/api.php');//'http://212.143.233.53/api.php'
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_POST, true);
 curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: multipart/form-data"));
