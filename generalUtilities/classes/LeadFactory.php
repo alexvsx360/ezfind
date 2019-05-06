@@ -21,6 +21,8 @@ class LeadFactory
                         if ($leadShimur->getPremiaAferShimur() != ""){
                         return new LeadShimur($leadToPopulateJson);
                         }
+                    case 24491://minuy sochen
+                        return null;
                         //do nothing
                         //return null;
                     default:

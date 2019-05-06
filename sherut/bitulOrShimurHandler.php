@@ -154,6 +154,13 @@ if ($_POST) {
                     $upload_token = $attachment->upload->token;
                 }
                 //Initializing the data to the ticket:
+            if($sellerNameMeshamer ==="מוכרן מקורי"){
+                  $requesterName = $sellerNameMeshamer;
+                  $requesterEmail = $_POST['supplierEmail'];
+            }else{
+                $requesterName = $sellerNameMeshamer;
+                $requesterEmail = $configTypes['sellerMeshamerEmail'][$sellerNameMeshamer];;
+            }
                 $sugCisuyLead = $configTypes['cisuyTypes'][$leadSugPolica];
                 $insuranceCompany = $configTypes['insuranceCompanyTypes'][$leadInsuranceCompany];
                 //format date from timestamp to format :'Y-m-d'
@@ -195,8 +202,8 @@ if ($_POST) {
                     'tags' => [$customerPhone, $customerId],
                     'subject' => $ticketSubject,
                     'requester' => array(
-                        'name' => $sellerNameMeshamer,
-                        'email' => $sellerMeshamerEmail
+                        'name' => $requesterName,
+                        'email' => $requesterEmail
                     ),
                     'collaborators' => ["michael@tgeg.co.il", $callCenterManagerMail, "Tzvika@tgeg.co.il", "doron1098@tgeg1.onmicrosoft.com"],
                     'custom_fields' => array(

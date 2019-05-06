@@ -1,0 +1,29 @@
+body{
+    text-align: center;
+}
+.mainDetailsLead{
+    border: 2px solid #117a8b;
+    margin:5px;
+    border-radius:5px;
+    padding:12px;
+}
+.mainDetailsLeadPolicy{
+    border: 1px solid #155724;
+    /*background-color: #d4edda;*/
+}
+.mainDetailsLeadMuzareyZmicha{
+    border: 1px solid #0c5460;
+    /*background-color: #d4edda;*/
+}
+.detailsPolicy{
+    display: none;
+    margin-bottom:12px;
+    margin-top: 12px;
+
+}
+.container{
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #d6d8db;
+    border-radius:5px ;
+}

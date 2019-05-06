@@ -124,24 +124,35 @@ if ($_GET) {
                     <input type="hidden" class="input-group form-control" value="bitul" name="leadType"/>
                 </div>
                 <div class="row" >
+                    <div class="col-xs-4 "></div>
+                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                        <label for="sel1">שומר בעבר?</label>
+                        <select required class="form-control" id="saveInPast" name="saveInPast" placeholder="">
+                            <option value ="">--בחר האם שומר בעבר--</option>
+                            <option value ="כן">כן</option>
+                            <option value ="לא">לא</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" >
                     <div class="col-xs-4"></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
                         <label for="sel1">תאריך כניסת הביטול:</label>
                         <input required type="date" class="input-group form-control date"  name="cancelDate"/>
                     </div>
                 </div>
-                <div class="row" >
-                    <div class="col-xs-4 "></div>
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label for="sel1">סוג הביטול:</label>
-                        <select data-style="btn-default" required  id="cancelType" name="cancelType[]" class="selectpicker form-control" multiple  >
-                            <option value="שומר בעבר">שומר בעבר</option>
-                            <option value="מכתב ביטול">מכתב ביטול</option>
-                            <option value="מינוי סוכן">מינוי סוכן</option>
-                            <option value="ביטול הרשאה לחיוב">ביטול הרשאה לחיוב</option>
-                        </select>
-                    </div>
-                </div>
+<!--                <div class="row" >-->
+<!--                    <div class="col-xs-4 "></div>-->
+<!--                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">-->
+<!--                        <label for="sel1">סוג הביטול:</label>-->
+<!--                        <select data-style="btn-default" required  id="cancelType" name="cancelType[]" class="selectpicker form-control" multiple  >-->
+<!--                            <option value="שומר בעבר">שומר בעבר</option>-->
+<!--                            <option value="מכתב ביטול">מכתב ביטול</option>-->
+<!--                            <option value="מינוי סוכן">מינוי סוכן</option>-->
+<!--                            <option value="ביטול הרשאה לחיוב">ביטול הרשאה לחיוב</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="row" >
                     <div class="col-xs-4 "></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -178,6 +189,59 @@ if ($_GET) {
                         </select>
                     </div>
                 </div>
+                <br/>
+                <div class="row" >
+                    <div class="col-xs-4 "></div>
+                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width: 100%;">בחר את סוג הביטול
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="test" tabindex="-1" href="#">ביטול פוטנציאלי <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a type="הפניה מצוות חווית לקוח" tabindex="-1" href="#" class="potentialCancel">הפניה מצוות חווית לקוח</a></li>
+                                        <li><a type="הפניה משרות הלקוחות" tabindex="-1" href="#" class="potentialCancel">הפניה משרות הלקוחות</a></li>
+                                        <li><a type="הפניה מצוות הפיגורים" tabindex="-1" href="#" class="potentialCancel">הפניה מצוות הפיגורים</a></li>
+                                        <li><a type="הפניה ממוקד המכירות" tabindex="-1" href="#" class="potentialCancel">הפניה ממוקד המכירות</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="test" tabindex="-1" href="#">ביטול יזום <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a type='תביעה שסורבה ע"י' class="initiatedCancel" tabindex="-1" href="#">תביעה שסורבה ע"י</a></li>
+                                        <li><a type="העברת הלקוח לחברה אחרת" class="initiatedCancel" tabindex="-1" href="#">העברת הלקוח לחברה אחרת</a></li>
+                                        <li><a type="הפוליסה הופסקה לקוח נפטר" class="initiatedCancel" tabindex="-1" href="#">הפוליסה הופסקה לקוח מפטר</a></li>
+                                        <li><a type="מכירה לא תקינה" class="initiatedCancel" tabindex="-1" href="#">מכירה לא תקינה</a></li>
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="test" tabindex="-1" href="#">ביטול רשמי<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="formalCancel" type="מכתב ביטול" tabindex="-1" href="#">מכתב ביטול</a></li>
+                                        <li><a class="formalCancel" type="מינוי סוכן" tabindex="-1" href="#">מינוי סוכן</a></li>
+                                        <li><a class="formalCancel" type="ביטול עקב אי תשלום(ביטול הרשאה לחיוב)" tabindex="-1" href="#">ביטול עקב אי תשלום(ביטול הרשאה לחיוב)</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-xs-4 "></div>
+                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                <input required type="text" id="cancelType" class="input-group form-control"
+                       name="cancelType" readonly/>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-xs-4 "></div>
+                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                <input required type="text" class="input-group form-control"
+                       name="cancelTypeDetails" id="cancelTypeDetails" readonly/>
+                    </div>
+                </div>
                     <div class="row" >
                         <div class="col-xs-5"></div>
                         <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -203,7 +267,25 @@ if ($_GET) {
 
     <script>
     jQuery(document).ready(function () {
-
+        //new code for cancel type 26/03/19
+        $('.dropdown a.test').on("click", function (e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+        $(".potentialCancel").click(function () {
+            $("#cancelType").val("ביטול פוטנציאלי");
+            $("#cancelTypeDetails").val(this.type.split(' ').join('_'));
+        });
+        $(".initiatedCancel").click(function () {
+            $("#cancelType").val("ביטול יזום");
+            $("#cancelTypeDetails").val(this.type.split(' ').join('_'));
+        });
+        $(".formalCancel").click(function () {
+            $("#cancelType").val("ביטול רשמי");
+            $("#cancelTypeDetails").val(this.type.split(' ').join('_'));
+        });
+            ///////////////////////////////////
 
             $('input:checkbox').click(function() {
                 $('input:checkbox').not(this).prop('checked', false);
