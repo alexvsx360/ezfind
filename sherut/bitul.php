@@ -213,7 +213,7 @@ if ($_GET) {
                                         <li><a type="העברת הלקוח לחברה אחרת" class="initiatedCancel" tabindex="-1" href="#">העברת הלקוח לחברה אחרת</a></li>
                                         <li><a type="הפוליסה הופסקה לקוח נפטר" class="initiatedCancel" tabindex="-1" href="#">הפוליסה הופסקה לקוח מפטר</a></li>
                                         <li><a type="מכירה לא תקינה" class="initiatedCancel" tabindex="-1" href="#">מכירה לא תקינה</a></li>
-
+                                        <li><a type="פרויקט ישור קו CRM" class="initiatedCancel" tabindex="-1" href="#">פרויקט ישור קו CRM</a></li>
                                     </ul>
                                 </li>
                                 <li>

@@ -226,6 +226,11 @@ function updateTicket($collaborators, $dataTicket, $newLeadId)
     global $statusTicket;
     global $requesterEmail;
     global $requesterName;
+
+    if ($_POST['cancelTypeDetails'] == 'פרויקט_ישור_קו_CRM'){
+        // no interaction with ticket is needed
+        return;
+    }
     $allTags = array_merge($tags, [$customerSsn, $phone]);
     // Update a ticket
     $client->tickets()->update($cancelTicketNumber, [
@@ -316,6 +321,7 @@ function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel)
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
         'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"],
         'saveInPast' => $_POST['saveInPast'],
+        'fld_127462' => $_POST['cancelTypeDetails'],  //פירוט סוג הביטול
         'savedInPastBy' => $_POST["savedInPastBy"],
 
     ];
@@ -443,14 +449,18 @@ if ($_POST) {
                 $status = "104260";//הופק ובוטל
                 $updateFieldsKeyValue = [107639 => "הופק_ובוטל",
                     125781 => $_POST['saveInPast'],
-                    103698 => $configTypes["typeOfCancel"][$_POST['cancelType']],
-                    125778 => $_POST['cancelTypeDetails']
+                    127462 => $_POST['cancelTypeDetails'],
+                    103693 => strtotime($_POST['cancelDate']),
+                    103698 => $configTypes["typeOfCancel"][$_POST['cancelType']],  //סוג הביטול
+                    125778 => $_POST['cancelTypeDetails'] // פירוט סוג הביטול
                 ];
                 leadImUpdateLead($crmAccountNumber, $recordNumber, $updateFieldsKeyValue, false, $status);
             } else {
                 $status = "107637";//התקבלה בקשה לביטול
                 $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול",
+                    103693 => strtotime($_POST['cancelDate']),
                     125781 => $_POST['saveInPast'],
+                    127462 => $_POST['cancelTypeDetails'],
                     103698 => $configTypes["typeOfCancel"][$_POST['cancelType']],
                     125778 => $_POST['cancelTypeDetails']
                 ];
