@@ -65,6 +65,8 @@ function generateMislakeLead($ticketCreationResponse){
         'mislakaPaymentCount' => $_POST['paymentCount'],
         'customerCount' => $_POST['customerCount'],
         'customerType' => ($_POST['customerCount'] == 2 ? 'זוגי' : 'יחיד' ),
+        'AgreeData' => 'true',
+        'AgreeMenora' => 'true'
     ];
 }
 
@@ -79,7 +81,9 @@ function generateCustomerPostData(){
         'issueDate' => $_POST['issueDate'],
         'email' => $_POST['customerEmail'],
         'address' => $_POST['address'],
-        'callCenter' => $_POST['callCenterName']
+        'callCenter' => $_POST['callCenterName'],
+        'AgreeData' => 'true',
+        'AgreeMenora' => 'true'
     ];
 }
 
