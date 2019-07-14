@@ -479,11 +479,16 @@ if ($_POST) {
     leadImUpdateLead($crmAccountNumber, $newLeadId, $updateFieldsKeyValue, true);
     $result = addSherutLeadToCustomerByLeadType($leadType, $newLeadId, $customerSsn, $crmAccountNumber);
 
-    if ($_POST['leadType'] == 'bitul') {
+
+    if ($_POST['leadType'] == 'bitul'){
+        if ($_POST['saveInPast'] == "כן" ){
+            //update lead in case was already saved in the past/
+            $updateFieldsKeyValue = [130575 => 130576];
+            leadImUpdateLead($crmAccountNumber, $newLeadId, $updateFieldsKeyValue, true);
+        }
         InitiateDataFoTicket($supplierNameEmail);
         updeteLeadBitulInCrm($newLeadId, $supplierNameEmail);
         updateTicket($collaborators, $dataTicket, $newLeadId);
-
     }
 }
 
