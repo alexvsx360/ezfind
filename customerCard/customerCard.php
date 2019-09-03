@@ -65,6 +65,12 @@
         case 3317:
             $ssnFieldId = 110113;
             break;
+        case 3474:
+            $ssnFieldId = 98689;
+            break;
+        case 4767:
+            $ssnFieldId = 132572;
+            break;
         default:
             null;
     }
