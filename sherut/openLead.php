@@ -143,13 +143,21 @@ function InitiateDataFoTicket($supplierNameEmail)
             . " \n" ."פוליסה מעל שלושה חודשים, עובר אוטומטית למחלקת שימור" . " \n" . " \n" .
             moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
     }
-    if ($_POST['cancelType'] === "ביטול יזום") {
+    if ($_POST['cancelType'] === "ביטול יזום" ) {
         $requesterName = $userName;
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
         $statusTicket = 'solved';
         $dataTicket =  ' שומר בעבר:'.$_POST['saveInPast']
             . " \n" ."ביטול יזום: ".$_POST['cancelTypeDetails'];
+    }
+    if (($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_לבקשת_לקוח')||
+        ($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_אין_הרשאה')){
+        $requesterEmail = $userEmail;
+        $collaborators = ["michael@tgeg.co.il"];
+        $statusTicket = 'solved';
+        $dataTicket =  ' שומר בעבר:'.$_POST['saveInPast'] . " \n" . " \n" .
+            moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
     }
 
 }
@@ -294,7 +302,15 @@ function generatePigurLeadPostData()
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber']
     ];
 }
-
+function calculateCanceledPremia(){
+    if($_POST['leadStatus'] == 104259 ||  $_POST['leadStatus'] == 124896 ) {//הופק ושומר או התחיל תהליך שימור
+        return $_POST['premiaAfterShimur'];
+    }elseif ($_POST['leadStatus'] == 102340 || $_POST['leadStatus']== 104260){//הופק או הופק ובוטל
+        return $_POST['actualPremia'];
+    }else{
+        return $_POST['cancelMonthlyPremia'];
+    }
+}
 function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel)
 {
     $postData = [
@@ -313,7 +329,7 @@ function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel)
         'cancelPolicyType' => $_POST['cancelPolicyType'],
         'cancelTicketNumber' => $_POST['cancelTicketNumber'],
         'cancelLink' => "https://ezfind.zendesk.com/agent/tickets/" . $_POST['cancelTicketNumber'],
-        'cancelMonthlyPremia' => $_POST['cancelMonthlyPremia'],
+        'cancelMonthlyPremia' => calculateCanceledPremia(),//$_POST['cancelMonthlyPremia'],
         'cancelInsurenceCompany' => $_POST['cancelInsuranceCompany'],
         'salesMan' => $_POST['salesMan'],
         'leadIdToCancel' => $_POST['leadId'],
@@ -327,7 +343,38 @@ function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel)
     ];
     return array_merge($postData, $extraDetailsToCancel);
 }
+function generateCancelFromBeginLeadData($supplierNameEmail, $extraDetailsToCancel)
+{
+    $postData = [
+        'lm_form' => 32123,
+        'lm_key' => "1a2cbdb9a6",
+        'lm_redirect' => "no",
+        'lm_supplier' => $supplierNameEmail[2],
+        'name' => $_POST['customerName'],
+        'phone' => $_POST['customerPhone'],
+        'id' => $_POST['customerSsn'],
+        'email' => $_POST['customerEmail'],
+        'callCenter' => $_POST['callCenterName'],
+        'cancelDate' => strtotime($_POST['cancelDate']),
+        'cancelType' => $_POST['cancelType'],
+        'cancelTypeDetails' => $_POST['cancelTypeDetails'],
+        'cancelPolicyType' => $_POST['cancelPolicyType'],
+        'cancelTicketNumber' => $_POST['cancelTicketNumber'],
+        'cancelLink' => "https://ezfind.zendesk.com/agent/tickets/" . $_POST['cancelTicketNumber'],
+        'cancelMonthlyPremia' => calculateCanceledPremia(),//$_POST['cancelMonthlyPremia'],
+        'cancelInsurenceCompany' => $_POST['cancelInsuranceCompany'],
+        'salesMan' => $_POST['salesMan'],
+        'leadIdToCancel' => $_POST['leadId'],
+        'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
+        'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
+        'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"],
+        'saveInPast' => $_POST['saveInPast'],
+        'fld_127462' => $_POST['cancelTypeDetails'],  //פירוט סוג הביטול
+        'savedInPastBy' => $_POST["savedInPastBy"],
 
+    ];
+    return array_merge($postData, $extraDetailsToCancel);
+}
 function generateDoublePayLeadData()
 {
     return [
@@ -445,7 +492,9 @@ if ($_POST) {
             $openLeadData = generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel);
             // update status of polica mekorit in crm
 //            $cancelTypeNumFieldAsArr = getArrNumFieldCancelType($configTypes);
-            if ($_POST['cancelType'] === "ביטול יזום") {
+            if (($_POST['cancelType'] === "ביטול יזום" )||
+                ($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_אין_הרשאה') ||
+                ($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_לבקשת_לקוח')) {
                 $status = "104260";//הופק ובוטל
                 $updateFieldsKeyValue = [107639 => "הופק_ובוטל",
                     125781 => $_POST['saveInPast'],
@@ -474,9 +523,17 @@ if ($_POST) {
             echo '$_POST[\'leadType\'] is not set!! ' . $_POST['leadType'];
             break;
     }
-    $newLeadId = openNewLead($openLeadData);
-    $updateFieldsKeyValue = [103698 => $configTypes["typeOfCancel"][$_POST['cancelType']]];
-    leadImUpdateLead($crmAccountNumber, $newLeadId, $updateFieldsKeyValue, true);
+    if (($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_אין_הרשאה' )||
+        ($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_לבקשת_לקוח')){
+        //open new lead in campaign :שירות לקוחות, in channel :"ביטולים מתחילה "
+        $openLeadData = generateCancelFromBeginLeadData($supplierNameEmail, $extraDetailsToCancel);
+        $newLeadId = openNewLead($openLeadData);
+    }else {
+        $newLeadId = openNewLead($openLeadData);
+        $updateFieldsKeyValue = [103698 => $configTypes["typeOfCancel"][$_POST['cancelType']]];
+        leadImUpdateLead($crmAccountNumber, $newLeadId, $updateFieldsKeyValue, true);
+        updeteLeadBitulInCrm($newLeadId, $supplierNameEmail);
+    }
     $result = addSherutLeadToCustomerByLeadType($leadType, $newLeadId, $customerSsn, $crmAccountNumber);
 
 
@@ -487,7 +544,6 @@ if ($_POST) {
             leadImUpdateLead($crmAccountNumber, $newLeadId, $updateFieldsKeyValue, true);
         }
         InitiateDataFoTicket($supplierNameEmail);
-        updeteLeadBitulInCrm($newLeadId, $supplierNameEmail);
         updateTicket($collaborators, $dataTicket, $newLeadId);
     }
 }

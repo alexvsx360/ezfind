@@ -88,7 +88,9 @@ if ($_GET) {
     $selerMeshamerFieldNum = $leadToPopulateJson['lead']['fields']['104604'];
     $selerMeshamer = $configTypes['sellerName'][$selerMeshamerFieldNum];
     $savedInPastBy = savedInPastBy($selerMeshamer, $acc_id, $supplier_id);
-
+    $isEverShumar = $leadToPopulateJson['lead']['fields']['125781'];
+    $leadStatus = $leadToPopulateJson['lead']['status'];
+    $premiaAfterShimur = $fields['104607'];
 }
 
 
@@ -122,6 +124,9 @@ if ($_GET) {
                     <input type="hidden" class="input-group form-control" value="<?php print $salesMan ?>" name="salesMan"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $callCenterName ?>" name="callCenterName"/>
                     <input type="hidden" class="input-group form-control" value="bitul" name="leadType"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $leadStatus ?>" name="leadStatus"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $isEverShumar ?>" name="isEverShumar"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $premiaAfterShimur ?>" name="premiaAfterShimur"/>
                 </div>
                 <div class="row" >
                     <div class="col-xs-4 "></div>
@@ -204,6 +209,18 @@ if ($_GET) {
                                         <li><a type="הפניה משרות הלקוחות" tabindex="-1" href="#" class="potentialCancel">הפניה משרות הלקוחות</a></li>
                                         <li><a type="הפניה מצוות הפיגורים" tabindex="-1" href="#" class="potentialCancel">הפניה מצוות הפיגורים</a></li>
                                         <li><a type="הפניה ממוקד המכירות" tabindex="-1" href="#" class="potentialCancel">הפניה ממוקד המכירות</a></li>
+                                        <li><a class="potentialCancel"  type="פיגור מתחילה" tabindex="-1" href="#">פיגור מתחילה<span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="pigurType" title="לבקשת_לקוח" tabindex="-1" href="#">לבקשת לקוח</a></li>
+                                                <li><a class="pigurType" title="אין_הרשאה" tabindex="-1" href="#">אין הרשאה</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="potentialCancel"  type="פיגור לאחר תשלום" tabindex="-1" href="#">פיגור לאחר תשלום<span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="pigurType" title="לבקשת_לקוח" tabindex="-1" href="#">לבקשת לקוח</a></li>
+                                                <li><a class="pigurType" title="אין_הרשאה" tabindex="-1" href="#">אין הרשאה</a></li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li>
@@ -222,6 +239,18 @@ if ($_GET) {
                                         <li><a class="formalCancel" type="מכתב ביטול" tabindex="-1" href="#">מכתב ביטול</a></li>
                                         <li><a class="formalCancel" type="מינוי סוכן" tabindex="-1" href="#">מינוי סוכן</a></li>
                                         <li><a class="formalCancel" type="ביטול עקב אי תשלום(ביטול הרשאה לחיוב)" tabindex="-1" href="#">ביטול עקב אי תשלום(ביטול הרשאה לחיוב)</a></li>
+                                        <li><a class="formalCancel"  type="ביטול מתחילה עקב פיגור" tabindex="-1" href="#">ביטול מתחילה עקב פיגור<span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="pigurType" title="לבקשת_לקוח" tabindex="-1" href="#">לבקשת לקוח</a></li>
+                                            <li><a class="pigurType" title="אין_הרשאה" tabindex="-1" href="#">אין הרשאה</a></li>
+                                        </ul>
+                                            </li>
+                                        <li><a class="formalCancel"  type="ביטול עקב פיגור לאחר תשלום" tabindex="-1" href="#">ביטול עקב פיגור לאחר תשלום<span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="pigurType" title="לבקשת_לקוח" tabindex="-1" href="#">לבקשת לקוח</a></li>
+                                                <li><a class="pigurType" title="אין_הרשאה" tabindex="-1" href="#">אין הרשאה</a></li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -273,6 +302,17 @@ if ($_GET) {
             e.stopPropagation();
             e.preventDefault();
         });
+        $('.dropdown-menu a.formalCancel').on("click", function (e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+        $('.dropdown-menu a.potentialCancel').on("click", function (e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
         $(".potentialCancel").click(function () {
             $("#cancelType").val("ביטול פוטנציאלי");
             $("#cancelTypeDetails").val(this.type.split(' ').join('_'));
@@ -284,6 +324,14 @@ if ($_GET) {
         $(".formalCancel").click(function () {
             $("#cancelType").val("ביטול רשמי");
             $("#cancelTypeDetails").val(this.type.split(' ').join('_'));
+            console.log($("#cancelTypeDetails").val());
+
+        });
+        $(".pigurType").click(function () {
+            var cancelTypeDetails = $("#cancelTypeDetails").val();
+            var cancelTypeWithOutPigurType = cancelTypeDetails.split(',_')[0];
+            console.log(cancelTypeWithOutPigurType);
+            $("#cancelTypeDetails").val(cancelTypeWithOutPigurType+",_"+ this.title);
         });
             ///////////////////////////////////
 
