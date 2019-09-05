@@ -207,7 +207,6 @@ if ($_GET) {
                                     <ul class="dropdown-menu">
                                         <li><a type="הפניה מצוות חווית לקוח" tabindex="-1" href="#" class="potentialCancel">הפניה מצוות חווית לקוח</a></li>
                                         <li><a type="הפניה משרות הלקוחות" tabindex="-1" href="#" class="potentialCancel">הפניה משרות הלקוחות</a></li>
-                                        <li><a type="הפניה מצוות הפיגורים" tabindex="-1" href="#" class="potentialCancel">הפניה מצוות הפיגורים</a></li>
                                         <li><a type="הפניה ממוקד המכירות" tabindex="-1" href="#" class="potentialCancel">הפניה ממוקד המכירות</a></li>
                                         <li><a class="potentialCancel"  type="פיגור מתחילה" tabindex="-1" href="#">פיגור מתחילה<span class="caret"></span></a>
                                             <ul class="dropdown-menu">
@@ -238,7 +237,6 @@ if ($_GET) {
                                     <ul class="dropdown-menu">
                                         <li><a class="formalCancel" type="מכתב ביטול" tabindex="-1" href="#">מכתב ביטול</a></li>
                                         <li><a class="formalCancel" type="מינוי סוכן" tabindex="-1" href="#">מינוי סוכן</a></li>
-                                        <li><a class="formalCancel" type="ביטול עקב אי תשלום(ביטול הרשאה לחיוב)" tabindex="-1" href="#">ביטול עקב אי תשלום(ביטול הרשאה לחיוב)</a></li>
                                         <li><a class="formalCancel"  type="ביטול מתחילה עקב פיגור" tabindex="-1" href="#">ביטול מתחילה עקב פיגור<span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <li><a class="pigurType" title="לבקשת_לקוח" tabindex="-1" href="#">לבקשת לקוח</a></li>
