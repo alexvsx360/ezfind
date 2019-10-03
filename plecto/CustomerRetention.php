@@ -33,6 +33,10 @@ $cancelDate = $_GET['cancelDate'];
 $cancelDate = str_replace("/","-", $cancelDate);
 $cancelDate = new DateTime($cancelDate);
 
+$lastRoutingDate = $_GET['lastRoutingDate'];
+$lastRoutingDate = str_replace("/","-", $lastRoutingDate);
+$lastRoutingDate = new DateTime($lastRoutingDate);
+
 $leadPostDate = [
     'date' => $leadDate->format(DateTime::ISO8601), // Updated ISO8601,
     'data_source' => '87c813ef9f41418282d6e77ab982ee1d',
@@ -52,7 +56,13 @@ $leadPostDate = [
     'reference' => $_GET['recordId'],
     'payWith' => $_GET['payWith'],
     'sortingCancellLetters'=> $_GET["sortingCancellLetters"],
-    'recordStatus' => ""
+    'recordStatus' => "",
+    'cancelTypeDetails' => $_GET['cancelTypeDetails'],
+    'moveToMokedShimur' => $_GET['moveToMokedShimur'],
+    'saveInPast' => $_GET['saveInPast'],
+    'handlingShimurAgent' => $_GET['handlingShimurAgent'],//נציג שימור מטפל
+    'lastRoutingDate' => $lastRoutingDate->format(DateTime::ISO8601),
+
 
 ];
 
