@@ -363,6 +363,11 @@ class LeadToCancel extends BaseLead
             'cancelReason' => $this-> getBitulReason(),
             'sortingCancellLetters' =>$this->getSortingCancellLetters(),
             'salesMan' => $this->getSalesMan(),
+            'lastRoutingDate' => $this->getLastRoutingDate()->format(DateTime::ISO8601),
+            'handlingShimurAgent' => $this->getHandlingShimurAgent(),
+            'saveInPast' => $this->getSaveInPast(),
+            'moveToMokedShimur' => $this->getMoveToMokedShimur(),
+            'cancelTypeDetails' => $this->getCancelTypeDetails(),
             'reference' => $this->getRecordId(),
         ];
     }
