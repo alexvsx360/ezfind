@@ -24,7 +24,11 @@ class LeadToCancel extends BaseLead
     private $firstPayment;
     private $policyLengthTime;
     private $sortingCancellLetters;
-
+    private $cancelTypeDetails;
+    private $moveToMokedShimur;
+    private $saveInPast;
+    private $handlingShimurAgent;
+    private $lastRoutingDate;
     function __construct($leadJson)
     {
         parent::__construct($leadJson);
@@ -44,9 +48,97 @@ class LeadToCancel extends BaseLead
         $this->setPolicyLengthTime($leadJson['lead']['fields']['108938']);
         $this->setBitulReason($leadJson['lead']['fields']['108937']);
         $this->setSortingCancellLetters($leadJson['lead']['fields']['109408']);
+        $this->setLastRoutingDate($leadJson['lead']['fields']['130234']);
+        $this->setHandlingShimurAgent($leadJson['lead']['fields']['130233']);
+        $this->setSaveInPast($leadJson['lead']['fields']['125781']);
+        $this->setMoveToMokedShimur($leadJson['lead']['fields']['111475']);
+        $this->setCancelTypeDetails($leadJson['lead']['fields']['125778']);
 
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getCancelTypeDetails()
+    {
+        return $this->cancelTypeDetails;
+    }
+
+    /**
+     * @param mixed $cancelTypeDetails
+     */
+    public function setCancelTypeDetails($cancelTypeDetails): void
+    {
+        $this->cancelTypeDetails = $cancelTypeDetails;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMoveToMokedShimur()
+    {
+        return $this->moveToMokedShimur;
+    }
+
+    /**
+     * @param mixed $moveToMokedShimur
+     */
+    public function setMoveToMokedShimur($moveToMokedShimur): void
+    {
+        $this->moveToMokedShimur = $moveToMokedShimur;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSaveInPast()
+    {
+        return $this->saveInPast;
+    }
+
+    /**
+     * @param mixed $saveInPast
+     */
+    public function setSaveInPast($saveInPast): void
+    {
+        $this->saveInPast = $saveInPast;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHandlingShimurAgent()
+    {
+        return $this->handlingShimurAgent;
+    }
+
+    /**
+     * @param mixed $handlingShimurAgent
+     */
+    public function setHandlingShimurAgent($handlingShimurAgent): void
+    {
+        $this->handlingShimurAgent = $handlingShimurAgent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastRoutingDate()
+    {
+        return $this->lastRoutingDate;
+    }
+
+    /**
+     * @param mixed $lastRoutingDate
+     */
+    public function setLastRoutingDate($lastRoutingDate): void
+    {
+        $this->lastRoutingDate = new DateTime();
+        $this->lastRoutingDate->setTimestamp($lastRoutingDate);
+    }
 //BitulReason()
+
     public function getBitulReason()
     {
         return $this->bitulReason;
