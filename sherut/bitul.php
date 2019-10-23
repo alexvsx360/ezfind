@@ -258,15 +258,15 @@ if ($_GET) {
                 <div class="row" >
                     <div class="col-xs-4 "></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                <input required type="text" id="cancelType" class="input-group form-control"
-                       name="cancelType" readonly/>
+                <input required type="text" id="cancelType" class="input-group form-control readonly"
+                       name="cancelType"/>
                     </div>
                 </div>
                 <div class="row" >
                     <div class="col-xs-4 "></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                <input required type="text" class="input-group form-control"
-                       name="cancelTypeDetails" id="cancelTypeDetails" readonly/>
+                <input required type="text" class="input-group form-control readonly"
+                       name="cancelTypeDetails" id="cancelTypeDetails" />
                     </div>
                 </div>
                     <div class="row" >
@@ -294,6 +294,10 @@ if ($_GET) {
 
     <script>
     jQuery(document).ready(function () {
+        $(".readonly").keydown(function(e){
+            e.preventDefault();
+        });
+
         //new code for cancel type 26/03/19
         $('.dropdown a.test').on("click", function (e) {
             $(this).next('ul').toggle();
