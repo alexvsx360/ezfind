@@ -103,7 +103,7 @@ function InitiateDataFoTicket($supplierNameEmail)
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
         $statusTicket = 'solved';
-        $dataTicket = ' שומר בעבר:'.$_POST['saveInPast']
+        $dataTicket = ' שומר בעבר:'.$_POST['savedInPast']
             . " \n" . "איש המכירות לא קיים עובר אוטומטית למחלקת שימור" . " \n" . " \n" .
             moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
         $tags = [''];
@@ -119,7 +119,7 @@ function InitiateDataFoTicket($supplierNameEmail)
             "חברת ביטוח :" . " " . $cancelInsurenceCompany . " \n" .
             "כיסוי :" . " " . $cancelPolicyType . " \n" .
             "פרמיה חודשית בפועל:" . " " . $actualPremia . " \n" . " \n" .
-            ' שומר בעבר:'.$_POST['saveInPast']
+            ' שומר בעבר:'.$_POST['savedInPast']
             . " \n" .
             moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy) . " \n" . " \n" .
 
@@ -133,13 +133,13 @@ function InitiateDataFoTicket($supplierNameEmail)
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
         $statusTicket = 'solved';
-        $dataTicket = ' שומר בעבר:'.$_POST['saveInPast']
+        $dataTicket = ' שומר בעבר:'.$_POST['savedInPast']
             . " \n" ."נציג מכירות מוותר על זכות השימור" . " \n" . " \n" .
             moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
         $tags = [''];
     }
     if ($policyThreeMonthsPassed == "פוליסות מעל שלושה חודשים") {
-        $dataTicket =  ' שומר בעבר:'.$_POST['saveInPast']
+        $dataTicket =  ' שומר בעבר:'.$_POST['savedInPast']
             . " \n" ."פוליסה מעל שלושה חודשים, עובר אוטומטית למחלקת שימור" . " \n" . " \n" .
             moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
     }
@@ -148,7 +148,7 @@ function InitiateDataFoTicket($supplierNameEmail)
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
         $statusTicket = 'solved';
-        $dataTicket =  ' שומר בעבר:'.$_POST['saveInPast']
+        $dataTicket =  ' שומר בעבר:'.$_POST['savedInPast']
             . " \n" ."ביטול יזום: ".$_POST['cancelTypeDetails'];
     }
     if (($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_לבקשת_לקוח')||
@@ -156,7 +156,7 @@ function InitiateDataFoTicket($supplierNameEmail)
         $requesterEmail = $userEmail;
         $collaborators = ["michael@tgeg.co.il"];
         $statusTicket = 'solved';
-        $dataTicket =  ' שומר בעבר:'.$_POST['saveInPast'] . " \n" . " \n" .
+        $dataTicket =  ' שומר בעבר:'.$_POST['savedInPast'] . " \n" . " \n" .
             moreDetailsOfCancel($moreDetailsOfBitul, $cancelType, $savedInPastBy);
     }
 
@@ -336,7 +336,7 @@ function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel)
         'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
         'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"],
-        'saveInPast' => $_POST['saveInPast'],
+        'saveInPast' => $_POST['savedInPast'],
         'fld_127462' => $_POST['cancelTypeDetails'],  //פירוט סוג הביטול
         'savedInPastBy' => $_POST["savedInPastBy"],
 
@@ -368,7 +368,7 @@ function generateCancelFromBeginLeadData($supplierNameEmail, $extraDetailsToCanc
         'cancelPolicyNumber' => $_POST['cancelPolicyNumber'],
         'linkToCustomer' => 'https://crm.ibell.co.il/a/3694/leads/' . $_POST['recordNumber'],
         'moreDetailsOfBitul' => $_POST["moreDetailsOfBitul"],
-        'saveInPast' => $_POST['saveInPast'],
+        'saveInPast' => $_POST['savedInPast'],
         'fld_127462' => $_POST['cancelTypeDetails'],  //פירוט סוג הביטול
         'savedInPastBy' => $_POST["savedInPastBy"],
 
@@ -497,7 +497,7 @@ if ($_POST) {
                 ($_POST['cancelType'] === "ביטול רשמי" && $_POST['cancelTypeDetails'] === 'ביטול_מתחילה_עקב_פיגור,_לבקשת_לקוח')) {
                 $status = "104260";//הופק ובוטל
                 $updateFieldsKeyValue = [107639 => "הופק_ובוטל",
-                    125781 => $_POST['saveInPast'],
+                    125781 => $_POST['savedInPast'],
                     127462 => $_POST['cancelTypeDetails'],
                     103693 => strtotime($_POST['cancelDate']),
                     103698 => $configTypes["typeOfCancel"][$_POST['cancelType']],  //סוג הביטול
@@ -508,7 +508,7 @@ if ($_POST) {
                 $status = "107637";//התקבלה בקשה לביטול
                 $updateFieldsKeyValue = [107639 => "התקבלה_בקשה_לביטול",
                     103693 => strtotime($_POST['cancelDate']),
-                    125781 => $_POST['saveInPast'],
+                    125781 => $_POST['savedInPast'],
                     127462 => $_POST['cancelTypeDetails'],
                     103698 => $configTypes["typeOfCancel"][$_POST['cancelType']],
                     125778 => $_POST['cancelTypeDetails']
@@ -538,7 +538,7 @@ if ($_POST) {
 
 
     if ($_POST['leadType'] == 'bitul'){
-        if ($_POST['saveInPast'] == "כן" ){
+        if ($_POST['savedInPast'] == "כן" ){
             //update lead in case was already saved in the past/
             $updateFieldsKeyValue = [130575 => 130576];
             leadImUpdateLead($crmAccountNumber, $newLeadId, $updateFieldsKeyValue, true);

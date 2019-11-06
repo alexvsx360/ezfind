@@ -46,7 +46,13 @@ function savedInPastBy($selerMeshamer, $acc_id, $supplier_id)
         return $userJson['result']['name'];
     }
 }
-
+function isSaveInPast($savedInPastBy){
+    if($savedInPastBy){
+        return "כן";
+    }else{
+      return "לא";
+    }
+}
 if ($_GET) {
     global
         $customerFullName,
@@ -88,6 +94,7 @@ if ($_GET) {
     $selerMeshamerFieldNum = $leadToPopulateJson['lead']['fields']['104604'];
     $selerMeshamer = $configTypes['sellerName'][$selerMeshamerFieldNum];
     $savedInPastBy = savedInPastBy($selerMeshamer, $acc_id, $supplier_id);
+    $savedInPast = isSaveInPast($savedInPastBy);
     $isEverShumar = $leadToPopulateJson['lead']['fields']['125781'];
     $leadStatus = $leadToPopulateJson['lead']['status'];
     $premiaAfterShimur = $fields['104607'];
@@ -103,6 +110,7 @@ if ($_GET) {
         <div class="row" >
             <form id="main-form" action="openLead.php"  class="" method="post" >
                 <div class="form-group">
+                    <input type="hidden" class="input-group form-control" value="<?php print $savedInPast; ?>"  name="savedInPast"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $payWith; ?>"  name="payWith"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $leadId; ?>"  name="leadId"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $savedInPastBy; ?>"  name="savedInPastBy"/>
@@ -128,17 +136,17 @@ if ($_GET) {
                     <input type="hidden" class="input-group form-control" value="<?php print $isEverShumar ?>" name="isEverShumar"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $premiaAfterShimur ?>" name="premiaAfterShimur"/>
                 </div>
-                <div class="row" >
-                    <div class="col-xs-4 "></div>
-                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                        <label for="sel1">שומר בעבר?</label>
-                        <select required class="form-control" id="saveInPast" name="saveInPast" placeholder="">
-                            <option value ="">--בחר האם שומר בעבר--</option>
-                            <option value ="כן">כן</option>
-                            <option value ="לא">לא</option>
-                        </select>
-                    </div>
-                </div>
+<!--                <div class="row" >-->
+<!--                    <div class="col-xs-4 "></div>-->
+<!--                    <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">-->
+<!--                        <label for="sel1">שומר בעבר?</label>-->
+<!--                        <select required class="form-control" id="saveInPast" name="saveInPast" placeholder="">-->
+<!--                            <option value ="">--בחר האם שומר בעבר--</option>-->
+<!--                            <option value ="כן">כן</option>-->
+<!--                            <option value ="לא">לא</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="row" >
                     <div class="col-xs-4"></div>
                     <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
@@ -225,7 +233,7 @@ if ($_GET) {
                                 <li>
                                     <a class="test" tabindex="-1" href="#">ביטול יזום <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a type='תביעה שסורבה ע"י' class="initiatedCancel" tabindex="-1" href="#">תביעה שסורבה ע"י</a></li>
+                                        <li><a type='חיתום בדיעבד שלא אישר' class="initiatedCancel" tabindex="-1" href="#">חיתום בדיעבד שלא אישר</a></li>
                                         <li><a type="העברת הלקוח לחברה אחרת" class="initiatedCancel" tabindex="-1" href="#">העברת הלקוח לחברה אחרת</a></li>
                                         <li><a type="הפוליסה הופסקה לקוח נפטר" class="initiatedCancel" tabindex="-1" href="#">הפוליסה הופסקה לקוח מפטר</a></li>
                                         <li><a type="מכירה לא תקינה" class="initiatedCancel" tabindex="-1" href="#">מכירה לא תקינה</a></li>
