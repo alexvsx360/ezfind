@@ -43,6 +43,7 @@
     }
     $leadToPopulateJson = leadImGetLead($accId, $leadId);
     $ssnFieldId = "";
+    //customer card
     switch ($accId){
         case 3694:
             $ssnFieldId = 102092;
@@ -71,10 +72,12 @@
         case 4767:
             $ssnFieldId = 132572;
             break;
+        case 4805:
+            $ssnFieldId = 134839;
+            break;
         default:
             null;
     }
-
     $ssn = $leadToPopulateJson['lead']['fields'][$ssnFieldId];
     $ssnToArray = str_split($ssn);
     if($ssnToArray[0]== 0){
@@ -165,7 +168,7 @@
                 $channel = $value['channel'];
                 $policyLiveMonth = $value['policyLiveMonth'];
                 $policyLiveDays = $value['policyLiveDays'];
-
+                $policyNumber =  $value['policyNumber'];
             }
             if ($status == 'הופק ובוטל') {
                 echo '
@@ -182,7 +185,7 @@
             <br>
             <b>משך חיי הפוליסה בחודשים</b>' . ' ' . $policyLiveMonth . '<br> 
             <b>משך חיי הפוליסה בימים</b>' . ' ' . $policyLiveDays . '<br> 
-
+            <b>מספר פוליסה</b>' . ' ' . $policyNumber . '<br> 
             <a target="_blank" href=' . $ticketLink . '>לינק לטיקט</a>
         </div>
     </div>';
@@ -205,6 +208,7 @@
             <br>
             <b>משך חיי הפוליסה בחודשים</b>' . ' ' . $policyLiveMonth . '<br> 
             <b>משך חיי הפוליסה בימים</b>' . ' ' . $policyLiveDays . '<br> 
+            <b>מספר פוליסה</b>' . ' ' . $policyNumber . '<br> 
 
             <a target="_blank" href=' . $ticketLink . '>לינק לטיקט</a>
         </div>
@@ -225,6 +229,7 @@
             <br>
             <b>משך חיי הפוליסה בחודשים</b>'.' '.$policyLiveMonth.'<br> 
             <b>משך חיי הפוליסה בימים</b>'.' '.$policyLiveDays.'<br> 
+            <b>מספר פוליסה</b>' . ' ' . $policyNumber . '<br> 
 
             <a target="_blank" href='.$ticketLink.'>לינק לטיקט</a>
         </div>
