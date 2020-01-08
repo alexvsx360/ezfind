@@ -296,6 +296,7 @@ $client->tickets()->update($newTicket->ticket->id,[
         'body' => 'קישור לרשומת הליד במסד נתונים (תפעול ושירות לקוחות) : ' . 'https://crm.ibell.co.il/a/3694/leads/' . $newPedionLead . " \n\n",
     ]
 ]);
+httpGet('https://ibell.frb.io//api/leadim/economicGrowth/event/bchirimNewSale?recordId=' . $_POST['recordNumber']);
 
 ?>
 <div class="container" role="main" id="button_block">
