@@ -80,6 +80,11 @@ $leadPostDate = [
     'leadCallCenterSuplaier' => getLeadCallCenterSuplaier($_GET['campainName']),
     'leadIncorrectStatus' => $_GET['incorrectLeadStatus'],
     'reference' => $_GET['leadId'],
+    'totalHealth' => $_GET['totalHealth'],
+    'totalLife' => $_GET['totalLife'],
+    'totalHealthAndLife' => $_GET['totalHealthAndLife'],
+    'totalCollective' => $_GET['totalCollective'],
+    'leadType' => $_GET['leadType']
 
 ];
 
