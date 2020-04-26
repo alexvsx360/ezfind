@@ -322,6 +322,7 @@ function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel)
         'phone' => $_POST['customerPhone'],
         'id' => $_POST['customerSsn'],
         'email' => $_POST['customerEmail'],
+        'sellingChannel' => $_POST['sellingChannel'],  // enter the selling channel to the lid
         'callCenter' => $_POST['callCenterName'],
         'cancelDate' => strtotime($_POST['cancelDate']),
         'cancelType' => $_POST['cancelType'],
@@ -339,7 +340,6 @@ function generateBitulLeadData($supplierNameEmail, $extraDetailsToCancel)
         'saveInPast' => $_POST['savedInPast'],
         'fld_127462' => $_POST['cancelTypeDetails'],  //פירוט סוג הביטול
         'savedInPastBy' => $_POST["savedInPastBy"],
-
     ];
     return array_merge($postData, $extraDetailsToCancel);
 }
@@ -465,6 +465,7 @@ if ($_POST) {
     $cancelPolicyType = setDefaultValue($_POST['cancelPolicyType']);
     $cancelTicketNumber = setDefaultValue($_POST['cancelTicketNumber']);
     $cancelLink = "https://ezfind.zendesk.com/agent/tickets/" . setDefaultValue($_POST['cancelTicketNumber']);
+    $sellingChannel = setDefaultValue($_POST['sellingChannel']);
     $cancelMonthlyPremia = setDefaultValue($_POST['cancelMonthlyPremia']);
     $cancelInsurenceCompany = setDefaultValue($_POST['cancelInsuranceCompany']);
     $salesMan = setDefaultValue($_POST['salesMan']);

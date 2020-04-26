@@ -7,13 +7,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
     <!-- Optional theme -->
     <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
@@ -23,7 +21,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
-
     <title>פתח פנית שירות לקוחות חדשה</title>
 </head>
 <body>
@@ -66,6 +63,7 @@ if ($_GET) {
     /*get lead information from the CRM*/
     $acc_id = $_GET['crmAcccountNumber'];
     $recordNumber = $_GET['recordNumber'];
+    $agentId = $_GET['agentId'];
     $leadToPopulateJson = getLeadJson($_GET['recordNumber'], $acc_id, $_GET['agentId']);
     $leadId = $leadToPopulateJson['lead']['lead_id'];
     $customerPhone = getCustomerPhone($acc_id, $leadToPopulateJson);
@@ -87,6 +85,7 @@ if ($_GET) {
     $actualPremia = $fields['102416'];
     $salesMan = $fields['100099'];
     $payWith = $fields['106839'];
+    $sellingChannel = $fields['102131'];
     $supplier_id = $leadToPopulateJson['lead']['supplier_id'];
 //    $getUserJson  = getUser($acc_id,$supplier_id);
     $getActiveUsers  = getActiveUsers($acc_id,60);
@@ -102,7 +101,6 @@ if ($_GET) {
 
 
 ?>
-
     <div class="container" role="main" id="back_form">
         <div class="text-center">
             <img src="logo3.png" class="rounded">
@@ -119,6 +117,7 @@ if ($_GET) {
                     <input type="hidden" class="input-group form-control" value="<?php print $customerFullName; ?>"  name="customerName"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $customerPhone; ?>" name="customerPhone"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $ssn ?>"  name="customerSsn"/>
+                    <input type="hidden" class="input-group form-control" value="<?php print $sellingChannel ?>"  name="sellingChannel"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $email ?>"  name="customerEmail"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $recordNumber ?>" name="recordNumber"/>
                     <input type="hidden" class="input-group form-control" value="<?php print $acc_id ?>" name="crmAccountNumber"/>
