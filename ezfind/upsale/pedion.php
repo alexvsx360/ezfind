@@ -177,11 +177,11 @@ if ($_GET) {
             <div class="row" >
                 <div class="col-xs-4 "></div>
                 <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-                    <label for="sel1">האם הלקוח מודע לתשלום מס 35%?</label>
+                    <label for="sel1">האם הפדיון חייב במס?</label>
                     <select required class="form-control" id="taxAware" name="taxAware">
                         <option disabled selected value> -- בחר תשובתך -- </option>
-                        <option value="כן">כן</option>
-                        <option value="לא">לא</option>
+                        <option value="פדיון_חייב_במס">פדיון חייב במס </option>
+                        <option value="פדיון_פטור_ממס">פדיון פטור ממס</option>
                     </select>
                 </div>
             </div>
