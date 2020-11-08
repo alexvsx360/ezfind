@@ -14,7 +14,7 @@ class ezfindConnect
     public function __construct(){
         $this -> subdomain ="ezfind-sherut";
         $this -> username = "yaki@tgeg.co.il";
-        $this -> token = "r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF"; // replace this with your token
+        $this -> token = "WP5x5E4l3ZCVcaiDqFSJIQouL8WY0AdcX2Rpd7SH"; // replace this with your token
     }
     public function getSubDomain(){
         return $this->subdomain;
