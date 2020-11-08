@@ -197,7 +197,7 @@ use Zendesk\API\HttpClient as ZendeskAPI;
 
 $subdomain = "ezfind-sherut";
 $username  = "yaki@tgeg.co.il";
-$token     = "r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF"; // replace this with your token
+$token     = "WP5x5E4l3ZCVcaiDqFSJIQouL8WY0AdcX2Rpd7SH"; // replace this with your token
 $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $LOGGER = fopen("log.txt", "a");
