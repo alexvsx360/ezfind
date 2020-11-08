@@ -53,7 +53,7 @@ foreach ($array as $line){
         $action = $line["ACTION"];
         $comments = $line["הערות על התיקט"];
 
-        'r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF';
+        'WP5x5E4l3ZCVcaiDqFSJIQouL8WY0AdcX2Rpd7SH';
 
 
         $ticketUrl = "https://ezfind-sherut.zendesk.com/api/v2/tickets.json";
@@ -96,7 +96,7 @@ foreach ($array as $line){
         //fwrite($myfile, "return value from Zendesk API is " . print_r($create, true));
 
         $username = 'yaki@tgeg.co.il/token';
-        $password = 'r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF';
+        $password = 'WP5x5E4l3ZCVcaiDqFSJIQouL8WY0AdcX2Rpd7SH';
 
         $process = curl_init($ticketUrl);
         curl_setopt($process, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
