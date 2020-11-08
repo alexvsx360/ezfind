@@ -155,7 +155,7 @@ $create = json_encode(array('ticket' => $data));
 //fwrite($myfile, "return value from Zendesk API is " . print_r($create, true));
 
 $username = 'yaki@tgeg.co.il/token';
-$password = 'r0sQ2m9H37u6OOnmYagEM08cW11xKasCbNZspYaF';
+$password = 'WP5x5E4l3ZCVcaiDqFSJIQouL8WY0AdcX2Rpd7SH';
 
 $return = httpPostWithUserPassword($ticketUrl, $create, $username, $password);
 $ticketCreationResponse = json_decode($return, true);
